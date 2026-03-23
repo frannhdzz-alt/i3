@@ -10,12 +10,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "command.h"
 #include "game.h"
 #include "game_actions.h"
 #include "graphic_engine.h"
 #include "game_reader.h"
+
 
 int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
 void game_loop_cleanup(Game *game, Graphic_engine *gengine);
@@ -25,6 +27,8 @@ int main(int argc, char *argv[]) {
   Graphic_engine *gengine = NULL;
   int result;
   Command *last_cmd;
+
+  srand(time(NULL));
 
   if (argc < 2) {
     fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);

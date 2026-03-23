@@ -24,7 +24,7 @@ struct _Character {
   char gdesc[7];            /*!< Character graphic description (6 chars + \0) */
   int health;               /*!< Character health points */
   Bool friendly;            /*!< Character friendliness */
-  char message[WORD_SIZE + 1]; /*!< Character message */
+  char message[WORD_SIZE + 2]; /*!< Character message */
 };
 
 Character* character_create(Id id) {

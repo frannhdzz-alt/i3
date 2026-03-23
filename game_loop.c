@@ -2,14 +2,15 @@
  * @brief It implements the main game loop
  *
  * @file game_loop.c
- * @author Rodrigo and Mario
- * @version 2.0
- * @date 9-03-2026
+ * @author Rodrigo, Mario y Tu Nombre
+ * @version 3.0
+ * @date 23-03-2026
  * @copyright GNU Public License
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include "command.h"
@@ -22,26 +23,45 @@
 int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
 void game_loop_cleanup(Game *game, Graphic_engine *gengine);
 
+
+extern char *cmd_to_str[N_CMD][N_CMDT];
+
 int main(int argc, char *argv[]) {
   Game *game = NULL;
   Graphic_engine *gengine = NULL;
   int result;
   Command *last_cmd;
+  
+
+  FILE *f_log = NULL; 
+  Status action_status = ERROR;
+  CommandCode cmd_code;
+  const char *cmd_arg;
 
   srand(time(NULL));
 
   if (argc < 2) {
-    fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
+    fprintf(stderr, "Use: %s <game_data_file> [-l <log_file>]\n", argv[0]);
     return 1;
+  }
+
+
+  if (argc >= 4 && strcmp(argv[2], "-l") == 0) {
+    f_log = fopen(argv[3], "w");
+    if (f_log == NULL) {
+      fprintf(stderr, "Warning: Could not open log file '%s'\n", argv[3]);
+    }
   }
 
   result = game_loop_init(&game, &gengine, argv[1]);
 
   if (result == 1) {
     fprintf(stderr, "Error while initializing game.\n");
+    if (f_log) fclose(f_log);
     return 1;
   } else if (result == 2){
     fprintf(stderr, "Error while initializing graphic engine.\n");
+    if (f_log) fclose(f_log);
     return 1;
   }
 
@@ -50,7 +70,21 @@ int main(int argc, char *argv[]) {
   while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE)) {
     graphic_engine_paint_game(gengine, game);
     command_get_user_input(last_cmd);
-    game_actions_update(game, last_cmd);
+    
+    action_status = game_actions_update(game, last_cmd);
+    
+    if (f_log != NULL) {
+      cmd_code = command_get_code(last_cmd);
+      cmd_arg = command_get_arg(last_cmd);
+      
+
+      if (cmd_arg != NULL && cmd_arg[0] != '\0') {
+        fprintf(f_log, "%s %s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], cmd_arg, (action_status == OK) ? "OK" : "ERROR");
+      } else {
+
+        fprintf(f_log, "%s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], (action_status == OK) ? "OK" : "ERROR");
+      }
+    }
   }
 
   if (game_get_finished(game) == TRUE) {
@@ -59,6 +93,11 @@ int main(int argc, char *argv[]) {
   }
 
   game_loop_cleanup(game, gengine);
+  
+
+  if (f_log != NULL) {
+    fclose(f_log);
+  }
 
   return 0;
 }

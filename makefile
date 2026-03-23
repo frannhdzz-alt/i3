@@ -34,11 +34,11 @@ castle: $(OBJ) $(TESTS)
 
 # Runs the game normally
 run: castle
-	./castle castle.dat
+	./castle castle.dat -l registro.txt
 
 # Runs the game with valgrind
 vrun: castle
-	valgrind --leak-check=full ./castle castle.dat
+	valgrind --leak-check=full ./castle castle.dat -l registro.txt
 
 # Test rule: Quick check (runs the game and then cleans up)
 test: run

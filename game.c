@@ -1,2 +1,1 @@
-[.ShellClassInfo]
-IconResource=C:\Program Files\Microsoft OneDrive\OneDrive.exe,15
+

@@ -2,7 +2,7 @@
  * @brief It implements the main game loop
  *
  * @file game_loop.c
- * @author Rodrigo, Mario y Tu Nombre
+ * @author Rodrigo, Mario y Francisco
  * @version 3.0
  * @date 23-03-2026
  * @copyright GNU Public License

@@ -194,10 +194,22 @@ Id game_get_player_location(Game *game) {
 }
 
 Status game_set_player_location(Game *game, Id id) {
+  Space *space = NULL;
+
   if (!game || id == NO_ID) {
     return ERROR;
   }
-  return player_set_location(game->player, id);
+  
+  if (player_set_location(game->player, id) == OK) {
+
+    space = game_get_space(game, id);
+    if (space) {
+      space_set_discovered(space, TRUE);
+    }
+    return OK;
+  }
+  
+  return ERROR;
 }
 
 Id game_get_object_location(Game *game, Id object_id) {

@@ -120,10 +120,12 @@ Status game_load_objects(Game *game, char *filename) {
       strcpy(name, toks);
       toks = strtok(NULL, "|");
       location = atol(toks);
+      toks = strtok(NULL, "|\n");
 
       object = object_create(id);
       if (object != NULL) {
         object_set_name(object, name);
+        if (toks) object_set_description(object, toks);
         game_add_object(game, object);
         game_set_object_location(game, location, id);
       }

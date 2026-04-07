@@ -21,6 +21,7 @@
 struct _Object {
   Id id;                    /*!< Object identifier */
   char name[WORD_SIZE + 1]; /*!< Object name */
+  char description[WORD_SIZE + 1]; /*!< Object description */
 };
 
 Object* object_create(Id id) {
@@ -82,4 +83,15 @@ Status object_print(Object* object) {
   fprintf(stdout, "--> Object (Id: %ld; Name: %s)\n", object->id, object->name);
 
   return OK;
+}
+
+Status object_set_description(Object* object, char* desc) {
+  if (!object || !desc) return ERROR;
+  if (!strcpy(object->description, desc)) return ERROR;
+  return OK;
+}
+
+const char* object_get_description(Object* object) {
+  if (!object) return NULL;
+  return object->description;
 }

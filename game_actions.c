@@ -99,19 +99,28 @@ void game_actions_drop(Game *game) {
   Id p_loc = NO_ID;
   Space *current_space = NULL;
   Player *player = NULL;
+  Command *cmd = NULL;
+  const char *obj_name = NULL;
   Id obj_id = NO_ID;
+  Object *obj = NULL;
 
   if (!game) return;
 
   p_loc = game_get_player_location(game);
   current_space = game_get_space(game, p_loc);
   player = game_get_player(game);
+  cmd = game_get_last_command(game);
+  obj_name = command_get_arg(cmd);
   obj_id = player_get_object(player);
 
-  if (obj_id == NO_ID) return;
+  if (!obj_name || obj_name[0] == '\0' || obj_id == NO_ID) return;
 
-  space_add_object(current_space, obj_id);
-  player_set_object(player, NO_ID);
+  obj = game_get_object(game, obj_id);
+  
+  if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+    space_add_object(current_space, obj_id);
+    player_set_object(player, NO_ID);
+  }
 }
 
 void game_actions_attack(Game *game) {
@@ -148,6 +157,9 @@ void game_actions_attack(Game *game) {
   }
 }
 
+void game_actions_inspect(Game *game) {
+}
+
 void game_actions_chat(Game *game) {
 }
 
@@ -169,6 +181,7 @@ Status game_actions_update(Game *game, Command *command) {
     case TAKE: game_actions_take(game); break;
     case DROP: game_actions_drop(game); break;
     case ATTACK: game_actions_attack(game); break;
+    case INSPECT: game_actions_inspect(game); break;
     case CHAT: game_actions_chat(game); break;
     default: break;
   }

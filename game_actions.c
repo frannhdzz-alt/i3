@@ -85,7 +85,7 @@ void game_actions_take(Game *game) {
 
   for (i = 1; i < MAX_OBJECTS; i++) {
     Object *o = game_get_object(game, i);
-    if (o && strcasecmp(object_get_name(o), obj_name) == 0) {
+    if (o && strcmp(object_get_name(o), obj_name) == 0) {
       obj_id = i;
       break;
     }

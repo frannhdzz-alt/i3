@@ -166,6 +166,11 @@ Player *game_get_player(Game *game) {
 
 Status game_set_player(Game *game, Player *player) {
     if (!game || !player) return ERROR;
+    if (game->player != NULL)
+    {
+      player_destroy(game->player);
+    }
+    
     game->player = player;
     return OK;
 }

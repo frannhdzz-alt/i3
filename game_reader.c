@@ -40,7 +40,7 @@ Status game_create_from_file(Game **game, char *filename) {
     return ERROR;
   }
 
-  /* NUEVO: cargar jugador */
+
   if (game_load_player(*game, filename) == ERROR) {
     return ERROR;
   }
@@ -85,7 +85,7 @@ Status game_load_spaces(Game *game, char *filename) {
         space_set_south(space, south);
         space_set_west(space, west);
 
-        /* Read the graphic description if present */
+        
         toks = strtok(NULL, "|\n");
         if (toks) {
           space_set_gdesc(space, 0, toks);
@@ -217,13 +217,14 @@ Status game_load_player(Game *game, char *filename) {
     if (strncmp("#p:", line, 3) == 0) {
 
       toks = strtok(line + 3, "|");
+      if (!toks) continue;
       id = atol(toks);
 
       toks = strtok(NULL, "|");
-      strcpy(name, toks);
+      if (toks) strcpy(name, toks);
 
       toks = strtok(NULL, "|");
-      location = atol(toks);
+      if (toks) location = atol(toks);
 
       toks = strtok(NULL, "|\n");
       if (toks) strcpy(obj_list, toks);
@@ -231,7 +232,9 @@ Status game_load_player(Game *game, char *filename) {
       player = player_create(id);
       if (player != NULL) {
         player_set_name(player, name);
-        player_set_location(player, location);
+        
+      
+        player_set_gdesc(player, "^O^");
 
         /* Procesar objetos separados por comas */
         token = strtok(obj_list, ",");
@@ -243,7 +246,9 @@ Status game_load_player(Game *game, char *filename) {
           token = strtok(NULL, ",");
         }
 
+        
         game_set_player(game, player);
+        game_set_player_location(game, location);
       }
     }
   }

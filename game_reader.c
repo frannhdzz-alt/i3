@@ -205,6 +205,8 @@ Status game_load_player(Game *game, char *filename) {
   Id id = NO_ID, location = NO_ID;
   Player *player = NULL;
   Status status = OK;
+  Id obj_id = NO_ID;
+  char *token = NULL;
 
   if (!filename) return ERROR;
 
@@ -232,9 +234,9 @@ Status game_load_player(Game *game, char *filename) {
         player_set_location(player, location);
 
         /* Procesar objetos separados por comas */
-        char *token = strtok(obj_list, ",");
+        token = strtok(obj_list, ",");
         while (token) {
-          Id obj_id = atol(token);
+          obj_id = atol(token);
           if (obj_id != NO_ID) {
             player_add_object(player, obj_id);
           }

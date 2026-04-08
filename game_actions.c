@@ -128,7 +128,7 @@ void game_actions_drop(Game *game) {
 
   for (i = 1; i < MAX_OBJECTS; i++) {
     obj = game_get_object(game, i);
-    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+    if (obj && strcmp(object_get_name(obj), obj_name) == 0) {
       obj_id = i;
       break;
     }

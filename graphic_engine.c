@@ -11,7 +11,7 @@
 #include "graphic_engine.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include "command.h"
 #include "libscreen.h"
@@ -108,7 +108,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Object *po = NULL;
   Character *c = NULL;
   Player *player = game_get_player(game);
-  
+  int i;
+  CommandCode last_cmd = UNKNOWN;
+  extern char *cmd_to_str[N_CMD][N_CMDT];
+  Inventory *inv;
+  Set *objs;
+
   char str[255];
   char left_str[60], center_str[60], right_str[60];
   char west_link[3], east_link[3];
@@ -117,9 +122,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   char c_sym_back[7], c_sym_act[7], c_sym_next[7], c_sym_west[7], c_sym_east[7];
   char obj_back[16], obj_act[16], obj_next[16], obj_west[16], obj_east[16];
   
-  int i;
-  CommandCode last_cmd = UNKNOWN;
-  extern char *cmd_to_str[N_CMD][N_CMDT];
+  
+
   
   if (player_get_gdesc(player) && strlen(player_get_gdesc(player)) > 0) {
     strncpy(p_sym, player_get_gdesc(player), 3);
@@ -268,18 +272,17 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   }
 
 screen_area_puts(ge->descript, " ");
-Inventory *inv;
-Set *objs;
-int i;
+
 
 inv = player_get_inventory(player);
 objs = inventory_get_objects(inv);
-Set *objs = inventory_get_objects(inv);
+
 
 if (set_get_n_ids(objs) > 0)
   p_obj = set_get_id_at(objs, 0);
-else
+else{
   p_obj = NO_ID;
+}
 
   sprintf(str, "  Player loc :%ld (%d pts)", game_get_player_location(game), player_get_health(player));
   screen_area_puts(ge->descript, str);
@@ -303,7 +306,7 @@ if (last_cmd == INSPECT) {
   if (arg_name && arg_name[0] != '\0') {
     for (i = 1; i <= MAX_OBJECTS; i++) {
       o = game_get_object(game, i);
-      if (o && strcasecmp(object_get_name(o), arg_name) == 0) {
+      if (o && strcmp(object_get_name(o), arg_name) == 0) {
 
       
         if (player_has_object(player, object_get_id(o)) == TRUE ||

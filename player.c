@@ -3,9 +3,8 @@
  *
  * @file player.c
  * @author Mario
- * @version 2.0
- * @date 24-02-2026
- * @copyright GNU Public License
+ * @version 3.0
+ * @date 24-03-2026
  */
 
 #include "player.h"
@@ -22,7 +21,7 @@ struct _Player {
   Id id;                    /*!< Player identifier */
   char name[WORD_SIZE + 1]; /*!< Player name */
   Id location;              /*!< Id of the space where the player is */
-  Id object;                /*!< Id of the object the player carries */
+  Inventory* backpack;      /*!< Player inventory (replaces object field) */
   int health;               /*!< Player health points */
   char gdesc[7];            /*!< Player graphic description (6 chars + \0) */
 };
@@ -40,9 +39,15 @@ Player* player_create(Id id) {
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
-  newPlayer->object = NO_ID;
-  newPlayer->health = 5; 
+  newPlayer->health = 5;
   newPlayer->gdesc[0] = '\0';
+
+  /* Create backpack with capacity 5 */
+  newPlayer->backpack = inventory_create(5);
+  if (!newPlayer->backpack) {
+    free(newPlayer);
+    return NULL;
+  }
 
   return newPlayer;
 }
@@ -52,7 +57,9 @@ Status player_destroy(Player* player) {
     return ERROR;
   }
 
+  inventory_destroy(player->backpack);
   free(player);
+
   return OK;
 }
 
@@ -97,20 +104,37 @@ Id player_get_location(Player* player) {
   return player->location;
 }
 
-Status player_set_object(Player* player, Id id) {
+/* === INVENTORY FUNCTIONS === */
+
+Status player_add_object(Player* player, Id id) {
   if (!player) {
     return ERROR;
   }
-  player->object = id;
-  return OK;
+  return inventory_add_object(player->backpack, id);
 }
 
-Id player_get_object(Player* player) {
+Status player_del_object(Player* player, Id id) {
   if (!player) {
-    return NO_ID;
+    return ERROR;
   }
-  return player->object;
+  return inventory_del_object(player->backpack, id);
 }
+
+Bool player_has_object(Player* player, Id id) {
+  if (!player) {
+    return FALSE;
+  }
+  return inventory_has_object(player->backpack, id);
+}
+
+Inventory* player_get_inventory(Player* player) {
+  if (!player) {
+    return NULL;
+  }
+  return player->backpack;
+}
+
+/* === HEALTH & GDESC === */
 
 Status player_set_health(Player* player, int health) {
   if (!player || health < 0) {
@@ -150,9 +174,11 @@ Status player_print(Player* player) {
 
   fprintf(stdout, "--> Player (Id: %ld; Name: %s)\n", player->id, player->name);
   fprintf(stdout, "---> Location: %ld\n", player->location);
-  fprintf(stdout, "---> Object: %ld\n", player->object);
   fprintf(stdout, "---> Health: %d\n", player->health);
   fprintf(stdout, "---> Graphic Description: %s\n", player->gdesc);
+
+  fprintf(stdout, "---> Backpack:\n");
+  inventory_print(player->backpack);
 
   return OK;
 }

@@ -9,9 +9,11 @@
  */
 
 #include "game_reader.h"
-#include "space.h" 
+#include "game.h"
+#include "space.h"
 #include "object.h"
 #include "character.h"
+#include "player.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,6 +21,7 @@
 Status game_load_spaces(Game *game, char *filename);
 Status game_load_objects(Game *game, char *filename);
 Status game_load_characters(Game *game, char *filename);
+Status game_load_player(Game *game, char *filename);
 
 Status game_create_from_file(Game **game, char *filename) {
   if (game_create(game) == ERROR) {
@@ -37,7 +40,10 @@ Status game_create_from_file(Game **game, char *filename) {
     return ERROR;
   }
 
-  game_set_player_location(*game, game_get_space_id_at(*game, 0));
+  /* NUEVO: cargar jugador */
+  if (game_load_player(*game, filename) == ERROR) {
+    return ERROR;
+  }
 
   return OK;
 }
@@ -178,9 +184,64 @@ Status game_load_characters(Game *game, char *filename) {
         character_set_health(character, health);
         character_set_friendly(character, friendly == 1 ? TRUE : FALSE);
         character_set_message(character, message);
-        
+
         game_add_character(game, character);
         game_set_character_location(game, location, id);
+      }
+    }
+  }
+
+  if (ferror(file)) status = ERROR;
+  fclose(file);
+  return status;
+}
+
+Status game_load_player(Game *game, char *filename) {
+  FILE *file = NULL;
+  char line[WORD_SIZE] = "";
+  char name[WORD_SIZE] = "";
+  char obj_list[WORD_SIZE] = "";
+  char *toks = NULL;
+  Id id = NO_ID, location = NO_ID;
+  Player *player = NULL;
+  Status status = OK;
+
+  if (!filename) return ERROR;
+
+  file = fopen(filename, "r");
+  if (file == NULL) return ERROR;
+
+  while (fgets(line, WORD_SIZE, file)) {
+    if (strncmp("#p:", line, 3) == 0) {
+
+      toks = strtok(line + 3, "|");
+      id = atol(toks);
+
+      toks = strtok(NULL, "|");
+      strcpy(name, toks);
+
+      toks = strtok(NULL, "|");
+      location = atol(toks);
+
+      toks = strtok(NULL, "|\n");
+      if (toks) strcpy(obj_list, toks);
+
+      player = player_create(id);
+      if (player != NULL) {
+        player_set_name(player, name);
+        player_set_location(player, location);
+
+        /* Procesar objetos separados por comas */
+        char *token = strtok(obj_list, ",");
+        while (token) {
+          Id obj_id = atol(token);
+          if (obj_id != NO_ID) {
+            player_add_object(player, obj_id);
+          }
+          token = strtok(NULL, ",");
+        }
+
+        game_set_player(game, player);
       }
     }
   }

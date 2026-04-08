@@ -73,4 +73,21 @@ Bool set_find(Set* set, Id id);
  */
 Status set_print(Set* set);
 
+/**
+ * @brief Gets the number of ids currently in the set
+ * @author Mario
+ * @param set The set
+ * @return The number of ids, or -1 if error
+ */
+int set_get_n_ids(Set *set);
+
+/**
+ * @brief Gets the id stored at a given position in the set
+ * @author Mario
+ * @param set The set
+ * @param index The position (0 to n_ids-1)
+ * @return The id, or NO_ID if error
+ */
+Id set_get_id_at(Set *set, int index);
+
 #endif

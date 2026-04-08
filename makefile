@@ -15,7 +15,7 @@ CFLAGS = -Wall -ansi -pedantic -g
 LDFLAGS = -L. -lscreen
 
 # List of all object files (.o) needed.
-OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o
+OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o
 
 # -----------------------------------------------------------------
 # MAIN RULES
@@ -109,3 +109,6 @@ character_test.o: character_test.c character.h types.h
 
 space_test.o: space_test.c space.h types.h set.h
 	$(CC) $(CFLAGS) -c space_test.c
+
+inventory.o: inventory.c inventory.h set.h types.h
+	$(CC) $(CFLAGS) -c inventory.c

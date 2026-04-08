@@ -103,6 +103,16 @@ Space *game_get_space(Game *game, Id id);
 Player *game_get_player(Game *game);
 
 /**
+ * @brief It sets the player of the game
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @param player a pointer to the player to be set
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status game_set_player(Game *game, Player *player);
+
+/**
  * @brief It gets a specific object from the game
  * @author Mario
  *

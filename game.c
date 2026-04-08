@@ -164,6 +164,12 @@ Player *game_get_player(Game *game) {
   return game->player;
 }
 
+Status game_set_player(Game *game, Player *player) {
+    if (!game || !player) return ERROR;
+    game->player = player;
+    return OK;
+}
+
 Object *game_get_object(Game *game, Id id) {
   int i;
   if (!game || id == NO_ID) return NULL;

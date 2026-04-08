@@ -116,3 +116,15 @@ Status set_print(Set* set) {
 
   return OK;
 }
+
+int set_get_n_ids(Set *set) {
+    if (!set) return 0;
+    return set->n_ids;
+}
+
+Id set_get_id_at(Set *set, int index) {
+  if (!set || index < 0 || index >= set->n_ids) {
+    return NO_ID;
+  }
+  return set->ids[index];
+}

@@ -79,7 +79,9 @@ void game_actions_take(Game *game) {
   cmd = game_get_last_command(game);
   obj_name = command_get_arg(cmd);
 
-  if (!obj_name || obj_name[0] == '\0' || player_get_object(player) != NO_ID) return;
+
+  if (!obj_name || obj_name[0] == '\0') return;
+
 
   for (i = 1; i < MAX_OBJECTS; i++) {
     Object *o = game_get_object(game, i);
@@ -89,8 +91,14 @@ void game_actions_take(Game *game) {
     }
   }
 
-  if (obj_id != NO_ID && space_has_object(current_space, obj_id) == TRUE) {
-    player_set_object(player, obj_id);
+
+  if (obj_id == NO_ID || space_has_object(current_space, obj_id) == FALSE) return;
+
+  
+  if (player_has_object(player, obj_id) == TRUE) return;
+
+  
+  if (player_add_object(player, obj_id) == OK) {
     space_del_object(current_space, obj_id);
   }
 }
@@ -103,6 +111,7 @@ void game_actions_drop(Game *game) {
   const char *obj_name = NULL;
   Id obj_id = NO_ID;
   Object *obj = NULL;
+    int i;
 
   if (!game) return;
 
@@ -111,15 +120,29 @@ void game_actions_drop(Game *game) {
   player = game_get_player(game);
   cmd = game_get_last_command(game);
   obj_name = command_get_arg(cmd);
-  obj_id = player_get_object(player);
 
-  if (!obj_name || obj_name[0] == '\0' || obj_id == NO_ID) return;
+  /* No hay nombre de objeto */
+  if (!obj_name || obj_name[0] == '\0') return;
 
-  obj = game_get_object(game, obj_id);
-  
-  if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+  /* Buscar el objeto por nombre entre los objetos del juego */
+
+  for (i = 1; i < MAX_OBJECTS; i++) {
+    obj = game_get_object(game, i);
+    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+      obj_id = i;
+      break;
+    }
+  }
+
+  /* Si no existe ese objeto, no se puede soltar */
+  if (obj_id == NO_ID) return;
+
+  /* Si el jugador no tiene ese objeto, no puede soltarlo */
+  if (player_has_object(player, obj_id) == FALSE) return;
+
+  /* Soltar el objeto */
+  if (player_del_object(player, obj_id) == OK) {
     space_add_object(current_space, obj_id);
-    player_set_object(player, NO_ID);
   }
 }
 

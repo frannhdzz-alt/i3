@@ -11,7 +11,7 @@
 #include "graphic_engine.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <strings.h>
 
 #include "command.h"
 #include "libscreen.h"
@@ -267,8 +267,20 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       }
   }
 
-  screen_area_puts(ge->descript, " ");
-  p_obj = player_get_object(player);
+screen_area_puts(ge->descript, " ");
+Inventory *inv;
+Set *objs;
+int i;
+
+inv = player_get_inventory(player);
+objs = inventory_get_objects(inv);
+Set *objs = inventory_get_objects(inv);
+
+if (set_get_n_ids(objs) > 0)
+  p_obj = set_get_id_at(objs, 0);
+else
+  p_obj = NO_ID;
+
   sprintf(str, "  Player loc :%ld (%d pts)", game_get_player_location(game), player_get_health(player));
   screen_area_puts(ge->descript, str);
   if (p_obj != NO_ID) {
@@ -280,33 +292,36 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->descript, str);
 
  /* Chat System */
- if (last_cmd == INSPECT) {
-    const char *arg_name = command_get_arg(game_get_last_command(game));
-    Object *o = NULL;
-    Id space_id = game_get_player_location(game);
-    int found = 0;
-    
-    screen_area_puts(ge->descript, " ");
-    
-    if (arg_name && arg_name[0] != '\0') {
-      for (i = 1; i <= MAX_OBJECTS; i++) {
-        o = game_get_object(game, i);
-        if (o && strcasecmp(object_get_name(o), arg_name) == 0) {
-          if (player_get_object(player) == object_get_id(o) || 
-              space_has_object(game_get_space(game, space_id), object_get_id(o)) == TRUE) {
-            
-            sprintf(str, "  Inspect: %s", object_get_description(o));
-            screen_area_puts(ge->descript, str);
-            found = 1;
-            break;
-          }
+if (last_cmd == INSPECT) {
+  const char *arg_name = command_get_arg(game_get_last_command(game));
+  Object *o = NULL;
+  Id space_id = game_get_player_location(game);
+  int found = 0;
+  
+  screen_area_puts(ge->descript, " ");
+  
+  if (arg_name && arg_name[0] != '\0') {
+    for (i = 1; i <= MAX_OBJECTS; i++) {
+      o = game_get_object(game, i);
+      if (o && strcasecmp(object_get_name(o), arg_name) == 0) {
+
+      
+        if (player_has_object(player, object_get_id(o)) == TRUE ||
+            space_has_object(game_get_space(game, space_id), object_get_id(o)) == TRUE) {
+
+          sprintf(str, "  Inspect: %s", object_get_description(o));
+          screen_area_puts(ge->descript, str);
+          found = 1;
+          break;
         }
       }
-      if (!found) {
-        screen_area_puts(ge->descript, "  Inspect: You can't inspect that here.");
-      }
+    }
+
+    if (!found) {
+      screen_area_puts(ge->descript, "  Inspect: You can't inspect that here.");
     }
   }
+}
 
   last_cmd = command_get_code(game_get_last_command(game));
   if (last_cmd == CHAT) {

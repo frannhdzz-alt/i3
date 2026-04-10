@@ -168,8 +168,10 @@ Status game_add_character(Game *game, Character *character)
   return OK;
 }
 
-Status game_add_link(Game *game, Link *link) {
-  if (!game || !link || game->n_links >= MAX_LINKS) {
+Status game_add_link(Game *game, Link *link)
+{
+  if (!game || !link || game->n_links >= MAX_LINKS)
+  {
     return ERROR;
   }
 
@@ -216,26 +218,30 @@ Player *game_get_player(Game *game)
   return game->player;
 }
 
-Status game_set_player(Game *game, Player *player) {
-    if (!game || !player) return ERROR;
-    if (game->player != NULL)
-    {
-      player_destroy(game->player);
-    }
-    
-    game->player = player;
-    return OK;
+Status game_set_player(Game *game, Player *player)
+{
+  if (!game || !player)
+    return ERROR;
+  if (game->player != NULL)
+  {
+    player_destroy(game->player);
+  }
+
+  game->player = player;
+  return OK;
 }
 
-Status game_set_player(Game *game, Player *player) {
-    if (!game || !player) return ERROR;
-    if (game->player != NULL)
-    {
-      player_destroy(game->player);
-    }
-    
-    game->player = player;
-    return OK;
+Status game_set_player(Game *game, Player *player)
+{
+  if (!game || !player)
+    return ERROR;
+  if (game->player != NULL)
+  {
+    player_destroy(game->player);
+  }
+
+  game->player = player;
+  return OK;
 }
 
 Object *game_get_object(Game *game, Id id)
@@ -270,15 +276,19 @@ Character *game_get_character(Game *game, Id id)
   return NULL;
 }
 
-Link *game_get_link(Game *game, Id id) {
+Link *game_get_link(Game *game, Id id)
+{
   int i = 0;
 
-  if (!game || id == NO_ID) {
+  if (!game || id == NO_ID)
+  {
     return NULL;
   }
 
-  for (i = 0; i < game->n_links; i++) {
-    if (id == link_get_id(game->links[i])) {
+  for (i = 0; i < game->n_links; i++)
+  {
+    if (id == link_get_id(game->links[i]))
+    {
       return game->links[i];
     }
   }
@@ -286,20 +296,24 @@ Link *game_get_link(Game *game, Id id) {
   return NULL;
 }
 
-Id game_get_connection(Game *game, Id space, Direction dir) {
+Id game_get_connection(Game *game, Id space, Direction dir)
+{
   int i = 0;
   Id origin = NO_ID;
   Direction link_dir = N;
 
-  if (game == NULL || space == NO_ID) {
+  if (game == NULL || space == NO_ID)
+  {
     return NO_ID;
   }
 
-  for (i = 0; i < game->n_links; i++) {
+  for (i = 0; i < game->n_links; i++)
+  {
     origin = link_get_origin(game->links[i]);
     link_dir = link_get_direction(game->links[i]);
 
-    if (origin == space && link_dir == dir) {
+    if (origin == space && link_dir == dir)
+    {
       return link_get_destination(game->links[i]);
     }
   }
@@ -307,20 +321,24 @@ Id game_get_connection(Game *game, Id space, Direction dir) {
   return NO_ID;
 }
 
-Bool game_connection_is_open(Game *game, Id space, Direction dir) {
+Bool game_connection_is_open(Game *game, Id space, Direction dir)
+{
   int i = 0;
   Id origin = NO_ID;
   Direction link_dir = N;
 
-  if (game == NULL || space == NO_ID) {
+  if (game == NULL || space == NO_ID)
+  {
     return FALSE;
   }
 
-  for (i = 0; i < game->n_links; i++) {
+  for (i = 0; i < game->n_links; i++)
+  {
     origin = link_get_origin(game->links[i]);
     link_dir = link_get_direction(game->links[i]);
 
-    if (origin == space && link_dir == dir) {
+    if (origin == space && link_dir == dir)
+    {
       return link_get_open(game->links[i]);
     }
   }
@@ -335,22 +353,26 @@ Id game_get_player_location(Game *game)
   return player_get_location(game->player);
 }
 
-Status game_set_player_location(Game *game, Id id) {
+Status game_set_player_location(Game *game, Id id)
+{
   Space *space = NULL;
 
-  if (!game || id == NO_ID) {
+  if (!game || id == NO_ID)
+  {
     return ERROR;
   }
-  
-  if (player_set_location(game->player, id) == OK) {
+
+  if (player_set_location(game->player, id) == OK)
+  {
 
     space = game_get_space(game, id);
-    if (space) {
+    if (space)
+    {
       space_set_discovered(space, TRUE);
     }
     return OK;
   }
-  
+
   return ERROR;
 }
 
@@ -525,43 +547,51 @@ void game_print(Game *game)
   }
 }
 
-Status game_set_space_discovered(Game* game, Id space_id, Bool discovered) {
-  Space* space = game_get_space(game, space_id);
-  if (!space) return ERROR;
+Status game_set_space_discovered(Game *game, Id space_id, Bool discovered)
+{
+  Space *space = game_get_space(game, space_id);
+  if (!space)
+    return ERROR;
   return space_set_discovered(space, discovered);
 }
 
-Bool game_get_space_discovered(Game* game, Id space_id) {
-  Space* space = game_get_space(game, space_id);
-  if (!space) return FALSE;
+Bool game_get_space_discovered(Game *game, Id space_id)
+{
+  Space *space = game_get_space(game, space_id);
+  if (!space)
+    return FALSE;
   return space_get_discovered(space);
 }
 
-Id game_get_connection(Game *game, Id space_id, Direction dir) {
+Id game_get_connection(Game *game, Id space_id, Direction dir)
+{
   int i;
   Link *link = NULL;
 
-  if (!game || space_id == NO_ID) {
+  if (!game || space_id == NO_ID)
+  {
     return NO_ID;
   }
 
-
-  for (i = 0; i < game->n_links; i++) {
+  for (i = 0; i < game->n_links; i++)
+  {
     link = game->links[i];
-    
 
-    if (link != NULL && link_get_origin(link) == space_id && link_get_direction(link) == dir) {
-      
+    if (link != NULL && link_get_origin(link) == space_id && link_get_direction(link) == dir)
+    {
+
       /* ...comprobamos si está abierto */
-      if (link_get_status(link) == TRUE) {
+      if (link_get_status(link) == TRUE)
+      {
         return link_get_destination(link);
-      } else {
+      }
+      else
+      {
 
         return NO_ID;
       }
     }
   }
-
 
   return NO_ID;
 }

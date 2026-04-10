@@ -1,0 +1,197 @@
+\doxysection{link.\+c File Reference}
+\hypertarget{link_8c}{}\label{link_8c}\index{link.c@{link.c}}
+
+
+It implements the inventory module.  
+
+
+{\ttfamily \#include "{}link.\+h"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+Include dependency graph for link.\+c\+:
+% FIG 0
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct__Link}{\+\_\+\+Link}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{link_8c_a1e662c55d1ea0191b66372f0fa57ac1c}{link\+\_\+create}} (\mbox{\hyperlink{types_8h_a845e604fb28f7e3d97549da3448149d3}{Id}} id)
+\begin{DoxyCompactList}\small\item\em It creates a new link, allocating memory and initializing its members. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{link_8c_a9db25e3b95dbce3ccd993329e103ef0f}{link\+\_\+destroy}} (\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}link)
+\begin{DoxyCompactList}\small\item\em It destroys a link, freeing the allocated memory. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a845e604fb28f7e3d97549da3448149d3}{Id}} \mbox{\hyperlink{link_8c_a2bbd320f995a72b2ea7ea639b1c81892}{link\+\_\+get\+\_\+id}} (\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}link)
+\begin{DoxyCompactList}\small\item\em It gets the id of a link. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{link_8c_ab56e0464805b4bb827b9e35219853fa9}{link\+\_\+set\+\_\+name}} (\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}link, char \texorpdfstring{$\ast$}{*}name)
+\begin{DoxyCompactList}\small\item\em It sets the name of a link. \end{DoxyCompactList}\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{link_8c_a64cc19818d585666349ed1bc591bd2d9}{link\+\_\+get\+\_\+name}} (\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}link)
+\begin{DoxyCompactList}\small\item\em It gets the name of a link. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{link_8c_a63adc8ec3b6a842f6e2dee947ae0d15b}{link\+\_\+print}} (\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}link)
+\begin{DoxyCompactList}\small\item\em It prints the link information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It implements the inventory module. 
+
+It implements the link module.
+
+It defines the inventory module interface.
+
+\begin{DoxyAuthor}{Author}
+Mario 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+25-\/03-\/2026 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+GNU Public License
+\end{DoxyCopyright}
+\begin{DoxyAuthor}{Author}
+María Gómez 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+23-\/03-\/2026 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+GNU Public License 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{link_8c_a1e662c55d1ea0191b66372f0fa57ac1c}\label{link_8c_a1e662c55d1ea0191b66372f0fa57ac1c} 
+\index{link.c@{link.c}!link\_create@{link\_create}}
+\index{link\_create@{link\_create}!link.c@{link.c}}
+\doxysubsubsection{\texorpdfstring{link\_create()}{link\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*} link\+\_\+create (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{types_8h_a845e604fb28f7e3d97549da3448149d3}{Id}}}]{id }\end{DoxyParamCaption})}
+
+
+
+It creates a new link, allocating memory and initializing its members. 
+
+\begin{DoxyAuthor}{Author}
+María
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & the identification number for the new link \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new link, initialized 
+\end{DoxyReturn}
+\Hypertarget{link_8c_a9db25e3b95dbce3ccd993329e103ef0f}\label{link_8c_a9db25e3b95dbce3ccd993329e103ef0f} 
+\index{link.c@{link.c}!link\_destroy@{link\_destroy}}
+\index{link\_destroy@{link\_destroy}!link.c@{link.c}}
+\doxysubsubsection{\texorpdfstring{link\_destroy()}{link\_destroy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} link\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}}]{link }\end{DoxyParamCaption})}
+
+
+
+It destroys a link, freeing the allocated memory. 
+
+\begin{DoxyAuthor}{Author}
+María
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em link} & a pointer to the link that must be destroyed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or ERROR if there was some mistake 
+\end{DoxyReturn}
+\Hypertarget{link_8c_a2bbd320f995a72b2ea7ea639b1c81892}\label{link_8c_a2bbd320f995a72b2ea7ea639b1c81892} 
+\index{link.c@{link.c}!link\_get\_id@{link\_get\_id}}
+\index{link\_get\_id@{link\_get\_id}!link.c@{link.c}}
+\doxysubsubsection{\texorpdfstring{link\_get\_id()}{link\_get\_id()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a845e604fb28f7e3d97549da3448149d3}{Id}} link\+\_\+get\+\_\+id (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}}]{link }\end{DoxyParamCaption})}
+
+
+
+It gets the id of a link. 
+
+\begin{DoxyAuthor}{Author}
+María
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em link} & a pointer to the space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the id of link 
+\end{DoxyReturn}
+\Hypertarget{link_8c_a64cc19818d585666349ed1bc591bd2d9}\label{link_8c_a64cc19818d585666349ed1bc591bd2d9} 
+\index{link.c@{link.c}!link\_get\_name@{link\_get\_name}}
+\index{link\_get\_name@{link\_get\_name}!link.c@{link.c}}
+\doxysubsubsection{\texorpdfstring{link\_get\_name()}{link\_get\_name()}}
+{\footnotesize\ttfamily const char \texorpdfstring{$\ast$}{*} link\+\_\+get\+\_\+name (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}}]{link }\end{DoxyParamCaption})}
+
+
+
+It gets the name of a link. 
+
+\begin{DoxyAuthor}{Author}
+María
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em link} & a pointer to the space \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string with the name of the link 
+\end{DoxyReturn}
+\Hypertarget{link_8c_a63adc8ec3b6a842f6e2dee947ae0d15b}\label{link_8c_a63adc8ec3b6a842f6e2dee947ae0d15b} 
+\index{link.c@{link.c}!link\_print@{link\_print}}
+\index{link\_print@{link\_print}!link.c@{link.c}}
+\doxysubsubsection{\texorpdfstring{link\_print()}{link\_print()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} link\+\_\+print (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}}]{link }\end{DoxyParamCaption})}
+
+
+
+It prints the link information. 
+
+\begin{DoxyAuthor}{Author}
+María
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em space} & a pointer to the link \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or ERROR if there was some mistake 
+\end{DoxyReturn}
+\Hypertarget{link_8c_ab56e0464805b4bb827b9e35219853fa9}\label{link_8c_ab56e0464805b4bb827b9e35219853fa9} 
+\index{link.c@{link.c}!link\_set\_name@{link\_set\_name}}
+\index{link\_set\_name@{link\_set\_name}!link.c@{link.c}}
+\doxysubsubsection{\texorpdfstring{link\_set\_name()}{link\_set\_name()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} link\+\_\+set\+\_\+name (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Link}{Link}} \texorpdfstring{$\ast$}{*}}]{link,  }\item[{char \texorpdfstring{$\ast$}{*}}]{name }\end{DoxyParamCaption})}
+
+
+
+It sets the name of a link. 
+
+\begin{DoxyAuthor}{Author}
+María
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em link} & a pointer to the link \\
+\hline
+{\em name} & a string with the name to store \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or ERROR if there was some mistake 
+\end{DoxyReturn}

@@ -1,0 +1,95 @@
+\doxysection{game\+\_\+actions.\+c File Reference}
+\hypertarget{game__actions_8c}{}\label{game__actions_8c}\index{game\_actions.c@{game\_actions.c}}
+
+
+It implements the game update through user actions.  
+
+
+{\ttfamily \#include "{}game\+\_\+actions.\+h"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$strings.\+h$>$}\newline
+Include dependency graph for game\+\_\+actions.\+c\+:
+% FIG 0
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{game__actions_8c_a6f4777fc8b60f74ffb82fb3df7e20e07}\label{game__actions_8c_a6f4777fc8b60f74ffb82fb3df7e20e07} 
+void {\bfseries game\+\_\+actions\+\_\+unknown} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_afc2847a7b83e67020a117fa8e1a79c5d}\label{game__actions_8c_afc2847a7b83e67020a117fa8e1a79c5d} 
+void {\bfseries game\+\_\+actions\+\_\+exit} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_a66e50f6ff4525c37c92382cdf5422b3c}\label{game__actions_8c_a66e50f6ff4525c37c92382cdf5422b3c} 
+void {\bfseries game\+\_\+actions\+\_\+next} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_a2498a234bdd058d092c1acb816e07194}\label{game__actions_8c_a2498a234bdd058d092c1acb816e07194} 
+void {\bfseries game\+\_\+actions\+\_\+back} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_ae1f81ac79cba2079a9935b21285daf8b}\label{game__actions_8c_ae1f81ac79cba2079a9935b21285daf8b} 
+void {\bfseries game\+\_\+actions\+\_\+left} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_abcf33bd732458eb69207d1744e50ffa1}\label{game__actions_8c_abcf33bd732458eb69207d1744e50ffa1} 
+void {\bfseries game\+\_\+actions\+\_\+right} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_ade93d5e908cecd1e78eeaaa19e9d5387}\label{game__actions_8c_ade93d5e908cecd1e78eeaaa19e9d5387} 
+void {\bfseries game\+\_\+actions\+\_\+take} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_a269baddb92b4a469576ff8c3c1ed3440}\label{game__actions_8c_a269baddb92b4a469576ff8c3c1ed3440} 
+void {\bfseries game\+\_\+actions\+\_\+drop} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_a68d58c80a2e0f552557788459d60926f}\label{game__actions_8c_a68d58c80a2e0f552557788459d60926f} 
+void {\bfseries game\+\_\+actions\+\_\+attack} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_aba91c42bed50e457b994452bfd717e5d}\label{game__actions_8c_aba91c42bed50e457b994452bfd717e5d} 
+void {\bfseries game\+\_\+actions\+\_\+inspect} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\Hypertarget{game__actions_8c_af712cf743e59ba4c75c95c1bae96a6c9}\label{game__actions_8c_af712cf743e59ba4c75c95c1bae96a6c9} 
+void {\bfseries game\+\_\+actions\+\_\+chat} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game)
+\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{game__actions_8c_a0693694a3e70b4a4129e2da4ddb1f1a7}{game\+\_\+actions\+\_\+update}} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}game, \mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em It updates the game state depending on the received command. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It implements the game update through user actions. 
+
+\begin{DoxyAuthor}{Author}
+Rodrigo and Mario 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+10-\/03-\/2026 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+GNU Public License 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{game__actions_8c_a0693694a3e70b4a4129e2da4ddb1f1a7}\label{game__actions_8c_a0693694a3e70b4a4129e2da4ddb1f1a7} 
+\index{game\_actions.c@{game\_actions.c}!game\_actions\_update@{game\_actions\_update}}
+\index{game\_actions\_update@{game\_actions\_update}!game\_actions.c@{game\_actions.c}}
+\doxysubsubsection{\texorpdfstring{game\_actions\_update()}{game\_actions\_update()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} game\+\_\+actions\+\_\+update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}}]{game,  }\item[{\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}}]{cmd }\end{DoxyParamCaption})}
+
+
+
+It updates the game state depending on the received command. 
+
+\begin{DoxyAuthor}{Author}
+Rodrigo and Mario
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em game} & a pointer to the game \\
+\hline
+{\em cmd} & a pointer to the command received \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK, if everything goes well or ERROR if there was some mistake 
+\end{DoxyReturn}

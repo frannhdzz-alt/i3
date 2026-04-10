@@ -356,3 +356,15 @@ void game_print(Game *game) {
   printf("=> Player info: \n");
   player_print(game->player);
 }
+
+Status game_set_space_discovered(Game* game, Id space_id, Bool discovered) {
+  Space* space = game_get_space(game, space_id);
+  if (!space) return ERROR;
+  return space_set_discovered(space, discovered);
+}
+
+Bool game_get_space_discovered(Game* game, Id space_id) {
+  Space* space = game_get_space(game, space_id);
+  if (!space) return FALSE;
+  return space_get_discovered(space);
+}

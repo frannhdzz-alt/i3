@@ -232,6 +232,16 @@ Bool game_get_finished(Game *game);
 Status game_set_finished(Game *game, Bool finished);
 
 /**
+ * @brief Cambia el estado de descubrimiento de un espacio
+ */
+Status game_set_space_discovered(Game* game, Id space_id, Bool discovered);
+
+/**
+ * @brief Comprueba si un espacio ha sido descubierto
+ */
+Bool game_get_space_discovered(Game* game, Id space_id);
+
+/**
  * @brief It prints the game information
  * @author Mario
  *

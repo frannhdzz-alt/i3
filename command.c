@@ -18,7 +18,7 @@
 
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, 
                                    {"m", "Move"}, {"t", "Take"}, {"d", "Drop"}, 
-                                   {"a", "Attack"}, {"c", "Chat"}};
+                                   {"a", "Attack"}, {"i", "Inspect"}, {"c", "Chat"}};
 
 struct _Command {
   CommandCode code;        /*!< Code of the command */

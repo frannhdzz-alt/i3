@@ -18,49 +18,6 @@
 void game_actions_unknown(Game *game) {}
 void game_actions_exit(Game *game) {}
 
-void game_actions_next(Game *game) {
-  Id current_id = NO_ID;
-  Id dest_id = NO_ID;
-
-  current_id = game_get_player_location(game);
-  if (current_id == NO_ID) return;
-  
-  dest_id = space_get_south(game_get_space(game, current_id));
-  if (dest_id != NO_ID) game_set_player_location(game, dest_id);
-}
-
-void game_actions_back(Game *game) {
-  Id current_id = NO_ID;
-  Id dest_id = NO_ID;
-
-  current_id = game_get_player_location(game);
-  if (current_id == NO_ID) return;
-  
-  dest_id = space_get_north(game_get_space(game, current_id));
-  if (dest_id != NO_ID) game_set_player_location(game, dest_id);
-}
-
-void game_actions_left(Game *game) {
-  Id current_id = NO_ID;
-  Id dest_id = NO_ID;
-
-  current_id = game_get_player_location(game);
-  if (current_id == NO_ID) return;
-  
-  dest_id = space_get_west(game_get_space(game, current_id));
-  if (dest_id != NO_ID) game_set_player_location(game, dest_id);
-}
-
-void game_actions_right(Game *game) {
-  Id current_id = NO_ID;
-  Id dest_id = NO_ID;
-
-  current_id = game_get_player_location(game);
-  if (current_id == NO_ID) return;
-  
-  dest_id = space_get_east(game_get_space(game, current_id));
-  if (dest_id != NO_ID) game_set_player_location(game, dest_id);
-}
 
 void game_actions_take(Game *game) {
   Id p_loc = NO_ID;
@@ -114,6 +71,40 @@ void game_actions_drop(Game *game) {
   player_set_object(player, NO_ID);
 }
 
+void game_actions_move(Game *game) {
+  Id current_id = NO_ID;
+  Id dest_id = NO_ID;
+  const char *arg = NULL;
+  Direction dir = N;
+
+  if (!game) return;
+
+  arg = command_get_arg(game_get_last_command(game));
+  if (!arg) return;
+
+if (strcmp(arg, "north") == 0 || strcmp(arg, "n") == 0) {
+    dir = N;
+  } else if (strcmp(arg, "south") == 0 || strcmp(arg, "s") == 0) {
+    dir = S;
+  } else if (strcmp(arg, "east") == 0 || strcmp(arg, "e") == 0) {
+    dir = E;
+  } else if (strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0) {
+    dir = W;
+  } else {
+    return;
+  }
+
+  current_id = game_get_player_location(game);
+  if (current_id == NO_ID) return;
+
+  if (game_connection_is_open(game, current_id, dir) == TRUE) {
+    dest_id = game_get_connection(game, current_id, dir);
+    if (dest_id != NO_ID) {
+      game_set_player_location(game, dest_id);
+    }
+  }
+}
+
 void game_actions_attack(Game *game) {
   Id p_loc = NO_ID;
   Space *current_space = NULL;
@@ -162,10 +153,7 @@ Status game_actions_update(Game *game, Command *command) {
   switch (cmd) {
     case UNKNOWN: game_actions_unknown(game); break;
     case EXIT: game_actions_exit(game); break;
-    case NEXT: game_actions_next(game); break;
-    case BACK: game_actions_back(game); break;
-    case LEFT: game_actions_left(game); break;
-    case RIGHT: game_actions_right(game); break;
+    case MOVE: game_actions_move(game); break;
     case TAKE: game_actions_take(game); break;
     case DROP: game_actions_drop(game); break;
     case ATTACK: game_actions_attack(game); break;

@@ -23,7 +23,7 @@ typedef struct _Space Space;
  * @param id the identification number for the new space
  * @return a new space, initialized
  */
-Space* space_create(Id id);
+Space *space_create(Id id);
 
 /**
  * @brief It destroys a space, freeing the allocated memory
@@ -32,7 +32,7 @@ Space* space_create(Id id);
  * @param space a pointer to the space that must be destroyed
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_destroy(Space* space);
+Status space_destroy(Space *space);
 
 /**
  * @brief It gets the id of a space
@@ -41,7 +41,7 @@ Status space_destroy(Space* space);
  * @param space a pointer to the space
  * @return the id of space
  */
-Id space_get_id(Space* space);
+Id space_get_id(Space *space);
 
 /**
  * @brief It sets the name of a space
@@ -51,7 +51,7 @@ Id space_get_id(Space* space);
  * @param name a string with the name to store
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_set_name(Space* space, char* name);
+Status space_set_name(Space *space, char *name);
 
 /**
  * @brief It gets the name of a space
@@ -60,83 +60,7 @@ Status space_set_name(Space* space, char* name);
  * @param space a pointer to the space
  * @return  a string with the name of the space
  */
-const char* space_get_name(Space* space);
-
-/**
- * @brief It sets the id of the space located at the north
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @param id the id number of the space located at the north
- * @return OK
- */
-Status space_set_north(Space* space, Id id);
-
-/**
- * @brief It gets the id of the space located at the north
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @return the id number of the space located at the north
- */
-Id space_get_north(Space* space);
-
-/**
- * @brief It sets the id of the space located at the south
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @param id the id number of the space located at the south
- * @return OK
- */
-Status space_set_south(Space* space, Id id);
-
-/**
- * @brief It gets the id of the space located at the south
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @return the id number of the space located at the south
- */
-Id space_get_south(Space* space);
-
-/**
- * @brief It sets the id of the space located at the east
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @param id the id number of the space located at the east
- * @return OK
- */
-Status space_set_east(Space* space, Id id);
-
-/**
- * @brief It gets the id of the space located at the east
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @return the id number of the space located at the east
- */
-Id space_get_east(Space* space);
-
-/**
- * @brief It sets the id of the space located at the west
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @param id the id number of the space located at the west
- * @return OK
- */
-Status space_set_west(Space* space, Id id);
-
-/**
- * @brief It gets the id of the space located at the west
- * @author Rodrigo
- *
- * @param space a pointer to the space
- * @return the id number of the space located at the west
- */
-Id space_get_west(Space* space);
+const char *space_get_name(Space *space);
 
 /**
  * @brief It adds an object to the space
@@ -146,7 +70,7 @@ Id space_get_west(Space* space);
  * @param id the id of the object to be added
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_add_object(Space* space, Id id);
+Status space_add_object(Space *space, Id id);
 
 /**
  * @brief It deletes an object from the space
@@ -156,7 +80,7 @@ Status space_add_object(Space* space, Id id);
  * @param id the id of the object to be removed
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_del_object(Space* space, Id id);
+Status space_del_object(Space *space, Id id);
 
 /**
  * @brief It checks if an object is in the space
@@ -166,7 +90,7 @@ Status space_del_object(Space* space, Id id);
  * @param id the id of the object
  * @return TRUE if the object is in the space, FALSE otherwise
  */
-Bool space_has_object(Space* space, Id id);
+Bool space_has_object(Space *space, Id id);
 
 /**
  * @brief It gets the set of objects in the space
@@ -175,7 +99,7 @@ Bool space_has_object(Space* space, Id id);
  * @param space a pointer to the space
  * @return A pointer to the set of objects
  */
-Set* space_get_objects(Space* space);
+Set *space_get_objects(Space *space);
 
 /**
  * @brief It sets the character in the space
@@ -185,7 +109,7 @@ Set* space_get_objects(Space* space);
  * @param id the id of the character
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_set_character(Space* space, Id id);
+Status space_set_character(Space *space, Id id);
 
 /**
  * @brief It gets the character in the space
@@ -194,7 +118,7 @@ Status space_set_character(Space* space, Id id);
  * @param space a pointer to the space
  * @return the id of the character in the space
  */
-Id space_get_character(Space* space);
+Id space_get_character(Space *space);
 
 /**
  * @brief It sets a line of the graphic description of the space
@@ -205,7 +129,7 @@ Id space_get_character(Space* space);
  * @param gdesc the string with the graphic description (max 9 chars)
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_set_gdesc(Space* space, int line, char* gdesc);
+Status space_set_gdesc(Space *space, int line, char *gdesc);
 
 /**
  * @brief It gets a line of the graphic description of the space
@@ -215,7 +139,7 @@ Status space_set_gdesc(Space* space, int line, char* gdesc);
  * @param line the line number (0 to 4)
  * @return a string with the graphic description line
  */
-const char* space_get_gdesc(Space* space, int line);
+const char *space_get_gdesc(Space *space, int line);
 
 /**
  * @brief It prints the space information
@@ -224,6 +148,6 @@ const char* space_get_gdesc(Space* space, int line);
  * @param space a pointer to the space
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_print(Space* space);
+Status space_print(Space *space);
 
 #endif

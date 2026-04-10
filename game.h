@@ -14,14 +14,15 @@
 #include "command.h"
 #include "space.h"
 #include "types.h"
-#include "player.h" 
+#include "player.h"
 #include "object.h"
 #include "character.h"
+#include "link.h"
 
 #define MAX_SPACES 100
 #define MAX_OBJECTS 100
 #define MAX_CHARACTERS 100
-
+#define MAX_LINKS 100
 
 typedef struct _Game Game;
 
@@ -184,13 +185,55 @@ Id game_get_character_location(Game *game, Id char_id);
 Status game_set_character_location(Game *game, Id space_id, Id char_id);
 
 /**
+ * @brief It adds a link to the game
+ * @author Maria
+ *
+ * @param game pointer to the game
+ * @param link pointer to the link to be added
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status game_add_link(Game *game, Link *link);
+
+/**
+ * @brief It gets a specific link from the game
+ * @author Maria
+ *
+ * @param game a pointer to the game
+ * @param id the id of the link
+ * @return a pointer to the link, or NULL if it does not exist
+ */
+Link *game_get_link(Game *game, Id id);
+
+/**
+ * @brief It gets the destination space id of a connection
+ * @author Maria
+ *
+ * @param game a pointer to the game
+ * @param space the origin space id
+ * @param dir the direction of the connection
+ * @return the destination space id, or NO_ID if there is no connection
+ */
+Id game_get_connection(Game *game, Id space, Direction dir);
+
+/**
+ * @brief It checks if a connection is open
+ * @author Maria
+ *
+ * @param game a pointer to the game
+ * @param space the origin space id
+ * @param dir the direction of the connection
+ * @return TRUE if the connection is open, FALSE otherwise
+ */
+Bool game_connection_is_open(Game *game, Id space, Direction dir);
+
+/**
  * @brief It gets the last command executed in the game
  * @author Mario
  *
  * @param game a pointer to the game
  * @return a pointer to the last command
  */
-Command* game_get_last_command(Game *game);
+Command *game_get_last_command(Game *game);
 
 /**
  * @brief It sets the last command executed in the game

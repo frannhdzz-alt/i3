@@ -1,0 +1,215 @@
+\doxysection{command.\+h File Reference}
+\hypertarget{command_8h}{}\label{command_8h}\index{command.h@{command.h}}
+
+
+It defines the command interpreter interface.  
+
+
+{\ttfamily \#include "{}types.\+h"{}}\newline
+Include dependency graph for command.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{command_8h_a8d93932dcdc527c13e06b688b68c7ffc}\label{command_8h_a8d93932dcdc527c13e06b688b68c7ffc} 
+\#define {\bfseries N\+\_\+\+CMDT}~2
+\item 
+\Hypertarget{command_8h_ae180fe89f0ae48ce5c80ffaa18de9271}\label{command_8h_ae180fe89f0ae48ce5c80ffaa18de9271} 
+\#define {\bfseries N\+\_\+\+CMD}~12
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{command_8h_a7d2935971c252377cb0fc1c8545dc2bc}\label{command_8h_a7d2935971c252377cb0fc1c8545dc2bc} 
+typedef struct \mbox{\hyperlink{struct__Command}{\+\_\+\+Command}} {\bfseries Command}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{command_8h_a21e038f5b8958e203d28bc4f18472352}\label{command_8h_a21e038f5b8958e203d28bc4f18472352} 
+enum {\bfseries Command\+Type} \{ {\bfseries CMDS}
+, {\bfseries CMDL}
+ \}
+\item 
+\Hypertarget{command_8h_a805cf38fd2b6d5604bf1f1036b80fde2}\label{command_8h_a805cf38fd2b6d5604bf1f1036b80fde2} 
+enum {\bfseries Command\+Code} \{ \newline
+{\bfseries NO\+\_\+\+CMD} = -\/1
+, {\bfseries UNKNOWN}
+, {\bfseries EXIT}
+, {\bfseries NEXT}
+, \newline
+{\bfseries BACK}
+, {\bfseries LEFT}
+, {\bfseries RIGHT}
+, {\bfseries TAKE}
+, \newline
+{\bfseries DROP}
+, {\bfseries ATTACK}
+, {\bfseries INSPECT}
+, {\bfseries CHAT}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{command_8h_aa3d3d6bdeb73c7bbaff6ee913569f456}{command\+\_\+create}} ()
+\begin{DoxyCompactList}\small\item\em It creates a new command. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{command_8h_abfb6dbf1977dc1a9a6136baefd91b451}{command\+\_\+destroy}} (\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em It destroys a command. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{command_8h_a0abb96f9b182d0018ec4b5e15d5307e4}{command\+\_\+set\+\_\+code}} (\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}command, Command\+Code code)
+\begin{DoxyCompactList}\small\item\em It sets the command code. \end{DoxyCompactList}\item 
+Command\+Code \mbox{\hyperlink{command_8h_a2206702025ffe5340d172decb4ceea52}{command\+\_\+get\+\_\+code}} (\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em It gets the command code. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{command_8h_ae41679c3d7390eaf56556f0aef9c3521}{command\+\_\+set\+\_\+arg}} (\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}command, char \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em It sets the argument of the command (for example, the object to take) \end{DoxyCompactList}\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{command_8h_a0e391791b991f72e915f161f52c9a74c}{command\+\_\+get\+\_\+arg}} (\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em It gets the argument of the command. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{command_8h_adf15cb97a09577adb8475a3c6c99e7c5}{command\+\_\+get\+\_\+user\+\_\+input}} (\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em It reads the user input to determine the command and argument. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It defines the command interpreter interface. 
+
+\begin{DoxyAuthor}{Author}
+Rodrigo and Mario 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+02-\/03-\/2026 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+GNU Public License 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{command_8h_aa3d3d6bdeb73c7bbaff6ee913569f456}\label{command_8h_aa3d3d6bdeb73c7bbaff6ee913569f456} 
+\index{command.h@{command.h}!command\_create@{command\_create}}
+\index{command\_create@{command\_create}!command.h@{command.h}}
+\doxysubsubsection{\texorpdfstring{command\_create()}{command\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*} command\+\_\+create (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+It creates a new command. 
+
+\begin{DoxyReturn}{Returns}
+a new command, initialized 
+\end{DoxyReturn}
+\Hypertarget{command_8h_abfb6dbf1977dc1a9a6136baefd91b451}\label{command_8h_abfb6dbf1977dc1a9a6136baefd91b451} 
+\index{command.h@{command.h}!command\_destroy@{command\_destroy}}
+\index{command\_destroy@{command\_destroy}!command.h@{command.h}}
+\doxysubsubsection{\texorpdfstring{command\_destroy()}{command\_destroy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} command\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}}]{command }\end{DoxyParamCaption})}
+
+
+
+It destroys a command. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & a pointer to the command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK or ERROR 
+\end{DoxyReturn}
+\Hypertarget{command_8h_a0e391791b991f72e915f161f52c9a74c}\label{command_8h_a0e391791b991f72e915f161f52c9a74c} 
+\index{command.h@{command.h}!command\_get\_arg@{command\_get\_arg}}
+\index{command\_get\_arg@{command\_get\_arg}!command.h@{command.h}}
+\doxysubsubsection{\texorpdfstring{command\_get\_arg()}{command\_get\_arg()}}
+{\footnotesize\ttfamily const char \texorpdfstring{$\ast$}{*} command\+\_\+get\+\_\+arg (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}}]{command }\end{DoxyParamCaption})}
+
+
+
+It gets the argument of the command. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & a pointer to the command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the argument string 
+\end{DoxyReturn}
+\Hypertarget{command_8h_a2206702025ffe5340d172decb4ceea52}\label{command_8h_a2206702025ffe5340d172decb4ceea52} 
+\index{command.h@{command.h}!command\_get\_code@{command\_get\_code}}
+\index{command\_get\_code@{command\_get\_code}!command.h@{command.h}}
+\doxysubsubsection{\texorpdfstring{command\_get\_code()}{command\_get\_code()}}
+{\footnotesize\ttfamily Command\+Code command\+\_\+get\+\_\+code (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}}]{command }\end{DoxyParamCaption})}
+
+
+
+It gets the command code. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & a pointer to the command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the command code 
+\end{DoxyReturn}
+\Hypertarget{command_8h_adf15cb97a09577adb8475a3c6c99e7c5}\label{command_8h_adf15cb97a09577adb8475a3c6c99e7c5} 
+\index{command.h@{command.h}!command\_get\_user\_input@{command\_get\_user\_input}}
+\index{command\_get\_user\_input@{command\_get\_user\_input}!command.h@{command.h}}
+\doxysubsubsection{\texorpdfstring{command\_get\_user\_input()}{command\_get\_user\_input()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} command\+\_\+get\+\_\+user\+\_\+input (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}}]{command }\end{DoxyParamCaption})}
+
+
+
+It reads the user input to determine the command and argument. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & a pointer to the command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK or ERROR 
+\end{DoxyReturn}
+\Hypertarget{command_8h_ae41679c3d7390eaf56556f0aef9c3521}\label{command_8h_ae41679c3d7390eaf56556f0aef9c3521} 
+\index{command.h@{command.h}!command\_set\_arg@{command\_set\_arg}}
+\index{command\_set\_arg@{command\_set\_arg}!command.h@{command.h}}
+\doxysubsubsection{\texorpdfstring{command\_set\_arg()}{command\_set\_arg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} command\+\_\+set\+\_\+arg (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}}]{command,  }\item[{char \texorpdfstring{$\ast$}{*}}]{arg }\end{DoxyParamCaption})}
+
+
+
+It sets the argument of the command (for example, the object to take) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & a pointer to the command \\
+\hline
+{\em arg} & the argument string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK or ERROR 
+\end{DoxyReturn}
+\Hypertarget{command_8h_a0abb96f9b182d0018ec4b5e15d5307e4}\label{command_8h_a0abb96f9b182d0018ec4b5e15d5307e4} 
+\index{command.h@{command.h}!command\_set\_code@{command\_set\_code}}
+\index{command\_set\_code@{command\_set\_code}!command.h@{command.h}}
+\doxysubsubsection{\texorpdfstring{command\_set\_code()}{command\_set\_code()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} command\+\_\+set\+\_\+code (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Command}{Command}} \texorpdfstring{$\ast$}{*}}]{command,  }\item[{Command\+Code}]{code }\end{DoxyParamCaption})}
+
+
+
+It sets the command code. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & a pointer to the command \\
+\hline
+{\em code} & the new command code \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK or ERROR 
+\end{DoxyReturn}

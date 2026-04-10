@@ -1,0 +1,87 @@
+\doxysection{space\+\_\+test.\+c File Reference}
+\hypertarget{space__test_8c}{}\label{space__test_8c}\index{space\_test.c@{space\_test.c}}
+
+
+It tests space module.  
+
+
+{\ttfamily \#include "{}space.\+h"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+Include dependency graph for space\+\_\+test.\+c\+:
+% FIG 0
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{space__test_8c_a005f03315fb2a3a035a792bd855c54a2}{PRINT\+\_\+\+TEST\+\_\+\+RESULT}}(pass,  name)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{space__test_8c_a69278cc022dc5688d4725f8d36317b30}\label{space__test_8c_a69278cc022dc5688d4725f8d36317b30} 
+void {\bfseries test1\+\_\+space\+\_\+create} ()
+\item 
+\Hypertarget{space__test_8c_a012cd3cf37a8d91e2d7098a264c29d65}\label{space__test_8c_a012cd3cf37a8d91e2d7098a264c29d65} 
+void {\bfseries test2\+\_\+space\+\_\+create} ()
+\item 
+\Hypertarget{space__test_8c_afe51f379fb29f8e96f9f034df991de30}\label{space__test_8c_afe51f379fb29f8e96f9f034df991de30} 
+void {\bfseries test1\+\_\+space\+\_\+add\+\_\+object} ()
+\item 
+\Hypertarget{space__test_8c_af5de291847d272d79a524c30b96f6f0c}\label{space__test_8c_af5de291847d272d79a524c30b96f6f0c} 
+void {\bfseries test2\+\_\+space\+\_\+add\+\_\+object} ()
+\item 
+\Hypertarget{space__test_8c_a247a03054f7c51b2194b871c7baad91f}\label{space__test_8c_a247a03054f7c51b2194b871c7baad91f} 
+void {\bfseries test1\+\_\+space\+\_\+has\+\_\+object} ()
+\item 
+\Hypertarget{space__test_8c_a544001e98473939e0c4acf4ac0ed75cd}\label{space__test_8c_a544001e98473939e0c4acf4ac0ed75cd} 
+void {\bfseries test2\+\_\+space\+\_\+has\+\_\+object} ()
+\item 
+\Hypertarget{space__test_8c_a068c22b91236896ae1b077a8f7059458}\label{space__test_8c_a068c22b91236896ae1b077a8f7059458} 
+void {\bfseries test1\+\_\+space\+\_\+set\+\_\+gdesc} ()
+\item 
+\Hypertarget{space__test_8c_af40c7a664b529a39c3d98dca3d0af708}\label{space__test_8c_af40c7a664b529a39c3d98dca3d0af708} 
+void {\bfseries test2\+\_\+space\+\_\+set\+\_\+gdesc} ()
+\item 
+\Hypertarget{space__test_8c_aa1e97468c10eeaf41307bee977142506}\label{space__test_8c_aa1e97468c10eeaf41307bee977142506} 
+void {\bfseries test1\+\_\+space\+\_\+set\+\_\+character} ()
+\item 
+\Hypertarget{space__test_8c_a8e7d3726a7551c0de5825cc882836a71}\label{space__test_8c_a8e7d3726a7551c0de5825cc882836a71} 
+void {\bfseries test2\+\_\+space\+\_\+set\+\_\+character} ()
+\item 
+\Hypertarget{space__test_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{space__test_8c_ae66f6b31b5ad750f1fe042a706a4e3d4} 
+int {\bfseries main} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It tests space module. 
+
+\begin{DoxyAuthor}{Author}
+Rodrigo y Mario 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+13-\/03-\/2026 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+GNU Public License 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{space__test_8c_a005f03315fb2a3a035a792bd855c54a2}\label{space__test_8c_a005f03315fb2a3a035a792bd855c54a2} 
+\index{space\_test.c@{space\_test.c}!PRINT\_TEST\_RESULT@{PRINT\_TEST\_RESULT}}
+\index{PRINT\_TEST\_RESULT@{PRINT\_TEST\_RESULT}!space\_test.c@{space\_test.c}}
+\doxysubsubsection{\texorpdfstring{PRINT\_TEST\_RESULT}{PRINT\_TEST\_RESULT}}
+{\footnotesize\ttfamily \#define PRINT\+\_\+\+TEST\+\_\+\+RESULT(\begin{DoxyParamCaption}\item[{}]{pass,  }\item[{}]{name }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{do}\ \{\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ fprintf(stdout,\ \textcolor{stringliteral}{"{}\%s\ :\ \%s\(\backslash\)n"{}},\ (name),\ (pass)\ ?\ \textcolor{stringliteral}{"{}OK"{}}\ :\ \textcolor{stringliteral}{"{}FAIL"{}});\ \(\backslash\)}
+\DoxyCodeLine{\ \ \}\ \textcolor{keywordflow}{while}\ (0)}
+
+\end{DoxyCode}

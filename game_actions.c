@@ -36,6 +36,8 @@ void game_actions_take(Game *game) {
   cmd = game_get_last_command(game);
   obj_name = command_get_arg(cmd);
 
+  
+
 
   if (!obj_name || obj_name[0] == '\0') return;
 
@@ -48,12 +50,13 @@ void game_actions_take(Game *game) {
     }
   }
 
-
+  
   if (obj_id == NO_ID || space_has_object(current_space, obj_id) == FALSE) return;
 
   
   if (player_has_object(player, obj_id) == TRUE) return;
 
+  
   
   if (player_add_object(player, obj_id) == OK) {
     space_del_object(current_space, obj_id);

@@ -38,7 +38,7 @@ run: castle
 
 # Runs the game with valgrind
 vrun: castle
-	valgrind --leak-check=full ./castle castle.dat -l registro.txt
+	valgrind --leak-check=full ./castle castle_i3.dat -l registro.txt
 
 # Test rule: Quick check (runs the game and then cleans up)
 test: run

@@ -55,6 +55,7 @@ Status game_load_spaces(Game *game, char *filename) {
 
   while (fgets(line, WORD_SIZE, file)) {
     if (strncmp("#s:", line, 3) == 0) {
+
       toks = strtok(line + 3, "|");
       id = atol(toks);
       
@@ -236,7 +237,7 @@ Status game_load_links(Game *game, char *filename) {
   char name[WORD_SIZE] = "";
   char *toks = NULL;
   Id id = NO_ID, origin = NO_ID, dest = NO_ID;
-  Direction dir = U;
+  Direction dir = N;
   int open = 0;
   Link *link = NULL;
   Status status = OK;
@@ -274,7 +275,61 @@ Status game_load_links(Game *game, char *filename) {
         link_set_direction(link, dir);
         link_set_status(link, open == 1 ? TRUE : FALSE);
         
-        game_add_link(game, link); /* Tendrás que añadir esta función a game.c */
+        game_add_link(game, link); 
+      }
+    }
+  }
+
+  if (ferror(file)) status = ERROR;
+  fclose(file);
+  return status;
+}
+
+Status game_load_players(Game *game, char *filename) {
+  FILE *file = NULL;
+  char line[WORD_SIZE] = "";
+  char name[WORD_SIZE] = "";
+  char gdesc[7] = "";
+  char *toks = NULL;
+  Id id = NO_ID, location = NO_ID;
+  int health = 0, max_objs = 0;
+  Player *player = NULL;
+  Status status = OK;
+
+  if (!filename) return ERROR;
+
+  file = fopen(filename, "r");
+  if (!file) return ERROR;
+
+  while (fgets(line, WORD_SIZE, file)) {
+    if (strncmp("#p:", line, 3) == 0) {
+      toks = strtok(line + 3, "|");
+      id = atol(toks);
+      
+      toks = strtok(NULL, "|");
+      strcpy(name, toks);
+      
+      toks = strtok(NULL, "|");
+      strcpy(gdesc, toks);
+      
+      toks = strtok(NULL, "|");
+      location = atol(toks);
+      
+      toks = strtok(NULL, "|");
+      health = atoi(toks);
+      
+      toks = strtok(NULL, "|");
+      max_objs = atoi(toks);
+
+      player = player_create(id);
+      if (player != NULL) {
+        player_set_name(player, name);
+        player_set_gdesc(player, gdesc);
+        player_set_location(player, location);
+        player_set_health(player, health);
+        player_set_max_objects(player, max_objs); //esto hacedlo 
+        
+        game_add_player(game, player);
       }
     }
   }

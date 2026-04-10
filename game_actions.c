@@ -85,7 +85,7 @@ void game_actions_take(Game *game) {
 
   for (i = 1; i < MAX_OBJECTS; i++) {
     Object *o = game_get_object(game, i);
-    if (o && strcmp(object_get_name(o), obj_name) == 0) {
+    if (o && strcasecmp(object_get_name(o), obj_name) == 0) {
       obj_id = i;
       break;
     }
@@ -121,26 +121,21 @@ void game_actions_drop(Game *game) {
   cmd = game_get_last_command(game);
   obj_name = command_get_arg(cmd);
 
-  /* No hay nombre de objeto */
   if (!obj_name || obj_name[0] == '\0') return;
 
-  /* Buscar el objeto por nombre entre los objetos del juego */
 
   for (i = 1; i < MAX_OBJECTS; i++) {
     obj = game_get_object(game, i);
-    if (obj && strcmp(object_get_name(obj), obj_name) == 0) {
+    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
       obj_id = i;
       break;
     }
   }
 
-  /* Si no existe ese objeto, no se puede soltar */
   if (obj_id == NO_ID) return;
 
-  /* Si el jugador no tiene ese objeto, no puede soltarlo */
   if (player_has_object(player, obj_id) == FALSE) return;
 
-  /* Soltar el objeto */
   if (player_del_object(player, obj_id) == OK) {
     space_add_object(current_space, obj_id);
   }

@@ -3,7 +3,7 @@
  *
  * @file graphic_engine.c
  * @author Rodrigo and Mario
- * @version 2.0
+ * @version 3.0
  * @date 12-03-2026
  * @copyright GNU Public License
  */
@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include "command.h"
 #include "libscreen.h"
@@ -33,8 +34,18 @@ struct _Graphic_engine {
   Area *map, *descript, *banner, *help, *feedback;
 };
 
+typedef struct {
+    Id id;
+    char gdesc[5][10];
+    char obj_list[20];
+    char c_sym[7];
+    char p_sym[4];
+    Bool discovered;
+} SpaceView;
+
 void _get_space_objects_str(Game *game, Id space_id, char *out_str);
 void _get_character_sym(Game *game, Id space_id, char *out_sym);
+void _prepare_space_view(Game *game, Space *s, Id p_loc, SpaceView *view);
 
 void _get_space_objects_str(Game *game, Id space_id, char *out_str) {
   int i;
@@ -48,7 +59,6 @@ void _get_space_objects_str(Game *game, Id space_id, char *out_str) {
       strcat(temp, object_get_name(game_get_object(game, i)));
     }
   }
-  
   strncpy(out_str, temp, 15);
   out_str[15] = '\0';
 }
@@ -68,6 +78,42 @@ void _get_character_sym(Game *game, Id space_id, char *out_sym) {
     }
   }
 }
+
+void _prepare_space_view(Game *game, Space *s, Id p_loc, SpaceView *view) {
+    int i;
+    Player *player = game_get_player(game);
+
+    if (!s) {
+        view->id = NO_ID;
+        return;
+    }
+
+    view->id = space_get_id(s);
+    view->discovered = space_get_discovered(s);
+    
+    strcpy(view->p_sym, "   ");
+    if (p_loc == view->id && player_get_gdesc(player)) {
+        strncpy(view->p_sym, player_get_gdesc(player), 3);
+        view->p_sym[3] = '\0';
+    }
+
+    if (view->discovered == TRUE) {
+     
+        for (i = 0; i < 5; i++) {
+            strcpy(view->gdesc[i], space_get_gdesc(s, i));
+        }
+        _get_space_objects_str(game, view->id, view->obj_list);
+        _get_character_sym(game, view->id, view->c_sym);
+    } else {
+    
+        for (i = 0; i < 5; i++) strcpy(view->gdesc[i], "         ");
+        strcpy(view->gdesc[2], "  ???    ");
+        strcpy(view->obj_list, "");
+        strcpy(view->c_sym, "      ");
+    }
+}
+
+/* --------------------------------------- */
 
 Graphic_engine *graphic_engine_create() {
   static Graphic_engine *ge = NULL;
@@ -89,155 +135,119 @@ Graphic_engine *graphic_engine_create() {
 
 void graphic_engine_destroy(Graphic_engine *ge) {
   if (!ge) return;
-
   screen_area_destroy(ge->map);
   screen_area_destroy(ge->descript);
   screen_area_destroy(ge->banner);
   screen_area_destroy(ge->help);
   screen_area_destroy(ge->feedback);
-
   screen_destroy();
   free(ge);
 }
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
-  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, p_obj = NO_ID;
-  Id id_west = NO_ID, id_east = NO_ID, char_id = NO_ID;
+
+  Id p_loc = NO_ID;
   Space *space_act = NULL, *space_back = NULL, *space_next = NULL;
-  Space *space_west = NULL, *space_east = NULL;
-  Object *po = NULL;
-  Character *c = NULL;
-  Player *player = game_get_player(game);
+  Player *player = NULL;
+  
+  char str[512]; 
   int i;
+  
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
-  Inventory *inv;
-  Set *objs;
+  
+  SpaceView view_act, view_back, view_next;
 
-  char str[255];
-  char left_str[60], center_str[60], right_str[60];
-  char west_link[3], east_link[3];
-  
-  char p_sym[4] = "   ";
-  char c_sym_back[7], c_sym_act[7], c_sym_next[7], c_sym_west[7], c_sym_east[7];
-  char obj_back[16], obj_act[16], obj_next[16], obj_west[16], obj_east[16];
-  
-  
+  Object *o = NULL;
+  Character *c = NULL;
+  Id char_id = NO_ID;
 
-  
-  if (player_get_gdesc(player) && strlen(player_get_gdesc(player)) > 0) {
-    strncpy(p_sym, player_get_gdesc(player), 3);
-    p_sym[3] = '\0';
-  }
+  if (!game) return;
+
+  player = game_get_player(game);
+  p_loc = game_get_player_location(game);
 
   /* Map Area */
   screen_area_clear(ge->map);
-  if ((id_act = game_get_player_location(game)) != NO_ID) {
-    space_act = game_get_space(game, id_act);
-    id_back = space_get_north(space_act);
-    id_next = space_get_south(space_act);
-    id_west = space_get_west(space_act);
-    id_east = space_get_east(space_act);
+  if (p_loc != NO_ID) {
+    space_act = game_get_space(game, p_loc);
+    space_back = game_get_space(game, space_get_north(space_act)); 
+    space_next = game_get_space(game, space_get_south(space_act)); 
 
-    if (id_west != NO_ID) space_west = game_get_space(game, id_west);
-    if (id_east != NO_ID) space_east = game_get_space(game, id_east);
+    _prepare_space_view(game, space_back, p_loc, &view_back);
+    _prepare_space_view(game, space_act, p_loc, &view_act);
+    _prepare_space_view(game, space_next, p_loc, &view_next);
 
-    _get_character_sym(game, id_back, c_sym_back);
-    _get_character_sym(game, id_act, c_sym_act);
-    _get_character_sym(game, id_next, c_sym_next);
-    _get_character_sym(game, id_west, c_sym_west);
-    _get_character_sym(game, id_east, c_sym_east);
-
-    _get_space_objects_str(game, id_back, obj_back);
-    _get_space_objects_str(game, id_act, obj_act);
-    _get_space_objects_str(game, id_next, obj_next);
-    _get_space_objects_str(game, id_west, obj_west);
-    _get_space_objects_str(game, id_east, obj_east);
-
-    if (id_back != NO_ID) {
-      space_back = game_get_space(game, id_back);
+    if (view_back.id != NO_ID) {
       sprintf(str, "                     +---------------+");
       screen_area_puts(ge->map, str);
-      sprintf(str, "                     | %-3s %-6s  %2d|", "   ", c_sym_back, (int)id_back);
-      screen_area_puts(ge->map, str);
-      for (i = 0; i < 5; i++) {
-          sprintf(str, "                     |   %-9s   |", space_get_gdesc(space_back, i));
+      if (view_back.discovered) {
+        sprintf(str, "                     | %-3s %-6s  %2d|", view_back.p_sym, view_back.c_sym, (int)view_back.id);
+        screen_area_puts(ge->map, str);
+        for (i = 0; i < 5; i++) {
+          sprintf(str, "                     |   %-9s   |", view_back.gdesc[i]);
           screen_area_puts(ge->map, str);
+        }
+        sprintf(str, "                     |%-15.15s|", view_back.obj_list);
+        screen_area_puts(ge->map, str);
+      } else {
+        sprintf(str, "                     | %-3s %-6s  %2d|", "   ", "      ", (int)view_back.id);
+        screen_area_puts(ge->map, str);
+        for (i = 0; i < 5; i++) {
+          sprintf(str, "                     |   %-9s   |", view_back.gdesc[i]);
+          screen_area_puts(ge->map, str);
+        }
+        sprintf(str, "                     |%-15.15s|", "");
+        screen_area_puts(ge->map, str);
       }
-      sprintf(str, "                     |%-15.15s|", obj_back);
-      screen_area_puts(ge->map, str);
       sprintf(str, "                     +---------------+");
       screen_area_puts(ge->map, str);
       sprintf(str, "                             ^");
       screen_area_puts(ge->map, str);
     }
 
-    if (id_west != NO_ID) sprintf(left_str, "  +---------------+");
-    else sprintf(left_str, "                   ");
-    sprintf(center_str, "  +---------------+  ");
-    if (id_east != NO_ID) sprintf(right_str, "+---------------+");
-    else sprintf(right_str, "                 ");
-    sprintf(str, "%s%s%s", left_str, center_str, right_str);
+    sprintf(str, "                     +---------------+");
     screen_area_puts(ge->map, str);
-
-    if (id_west != NO_ID) sprintf(left_str, "  | %-3s %-6s  %2d|", "   ", c_sym_west, (int)id_west);
-    else sprintf(left_str, "                   ");
-    sprintf(center_str, "  | %-3s %-6s  %2d|  ", p_sym, c_sym_act, (int)id_act);
-    if (id_east != NO_ID) sprintf(right_str, "| %-3s %-6s  %2d|", "   ", c_sym_east, (int)id_east);
-    else sprintf(right_str, "                 ");
-    sprintf(str, "%s%s%s", left_str, center_str, right_str);
+    sprintf(str, "                     | %-3s %-6s  %2d|", view_act.p_sym, view_act.c_sym, (int)view_act.id);
     screen_area_puts(ge->map, str);
-
     for (i = 0; i < 5; i++) {
-        if (id_west != NO_ID) sprintf(left_str, "  |   %-9s   |", space_get_gdesc(space_west, i));
-        else sprintf(left_str, "                   ");
-        
-        strcpy(west_link, "  ");
-        strcpy(east_link, "  ");
+        char w_link[3] = "  ", e_link[3] = "  ";
         if (i == 2) {
-            if (id_west != NO_ID) strcpy(west_link, "<-");
-            if (id_east != NO_ID) strcpy(east_link, "->");
+            if (space_get_west(space_act) != NO_ID) strcpy(w_link, "<-");
+            if (space_get_east(space_act) != NO_ID) strcpy(e_link, "->");
         }
-        
-        sprintf(center_str, "%s|   %-9s   |%s", west_link, space_get_gdesc(space_act, i), east_link);
-        
-        if (id_east != NO_ID) sprintf(right_str, "|   %-9s   |", space_get_gdesc(space_east, i));
-        else sprintf(right_str, "                 ");
-        
-        sprintf(str, "%s%s%s", left_str, center_str, right_str);
+        sprintf(str, "                   %s|   %-9s   |%s", w_link, view_act.gdesc[i], e_link);
         screen_area_puts(ge->map, str);
     }
-
-    if (id_west != NO_ID) sprintf(left_str, "  |%-15.15s|", obj_west);
-    else sprintf(left_str, "                   ");
-    sprintf(center_str, "  |%-15.15s|  ", obj_act);
-    if (id_east != NO_ID) sprintf(right_str, "|%-15.15s|", obj_east);
-    else sprintf(right_str, "                 ");
-    sprintf(str, "%s%s%s", left_str, center_str, right_str);
+    sprintf(str, "                     |%-15.15s|", view_act.obj_list);
+    screen_area_puts(ge->map, str);
+    sprintf(str, "                     +---------------+");
     screen_area_puts(ge->map, str);
 
-    if (id_west != NO_ID) sprintf(left_str, "  +---------------+");
-    else sprintf(left_str, "                   ");
-    sprintf(center_str, "  +---------------+  ");
-    if (id_east != NO_ID) sprintf(right_str, "+---------------+");
-    else sprintf(right_str, "                 ");
-    sprintf(str, "%s%s%s", left_str, center_str, right_str);
-    screen_area_puts(ge->map, str);
-
-    if (id_next != NO_ID) {
-      space_next = game_get_space(game, id_next);
+    if (view_next.id != NO_ID) {
       sprintf(str, "                             v");
       screen_area_puts(ge->map, str);
       sprintf(str, "                     +---------------+");
       screen_area_puts(ge->map, str);
-      sprintf(str, "                     | %-3s %-6s  %2d|", "   ", c_sym_next, (int)id_next);
-      screen_area_puts(ge->map, str);
-      for (i = 0; i < 5; i++) {
-          sprintf(str, "                     |   %-9s   |", space_get_gdesc(space_next, i));
+      if (view_next.discovered) {
+        sprintf(str, "                     | %-3s %-6s  %2d|", view_next.p_sym, view_next.c_sym, (int)view_next.id);
+        screen_area_puts(ge->map, str);
+        for (i = 0; i < 5; i++) {
+          sprintf(str, "                     |   %-9s   |", view_next.gdesc[i]);
           screen_area_puts(ge->map, str);
+        }
+        sprintf(str, "                     |%-15.15s|", view_next.obj_list);
+        screen_area_puts(ge->map, str);
+      } else {
+        sprintf(str, "                     | %-3s %-6s  %2d|", "   ", "      ", (int)view_next.id);
+        screen_area_puts(ge->map, str);
+        for (i = 0; i < 5; i++) {
+          sprintf(str, "                     |   %-9s   |", view_next.gdesc[i]);
+          screen_area_puts(ge->map, str);
+        }
+        sprintf(str, "                     |%-15.15s|", "");
+        screen_area_puts(ge->map, str);
       }
-      sprintf(str, "                     |%-15.15s|", obj_next);
-      screen_area_puts(ge->map, str);
       sprintf(str, "                     +---------------+");
       screen_area_puts(ge->map, str);
     }
@@ -249,10 +259,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   sprintf(str, "  Objects Location:");
   screen_area_puts(ge->descript, str);
   for (i = 1; i <= MAX_OBJECTS; i++) {
-      Object *o = game_get_object(game, i);
+      o = game_get_object(game, i);
       if (o) {
           Id o_loc = game_get_object_location(game, i);
-          if (o_loc != NO_ID) {
+          Space *o_space = game_get_space(game, o_loc);
+          if (o_space && space_get_discovered(o_space) == TRUE) {
               sprintf(str, "  %-12s:%ld", object_get_name(o), o_loc);
               screen_area_puts(ge->descript, str);
           }
@@ -266,78 +277,78 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       c = game_get_character(game, i);
       if (c) {
           Id c_loc = game_get_character_location(game, i);
-          sprintf(str, "  %-6s:%ld (%d pts)", character_get_gdesc(c), c_loc, character_get_health(c));
-          screen_area_puts(ge->descript, str);
+          Space *c_space = game_get_space(game, c_loc);
+          if (c_space && space_get_discovered(c_space) == TRUE) {
+            sprintf(str, "  %-6s:%ld (%d pts)", character_get_gdesc(c), c_loc, character_get_health(c));
+            screen_area_puts(ge->descript, str);
+          }
       }
   }
 
-screen_area_puts(ge->descript, " ");
-
-
-inv = player_get_inventory(player);
-objs = inventory_get_objects(inv);
-
-
-if (set_get_n_ids(objs) > 0)
-  p_obj = set_get_id_at(objs, 0);
-else{
-  p_obj = NO_ID;
-}
-
-  sprintf(str, "  Player loc :%ld (%d pts)", game_get_player_location(game), player_get_health(player));
-  screen_area_puts(ge->descript, str);
-  if (p_obj != NO_ID) {
-      po = game_get_object(game, p_obj);
-      sprintf(str, "  Player has object: %s", po ? object_get_name(po) : "Unknown");
-  } else {
-      sprintf(str, "  Player has no objects");
-  }
-  screen_area_puts(ge->descript, str);
-
- /* Chat System */
-if (last_cmd == INSPECT) {
-  const char *arg_name = command_get_arg(game_get_last_command(game));
-  Object *o = NULL;
-  Id space_id = game_get_player_location(game);
-  int found = 0;
-  
   screen_area_puts(ge->descript, " ");
   
-  if (arg_name && arg_name[0] != '\0') {
-    for (i = 1; i <= MAX_OBJECTS; i++) {
-      o = game_get_object(game, i);
-      if (o && strcmp(object_get_name(o), arg_name) == 0) {
+  /* Player info */
+  sprintf(str, "  Player loc :%ld (%d pts)", game_get_player_location(game), player_get_health(player));
+  screen_area_puts(ge->descript, str);
+  
+  /* Player inventory */
+  {
+      char player_objs[255] = ""; 
+      Object *po_inv = NULL;
 
-      
-        if (player_has_object(player, object_get_id(o)) == TRUE ||
-            space_has_object(game_get_space(game, space_id), object_get_id(o)) == TRUE) {
-
-          sprintf(str, "  Inspect: %s", object_get_description(o));
-          screen_area_puts(ge->descript, str);
-          found = 1;
-          break;
-        }
+      for (i = 1; i <= MAX_OBJECTS; i++) {
+          po_inv = game_get_object(game, i);
+          if (po_inv != NULL) {
+              if (player_has_object(player, object_get_id(po_inv)) == TRUE) {
+                  if (strlen(player_objs) > 0) {
+                      strcat(player_objs, ", ");
+                  }
+                  strcat(player_objs, object_get_name(po_inv));
+              }
+          }
       }
-    }
 
-    if (!found) {
-      screen_area_puts(ge->descript, "  Inspect: You can't inspect that here.");
-    }
+      if (strlen(player_objs) > 0) {
+          sprintf(str, "  Player objects: %s", player_objs);
+      } else {
+          sprintf(str, "  Player has no objects");
+      }
+      screen_area_puts(ge->descript, str);
   }
-}
 
   last_cmd = command_get_code(game_get_last_command(game));
+  
+  /* Inspect System*/
+  if (last_cmd == INSPECT) {
+    const char *arg_name = command_get_arg(game_get_last_command(game));
+    int found = 0;
+    
+    screen_area_puts(ge->descript, " ");
+    if (arg_name && arg_name[0] != '\0') {
+      for (i = 1; i <= MAX_OBJECTS; i++) {
+        o = game_get_object(game, i);
+        if (o && strcasecmp(object_get_name(o), arg_name) == 0) {
+          if (player_has_object(player, object_get_id(o)) == TRUE || 
+              space_has_object(game_get_space(game, p_loc), object_get_id(o)) == TRUE) {
+            sprintf(str, "  Inspect: %s", object_get_description(o));
+            screen_area_puts(ge->descript, str);
+            found = 1;
+            break;
+          }
+        }
+      }
+      if (!found) screen_area_puts(ge->descript, "  Inspect: You can't inspect that here.");
+    }
+  }
+
+  /* Chat System */
   if (last_cmd == CHAT) {
       screen_area_puts(ge->descript, " "); 
-      
       if (space_act != NULL && (char_id = space_get_character(space_act)) != NO_ID) {
           c = game_get_character(game, char_id);
           if (c != NULL) {
-              if (character_get_friendly(c) == TRUE) {
-                  sprintf(str, "  Chat: %s", character_get_message(c));
-              } else {
-                  sprintf(str, "  Chat: The %s is hostile! No talking.", character_get_name(c));
-              }
+              if (character_get_friendly(c) == TRUE) sprintf(str, "  Chat: %s", character_get_message(c));
+              else sprintf(str, "  Chat: The %s is hostile! No talking.", character_get_name(c));
               screen_area_puts(ge->descript, str);
           }
       } else {
@@ -350,7 +361,7 @@ if (last_cmd == INSPECT) {
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, " next(n), back(b), left(l), right(r), take(t) [obj], drop(d), attack(a), chat(c), exit(e)");
+  sprintf(str, " next(n), back(b), left(l), right(r), take(t) [obj], drop(d) [obj], attack(a), inspect(i) [obj], chat(c), exit(e)");
   screen_area_puts(ge->help, str);
 
   /* Feedback Area */

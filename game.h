@@ -242,6 +242,15 @@ Status game_set_space_discovered(Game* game, Id space_id, Bool discovered);
 Bool game_get_space_discovered(Game* game, Id space_id);
 
 /**
+ * @brief Obtiene el ID del espacio de destino a través de un enlace
+ * @param game Puntero al juego
+ * @param space_id ID del espacio de origen
+ * @param dir Dirección del movimiento (N, S, E, W)
+ * @return El ID del espacio de destino si hay un enlace abierto, o NO_ID si no lo hay o está cerrado
+ */
+Id game_get_connection(Game *game, Id space_id, Direction dir);
+
+/**
  * @brief It prints the game information
  * @author Mario
  *

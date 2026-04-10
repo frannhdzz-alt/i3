@@ -368,3 +368,32 @@ Bool game_get_space_discovered(Game* game, Id space_id) {
   if (!space) return FALSE;
   return space_get_discovered(space);
 }
+
+Id game_get_connection(Game *game, Id space_id, Direction dir) {
+  int i;
+  Link *link = NULL;
+
+  if (!game || space_id == NO_ID) {
+    return NO_ID;
+  }
+
+
+  for (i = 0; i < game->n_links; i++) {
+    link = game->links[i];
+    
+
+    if (link != NULL && link_get_origin(link) == space_id && link_get_direction(link) == dir) {
+      
+      /* ...comprobamos si está abierto */
+      if (link_get_status(link) == TRUE) {
+        return link_get_destination(link);
+      } else {
+
+        return NO_ID;
+      }
+    }
+  }
+
+
+  return NO_ID;
+}

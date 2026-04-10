@@ -148,6 +148,24 @@ const char *space_get_gdesc(Space *space, int line);
  * @param space a pointer to the space
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_print(Space *space);
+Status space_print(Space* space);
+/**
+ * @brief It sets the discovered status of the space
+ * @author Rodrigo
+ *
+ * @param space a pointer to the space
+ * @param discovered the new discovered status (TRUE or FALSE)
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status space_set_discovered(Space* space, Bool discovered);
+
+/**
+ * @brief It gets the discovered status of the space
+ * @author Rodrigo
+ *
+ * @param space a pointer to the space
+ * @return TRUE if discovered, FALSE otherwise
+ */
+Bool space_get_discovered(Space* space);
 
 #endif

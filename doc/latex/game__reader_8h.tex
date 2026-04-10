@@ -1,0 +1,58 @@
+\doxysection{game\+\_\+reader.\+h File Reference}
+\hypertarget{game__reader_8h}{}\label{game__reader_8h}\index{game\_reader.h@{game\_reader.h}}
+
+
+It defines the game reader module interface.  
+
+
+{\ttfamily \#include "{}game.\+h"{}}\newline
+{\ttfamily \#include "{}types.\+h"{}}\newline
+Include dependency graph for game\+\_\+reader.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} \mbox{\hyperlink{game__reader_8h_a6016bb2c2fb9a424400aed5523e8e73b}{game\+\_\+create\+\_\+from\+\_\+file}} (\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}game, char \texorpdfstring{$\ast$}{*}filename)
+\begin{DoxyCompactList}\small\item\em It creates a game reading it from a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It defines the game reader module interface. 
+
+\begin{DoxyAuthor}{Author}
+Rodrigo and Mario 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+2.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+10-\/03-\/2026 
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+GNU Public License 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{game__reader_8h_a6016bb2c2fb9a424400aed5523e8e73b}\label{game__reader_8h_a6016bb2c2fb9a424400aed5523e8e73b} 
+\index{game\_reader.h@{game\_reader.h}!game\_create\_from\_file@{game\_create\_from\_file}}
+\index{game\_create\_from\_file@{game\_create\_from\_file}!game\_reader.h@{game\_reader.h}}
+\doxysubsubsection{\texorpdfstring{game\_create\_from\_file()}{game\_create\_from\_file()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{types_8h_a67a0db04d321a74b7e7fcfd3f1a3f70b}{Status}} game\+\_\+create\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct__Game}{Game}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{game,  }\item[{char \texorpdfstring{$\ast$}{*}}]{filename }\end{DoxyParamCaption})}
+
+
+
+It creates a game reading it from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em game} & A pointer to the game pointer to be initialized \\
+\hline
+{\em filename} & The name of the file to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+OK if everything goes well, ERROR otherwise 
+\end{DoxyReturn}

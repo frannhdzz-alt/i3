@@ -36,7 +36,9 @@ void game_actions_take(Game *game) {
   cmd = game_get_last_command(game);
   obj_name = command_get_arg(cmd);
 
-  if (!obj_name || obj_name[0] == '\0' || player_get_object(player) != NO_ID) return;
+
+  if (!obj_name || obj_name[0] == '\0') return;
+
 
   for (i = 1; i < MAX_OBJECTS; i++) {
     Object *o = game_get_object(game, i);
@@ -46,8 +48,14 @@ void game_actions_take(Game *game) {
     }
   }
 
-  if (obj_id != NO_ID && space_has_object(current_space, obj_id) == TRUE) {
-    player_set_object(player, obj_id);
+
+  if (obj_id == NO_ID || space_has_object(current_space, obj_id) == FALSE) return;
+
+  
+  if (player_has_object(player, obj_id) == TRUE) return;
+
+  
+  if (player_add_object(player, obj_id) == OK) {
     space_del_object(current_space, obj_id);
   }
 }
@@ -56,19 +64,38 @@ void game_actions_drop(Game *game) {
   Id p_loc = NO_ID;
   Space *current_space = NULL;
   Player *player = NULL;
+  Command *cmd = NULL;
+  const char *obj_name = NULL;
   Id obj_id = NO_ID;
+  Object *obj = NULL;
+    int i;
 
   if (!game) return;
 
   p_loc = game_get_player_location(game);
   current_space = game_get_space(game, p_loc);
   player = game_get_player(game);
-  obj_id = player_get_object(player);
+  cmd = game_get_last_command(game);
+  obj_name = command_get_arg(cmd);
+
+  if (!obj_name || obj_name[0] == '\0') return;
+
+
+  for (i = 1; i < MAX_OBJECTS; i++) {
+    obj = game_get_object(game, i);
+    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+      obj_id = i;
+      break;
+    }
+  }
 
   if (obj_id == NO_ID) return;
 
-  space_add_object(current_space, obj_id);
-  player_set_object(player, NO_ID);
+  if (player_has_object(player, obj_id) == FALSE) return;
+
+  if (player_del_object(player, obj_id) == OK) {
+    space_add_object(current_space, obj_id);
+  }
 }
 
 void game_actions_move(Game *game) {
@@ -139,6 +166,9 @@ void game_actions_attack(Game *game) {
   }
 }
 
+void game_actions_inspect(Game *game) {
+}
+
 void game_actions_chat(Game *game) {
 }
 
@@ -157,6 +187,7 @@ Status game_actions_update(Game *game, Command *command) {
     case TAKE: game_actions_take(game); break;
     case DROP: game_actions_drop(game); break;
     case ATTACK: game_actions_attack(game); break;
+    case INSPECT: game_actions_inspect(game); break;
     case CHAT: game_actions_chat(game); break;
     default: break;
   }

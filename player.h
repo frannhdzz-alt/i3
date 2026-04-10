@@ -3,15 +3,15 @@
  *
  * @file player.h
  * @author Mario
- * @version 2.0
- * @date 24-02-2026
- * @copyright GNU Public License
+ * @version 3.0
+ * @date 24-03-2026
  */
 
 #ifndef PLAYER_H
 #define PLAYER_H
 
 #include "types.h"
+#include "inventory.h"
 
 typedef struct _Player Player;
 
@@ -80,41 +80,63 @@ Status player_set_location(Player* player, Id id);
  */
 Id player_get_location(Player* player);
 
-/**
- * @brief It sets the object carried by the player
- * @author Mario
- *
- * @param player A pointer to the player
- * @param id The id of the object carried
- * @return OK if everything goes well, ERROR otherwise
- */
-Status player_set_object(Player* player, Id id);
+/* === NUEVAS FUNCIONES PARA INVENTORY === */
 
 /**
- * @brief It gets the object carried by the player
+ * @brief It adds an object to the player's backpack
  * @author Mario
  *
  * @param player A pointer to the player
- * @return The id of the object carried
+ * @param id The id of the object to add
+ * @return OK if everything goes well, ERROR otherwise
  */
-Id player_get_object(Player* player);
+Status player_add_object(Player* player, Id id);
+
+/**
+ * @brief It removes an object from the player's backpack
+ * @author Mario
+ *
+ * @param player A pointer to the player
+ * @param id The id of the object to remove
+ * @return OK if everything goes well, ERROR otherwise
+ */
+Status player_del_object(Player* player, Id id);
+
+/**
+ * @brief It checks if the player has an object in the backpack
+ * @author Mario
+ *
+ * @param player A pointer to the player
+ * @param id The id of the object
+ * @return TRUE if the object is in the backpack, FALSE otherwise
+ */
+Bool player_has_object(Player* player, Id id);
+
+/**
+ * @brief It gets the player's inventory
+ * @author Mario
+ *
+ * @param player A pointer to the player
+ * @return A pointer to the inventory, or NULL if error
+ */
+Inventory* player_get_inventory(Player* player);
 
 /**
  * @brief It sets the health of a player
  * @author Mario
  *
  * @param player A pointer to the player
- * @param health The health points to set
+ * @param health The health value to set
  * @return OK if everything goes well, ERROR otherwise
  */
 Status player_set_health(Player* player, int health);
 
 /**
  * @brief It gets the health of a player
- * @author Mario
+  * @author Mario
  *
  * @param player A pointer to the player
- * @return The player's health points, or -1 if error
+ * @return The health value, or -1 if error
  */
 int player_get_health(Player* player);
 
@@ -123,7 +145,7 @@ int player_get_health(Player* player);
  * @author Mario
  *
  * @param player A pointer to the player
- * @param gdesc A string with the graphic description
+ * @param gdesc A string with the graphic description to store
  * @return OK if everything goes well, ERROR otherwise
  */
 Status player_set_gdesc(Player* player, char* gdesc);
@@ -133,7 +155,7 @@ Status player_set_gdesc(Player* player, char* gdesc);
  * @author Mario
  *
  * @param player A pointer to the player
- * @return A string with the graphic description, or NULL if error
+ * @return A string with the graphic description of the player, or NULL if error
  */
 const char* player_get_gdesc(Player* player);
 

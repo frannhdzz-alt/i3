@@ -15,7 +15,7 @@ CFLAGS = -Wall -ansi -pedantic -g
 LDFLAGS = -L. -lscreen
 
 # List of all object files (.o) needed.
-OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o
+OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o link.o
 
 # -----------------------------------------------------------------
 # MAIN RULES
@@ -25,8 +25,8 @@ OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_
 all: castle
 
 # Linking: Joins all object files (.o) and the library to create the executable
-castle: $(OBJ) $(TESTS)
-	$(CC) -o castle $(OBJ) $(TESTS) $(LDFLAGS)
+castle: $(OBJ) 
+	$(CC) -o castle $(OBJ) $(LDFLAGS)
 
 # -----------------------------------------------------------------
 # EXECUTION RULES
@@ -50,7 +50,8 @@ vtest: vrun
 
 # Deletes temporary object files and the executable
 clean:
-	rm -f *.o $(EXEC) $(TESTS) castle
+	rm -f *.o $(EXEC) castle
+	rm -f *.txt 
 # -----------------------------------------------------------------
 # MODULE COMPILATION (.c -> .o)
 # -----------------------------------------------------------------
@@ -88,6 +89,12 @@ set.o: set.c set.h types.h
 character.o: character.c character.h types.h
 	$(CC) $(CFLAGS) -c character.c
 
+inventory.o: inventory.c inventory.h set.h types.h
+	$(CC) $(CFLAGS) -c inventory.c
+
+link.o: link.c link.h types.h
+	$(CC) $(CFLAGS) -c link.c
+
 # -----------------------------------------------------------------
 # TEST RULES
 # -----------------------------------------------------------------
@@ -108,3 +115,5 @@ character_test.o: character_test.c character.h types.h
 
 space_test.o: space_test.c space.h types.h set.h
 	$(CC) $(CFLAGS) -c space_test.c
+
+

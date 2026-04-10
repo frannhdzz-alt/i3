@@ -216,6 +216,28 @@ Player *game_get_player(Game *game)
   return game->player;
 }
 
+Status game_set_player(Game *game, Player *player) {
+    if (!game || !player) return ERROR;
+    if (game->player != NULL)
+    {
+      player_destroy(game->player);
+    }
+    
+    game->player = player;
+    return OK;
+}
+
+Status game_set_player(Game *game, Player *player) {
+    if (!game || !player) return ERROR;
+    if (game->player != NULL)
+    {
+      player_destroy(game->player);
+    }
+    
+    game->player = player;
+    return OK;
+}
+
 Object *game_get_object(Game *game, Id id)
 {
   int i;
@@ -313,13 +335,23 @@ Id game_get_player_location(Game *game)
   return player_get_location(game->player);
 }
 
-Status game_set_player_location(Game *game, Id id)
-{
-  if (!game || id == NO_ID)
-  {
+Status game_set_player_location(Game *game, Id id) {
+  Space *space = NULL;
+
+  if (!game || id == NO_ID) {
     return ERROR;
   }
-  return player_set_location(game->player, id);
+  
+  if (player_set_location(game->player, id) == OK) {
+
+    space = game_get_space(game, id);
+    if (space) {
+      space_set_discovered(space, TRUE);
+    }
+    return OK;
+  }
+  
+  return ERROR;
 }
 
 Id game_get_object_location(Game *game, Id object_id)
@@ -491,4 +523,45 @@ void game_print(Game *game)
   {
     link_print(game->links[i]);
   }
+}
+
+Status game_set_space_discovered(Game* game, Id space_id, Bool discovered) {
+  Space* space = game_get_space(game, space_id);
+  if (!space) return ERROR;
+  return space_set_discovered(space, discovered);
+}
+
+Bool game_get_space_discovered(Game* game, Id space_id) {
+  Space* space = game_get_space(game, space_id);
+  if (!space) return FALSE;
+  return space_get_discovered(space);
+}
+
+Id game_get_connection(Game *game, Id space_id, Direction dir) {
+  int i;
+  Link *link = NULL;
+
+  if (!game || space_id == NO_ID) {
+    return NO_ID;
+  }
+
+
+  for (i = 0; i < game->n_links; i++) {
+    link = game->links[i];
+    
+
+    if (link != NULL && link_get_origin(link) == space_id && link_get_direction(link) == dir) {
+      
+      /* ...comprobamos si está abierto */
+      if (link_get_status(link) == TRUE) {
+        return link_get_destination(link);
+      } else {
+
+        return NO_ID;
+      }
+    }
+  }
+
+
+  return NO_ID;
 }

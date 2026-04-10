@@ -104,6 +104,16 @@ Space *game_get_space(Game *game, Id id);
 Player *game_get_player(Game *game);
 
 /**
+ * @brief It sets the player of the game
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @param player a pointer to the player to be set
+ * @return OK, if everything goes well or ERROR if there was some mistake
+ */
+Status game_set_player(Game *game, Player *player);
+
+/**
  * @brief It gets a specific object from the game
  * @author Mario
  *
@@ -263,6 +273,25 @@ Bool game_get_finished(Game *game);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status game_set_finished(Game *game, Bool finished);
+
+/**
+ * @brief Cambia el estado de descubrimiento de un espacio
+ */
+Status game_set_space_discovered(Game* game, Id space_id, Bool discovered);
+
+/**
+ * @brief Comprueba si un espacio ha sido descubierto
+ */
+Bool game_get_space_discovered(Game* game, Id space_id);
+
+/**
+ * @brief Obtiene el ID del espacio de destino a través de un enlace
+ * @param game Puntero al juego
+ * @param space_id ID del espacio de origen
+ * @param dir Dirección del movimiento (N, S, E, W)
+ * @return El ID del espacio de destino si hay un enlace abierto, o NO_ID si no lo hay o está cerrado
+ */
+Id game_get_connection(Game *game, Id space_id, Direction dir);
 
 /**
  * @brief It prints the game information

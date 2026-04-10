@@ -25,6 +25,7 @@ struct _Space
   Set *objects;             /*!< Set of object ids in the space */
   Id character;             /*!< Id of the character in the space */
   char gdesc[5][10];        /*!< Graphic description (5 lines of 9 chars + \0) */
+  Bool discovered;          /*!< Indicates if the space has been discovered */
 };
 
 Space *space_create(Id id)
@@ -45,6 +46,7 @@ Space *space_create(Id id)
   newSpace->name[0] = '\0';
   newSpace->objects = set_create();
   newSpace->character = NO_ID;
+  newSpace->discovered = FALSE;
 
   /* Initialize graphic description with spaces */
   for (i = 0; i < 5; i++)
@@ -172,6 +174,21 @@ const char *space_get_gdesc(Space *space, int line)
     return NULL;
   }
   return space->gdesc[line];
+}
+
+Status space_set_discovered(Space* space, Bool discovered) {
+  if (!space) {
+    return ERROR;
+  }
+  space->discovered = discovered;
+  return OK;
+}
+
+Bool space_get_discovered(Space* space) {
+  if (!space) {
+    return FALSE;
+  }
+  return space->discovered;
 }
 
 Status space_print(Space *space)

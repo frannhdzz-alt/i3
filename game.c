@@ -231,18 +231,6 @@ Status game_set_player(Game *game, Player *player)
   return OK;
 }
 
-Status game_set_player(Game *game, Player *player)
-{
-  if (!game || !player)
-    return ERROR;
-  if (game->player != NULL)
-  {
-    player_destroy(game->player);
-  }
-
-  game->player = player;
-  return OK;
-}
 
 Object *game_get_object(Game *game, Id id)
 {
@@ -296,30 +284,6 @@ Link *game_get_link(Game *game, Id id)
   return NULL;
 }
 
-Id game_get_connection(Game *game, Id space, Direction dir)
-{
-  int i = 0;
-  Id origin = NO_ID;
-  Direction link_dir = N;
-
-  if (game == NULL || space == NO_ID)
-  {
-    return NO_ID;
-  }
-
-  for (i = 0; i < game->n_links; i++)
-  {
-    origin = link_get_origin(game->links[i]);
-    link_dir = link_get_direction(game->links[i]);
-
-    if (origin == space && link_dir == dir)
-    {
-      return link_get_destination(game->links[i]);
-    }
-  }
-
-  return NO_ID;
-}
 
 Bool game_connection_is_open(Game *game, Id space, Direction dir)
 {
@@ -581,7 +545,7 @@ Id game_get_connection(Game *game, Id space_id, Direction dir)
     {
 
       /* ...comprobamos si está abierto */
-      if (link_get_status(link) == TRUE)
+      if (link_get_open(link) == TRUE)
       {
         return link_get_destination(link);
       }

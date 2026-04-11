@@ -217,12 +217,10 @@ Status game_load_players(Game *game, char *filename) {
         player_set_gdesc(player, gdesc);
         player_set_location(player, location);
         player_set_health(player, health);
-        
-        game_add_player(game, player);
+        /*player_set_max_objects(player, max_objs); */
+        game_set_player(game, player); 
         game_set_space_discovered(game, location, TRUE);
       }
-
-      
     }
   }
 
@@ -273,7 +271,7 @@ Status game_load_links(Game *game, char *filename) {
         link_set_origin(link, origin);
         link_set_destination(link, dest);
         link_set_direction(link, dir);
-        link_set_status(link, open == 1 ? TRUE : FALSE);
+        link_set_open(link, open == 1 ? TRUE : FALSE);
         
         game_add_link(game, link); 
       }
@@ -285,56 +283,3 @@ Status game_load_links(Game *game, char *filename) {
   return status;
 }
 
-Status game_load_players(Game *game, char *filename) {
-  FILE *file = NULL;
-  char line[WORD_SIZE] = "";
-  char name[WORD_SIZE] = "";
-  char gdesc[7] = "";
-  char *toks = NULL;
-  Id id = NO_ID, location = NO_ID;
-  int health = 0, max_objs = 0;
-  Player *player = NULL;
-  Status status = OK;
-
-  if (!filename) return ERROR;
-
-  file = fopen(filename, "r");
-  if (!file) return ERROR;
-
-  while (fgets(line, WORD_SIZE, file)) {
-    if (strncmp("#p:", line, 3) == 0) {
-      toks = strtok(line + 3, "|");
-      id = atol(toks);
-      
-      toks = strtok(NULL, "|");
-      strcpy(name, toks);
-      
-      toks = strtok(NULL, "|");
-      strcpy(gdesc, toks);
-      
-      toks = strtok(NULL, "|");
-      location = atol(toks);
-      
-      toks = strtok(NULL, "|");
-      health = atoi(toks);
-      
-      toks = strtok(NULL, "|");
-      max_objs = atoi(toks);
-
-      player = player_create(id);
-      if (player != NULL) {
-        player_set_name(player, name);
-        player_set_gdesc(player, gdesc);
-        player_set_location(player, location);
-        player_set_health(player, health);
-        player_set_max_objects(player, max_objs); //esto hacedlo 
-        
-        game_add_player(game, player);
-      }
-    }
-  }
-
-  if (ferror(file)) status = ERROR;
-  fclose(file);
-  return status;
-}

@@ -171,8 +171,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->map);
   if (p_loc != NO_ID) {
     space_act = game_get_space(game, p_loc);
-    space_back = game_get_space(game, space_get_north(space_act)); 
-    space_next = game_get_space(game, space_get_south(space_act)); 
+    space_back = game_get_space(game, game_get_connection(game, space_get_id(space_act), N)); 
+    space_next = game_get_space(game, game_get_connection(game, space_get_id(space_act), S)); 
 
     _prepare_space_view(game, space_back, p_loc, &view_back);
     _prepare_space_view(game, space_act, p_loc, &view_act);
@@ -213,8 +213,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     for (i = 0; i < 5; i++) {
         char w_link[3] = "  ", e_link[3] = "  ";
         if (i == 2) {
-            if (space_get_west(space_act) != NO_ID) strcpy(w_link, "<-");
-            if (space_get_east(space_act) != NO_ID) strcpy(e_link, "->");
+            if (game_get_connection(game, space_get_id(space_act), W) != NO_ID) strcpy(w_link, "<-");
+            if (game_get_connection(game, space_get_id(space_act), E) != NO_ID) strcpy(e_link, "->");
         }
         sprintf(str, "                   %s|   %-9s   |%s", w_link, view_act.gdesc[i], e_link);
         screen_area_puts(ge->map, str);
@@ -361,7 +361,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, " next(n), back(b), left(l), right(r), take(t) [obj], drop(d) [obj], attack(a), inspect(i) [obj], chat(c), exit(e)");
+  sprintf(str, " move(m) [direction], take(t) [obj], drop(d) [obj], attack(a), inspect(i) [obj], chat(c), exit(e)");
   screen_area_puts(ge->help, str);
 
   /* Feedback Area */

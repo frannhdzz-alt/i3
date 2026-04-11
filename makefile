@@ -34,7 +34,7 @@ castle: $(OBJ)
 
 # Runs the game normally
 run: castle
-	./castle castle.dat -l registro.txt
+	./castle castle_i3.dat -l registro.txt
 
 # Runs the game with valgrind
 vrun: castle

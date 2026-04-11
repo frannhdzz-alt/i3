@@ -20,7 +20,8 @@
  */
 struct _Game
 {
-  Player *player;                        /*!< Pointer to the player of the game */
+  Player *players[2];                    /*!< Array of pointers to the players of the game */
+  int turn;                              /*!< Current turn (0 or 1) */
   Object *objects[MAX_OBJECTS];          /*!< Array of pointers to the objects of the game */
   int n_objects;                         /*!< Number of objects in the game */
   Character *characters[MAX_CHARACTERS]; /*!< Array of pointers to characters */
@@ -71,19 +72,13 @@ Status game_create(Game **game)
   }
   newGame->n_links = 0;
 
-  newGame->player = player_create(1);
-  if (newGame->player == NULL)
-  {
-    free(newGame);
-    return ERROR;
-  }
-
-  player_set_gdesc(newGame->player, "^O^");
+  newGame->players[0] = NULL;
+  newGame->players[1] = NULL;
+  newGame->turn = 0;
 
   newGame->last_cmd = command_create();
   if (newGame->last_cmd == NULL)
   {
-    player_destroy(newGame->player);
     free(newGame);
     return ERROR;
   }
@@ -121,7 +116,15 @@ Status game_destroy(Game *game)
     link_destroy(game->links[i]);
   }
 
-  player_destroy(game->player);
+
+  for (i = 0; i < 2; i++)
+  {
+    if (game->players[i] != NULL)
+    {
+      player_destroy(game->players[i]);
+    }
+  }
+
   command_destroy(game->last_cmd);
 
   free(game);
@@ -211,24 +214,41 @@ Space *game_get_space(Game *game, Id id)
   return NULL;
 }
 
+
+Player *game_get_active_player(Game *game)
+{
+  if (game == NULL) return NULL;
+  
+  return game->players[game->turn];
+}
+
+Status game_add_player(Game *game, Player *player)
+{
+  int i;
+
+  if (game == NULL || player == NULL)
+  {
+    return ERROR;
+  }
+
+
+  for (i = 0; i < 2; i++)
+  {
+    if (game->players[i] == NULL)
+    {
+      game->players[i] = player;
+      return OK;
+    }
+  }
+
+  return ERROR; 
+}
+
 Player *game_get_player(Game *game)
 {
   if (!game)
     return NULL;
-  return game->player;
-}
-
-Status game_set_player(Game *game, Player *player)
-{
-  if (!game || !player)
-    return ERROR;
-  if (game->player != NULL)
-  {
-    player_destroy(game->player);
-  }
-
-  game->player = player;
-  return OK;
+  return game_get_active_player(game);
 }
 
 
@@ -314,7 +334,7 @@ Id game_get_player_location(Game *game)
 {
   if (!game)
     return NO_ID;
-  return player_get_location(game->player);
+  return player_get_location(game_get_active_player(game));
 }
 
 Status game_set_player_location(Game *game, Id id)
@@ -326,7 +346,7 @@ Status game_set_player_location(Game *game, Id id)
     return ERROR;
   }
 
-  if (player_set_location(game->player, id) == OK)
+  if (player_set_location(game_get_active_player(game), id) == OK)
   {
 
     space = game_get_space(game, id);
@@ -371,7 +391,7 @@ Status game_set_object_location(Game *game, Id space_id, Id object_id)
     return ERROR;
   }
 
-  /* Remove from current location if any */
+
   current_space_id = game_get_object_location(game, object_id);
   if (current_space_id != NO_ID)
   {
@@ -379,7 +399,7 @@ Status game_set_object_location(Game *game, Id space_id, Id object_id)
     space_del_object(current_space, object_id);
   }
 
-  /* Place in new location */
+
   if (space_id != NO_ID)
   {
     new_space = game_get_space(game, space_id);
@@ -423,7 +443,7 @@ Status game_set_character_location(Game *game, Id space_id, Id char_id)
     return ERROR;
   }
 
-  /* Remove from current location */
+
   current_space_id = game_get_character_location(game, char_id);
   if (current_space_id != NO_ID)
   {
@@ -431,7 +451,7 @@ Status game_set_character_location(Game *game, Id space_id, Id char_id)
     space_set_character(current_space, NO_ID);
   }
 
-  /* Place in new location */
+
   if (space_id != NO_ID)
   {
     new_space = game_get_space(game, space_id);
@@ -502,7 +522,7 @@ void game_print(Game *game)
   }
 
   printf("=> Player info: \n");
-  player_print(game->player);
+  player_print(game_get_active_player(game));
 
   printf("=> Links info: \n");
   for (i = 0; i < game->n_links; i++)
@@ -543,8 +563,6 @@ Id game_get_connection(Game *game, Id space_id, Direction dir)
 
     if (link != NULL && link_get_origin(link) == space_id && link_get_direction(link) == dir)
     {
-
-      /* ...comprobamos si está abierto */
       if (link_get_open(link) == TRUE)
       {
         return link_get_destination(link);
@@ -558,4 +576,19 @@ Id game_get_connection(Game *game, Id space_id, Direction dir)
   }
 
   return NO_ID;
+}
+
+Status game_next_turn(Game *game)
+{
+  if (game == NULL) {
+    return ERROR;
+  }
+
+  if (game->turn == 0) {
+    game->turn = 1;
+  } else {
+    game->turn = 0;
+  }
+
+  return OK;
 }

@@ -103,15 +103,25 @@ Space *game_get_space(Game *game, Id id);
  */
 Player *game_get_player(Game *game);
 
+
 /**
- * @brief It sets the player of the game
- * @author Mario
+ * @brief It adds a new player to the game 
+ * @author Maria
  *
  * @param game a pointer to the game
- * @param player a pointer to the player to be set
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @param player a pointer to the player to be added
+ * @return OK if successful or ERROR if the game is full or pointers are NULL
  */
-Status game_set_player(Game *game, Player *player);
+Status game_add_player(Game *game, Player *player);
+
+/**
+ * @brief It gets the active player of the game based on the turn
+ * @author Maria
+ *
+ * @param game a pointer to the game
+ * @return a pointer to the active player or NULL in case of error
+ */
+Player *game_get_active_player(Game *game);
 
 /**
  * @brief It gets a specific object from the game
@@ -300,5 +310,14 @@ Id game_get_connection(Game *game, Id space_id, Direction dir);
  * @param game a pointer to the game
  */
 void game_print(Game *game);
+
+/**
+ * @brief It updates the game turn to the next player (0 or 1)
+ * @author Maria
+ *
+ * @param game a pointer to the game
+ * @return OK if successful or ERROR in case of error
+ */
+Status game_next_turn(Game *game);
 
 #endif

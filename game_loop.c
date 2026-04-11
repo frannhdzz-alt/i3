@@ -72,6 +72,10 @@ int main(int argc, char *argv[]) {
     command_get_user_input(last_cmd);
     
     action_status = game_actions_update(game, last_cmd);
+
+    if (action_status == OK && command_get_code(last_cmd) != UNKNOWN && command_get_code(last_cmd) != NO_CMD) {
+      game_next_turn(game);
+    }
     
     if (f_log != NULL) {
       cmd_code = command_get_code(last_cmd);

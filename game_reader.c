@@ -182,7 +182,7 @@ Status game_load_players(Game *game, char *filename) {
   char gdesc[7] = "";
   char *toks = NULL;
   Id id = NO_ID, location = NO_ID;
-  int health = 0, max_objs = 0;
+  int health = 0;
   Player *player = NULL;
   Status status = OK;
 
@@ -209,7 +209,6 @@ Status game_load_players(Game *game, char *filename) {
       health = atoi(toks);
       
       toks = strtok(NULL, "|");
-      max_objs = atoi(toks);
 
       player = player_create(id);
       if (player != NULL) {

@@ -1,11 +1,10 @@
 chat
-inspect s
-take Sword
-inspect Sword
+take sword
 move s
+move s
+take shield
 attack
-take Shield
-drop Sword
 move s
-move e
+drop sword
+take armour
 exit

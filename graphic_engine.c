@@ -4,7 +4,7 @@
  * @file graphic_engine.c
  * @author Rodrigo and Mario
  * @version 3.0
- * @date 12-03-2026
+ * @date 05-04-2026
  * @copyright GNU Public License
  */
 

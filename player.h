@@ -4,7 +4,7 @@
  * @file player.h
  * @author Mario
  * @version 3.0
- * @date 24-03-2026
+ * @date 13-04-2026
  */
 
 #ifndef PLAYER_H
@@ -80,7 +80,6 @@ Status player_set_location(Player* player, Id id);
  */
 Id player_get_location(Player* player);
 
-/* === NUEVAS FUNCIONES PARA INVENTORY === */
 
 /**
  * @brief It adds an object to the player's backpack

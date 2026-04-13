@@ -1,10 +1,10 @@
 /**
  * @brief It defines the inventory module interface
  *
- * @file link.c
+ * @file inventory.h
  * @author Mario
  * @version 1.0
- * @date 25-03-2026
+ * @date 10-04-2026
  * @copyright GNU Public License
  */
 

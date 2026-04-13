@@ -3,8 +3,8 @@
  *
  * @file game.c
  * @author Mario
- * @version 2.0
- * @date 26-02-2026
+ * @version 3.0
+ * @date 13-04-2026
  * @copyright GNU Public License
  */
 

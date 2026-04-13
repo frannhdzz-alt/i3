@@ -4,7 +4,7 @@
  * @file game_reader.c
  * @author Rodrigo and Mario
  * @version 2.0
- * @date 10-03-2026
+ * @date 13-04-2026
  * @copyright GNU Public License
  */
 

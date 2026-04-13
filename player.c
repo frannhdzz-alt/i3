@@ -4,7 +4,7 @@
  * @file player.c
  * @author Mario
  * @version 3.0
- * @date 24-03-2026
+ * @date 13-04-2026
  */
 
 #include "player.h"
@@ -104,7 +104,7 @@ Id player_get_location(Player* player) {
   return player->location;
 }
 
-/* === INVENTORY FUNCTIONS === */
+
 
 Status player_add_object(Player* player, Id id) {
   if (!player) {
@@ -134,7 +134,6 @@ Inventory* player_get_inventory(Player* player) {
   return player->backpack;
 }
 
-/* === HEALTH & GDESC === */
 
 Status player_set_health(Player* player, int health) {
   if (!player || health < 0) {

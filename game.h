@@ -4,7 +4,7 @@
  * @file game.h
  * @author Mario
  * @version 2.0
- * @date 26-02-2026
+ * @date 13-04-2026
  * @copyright GNU Public License
  */
 
@@ -285,21 +285,35 @@ Bool game_get_finished(Game *game);
 Status game_set_finished(Game *game, Bool finished);
 
 /**
- * @brief Cambia el estado de descubrimiento de un espacio
+ * @brief It sets the discovered status of a space
+ * @author Francisco
+ *
+ * @param game a pointer to the game
+ * @param space_id the id of the space
+ * @param discovered the new discovered status (TRUE or FALSE)
+ * @return OK if successful or ERROR in case of error
  */
 Status game_set_space_discovered(Game* game, Id space_id, Bool discovered);
 
 /**
- * @brief Comprueba si un espacio ha sido descubierto
+ * @brief It checks if a space has been discovered
+ * @author Francisco
+ *
+ * @param game a pointer to the game
+ * @param space_id the id of the space
+ * @return TRUE if the space has been discovered, FALSE otherwise
  */
 Bool game_get_space_discovered(Game* game, Id space_id);
 
 /**
- * @brief Obtiene el ID del espacio de destino a través de un enlace
- * @param game Puntero al juego
- * @param space_id ID del espacio de origen
- * @param dir Dirección del movimiento (N, S, E, W)
- * @return El ID del espacio de destino si hay un enlace abierto, o NO_ID si no lo hay o está cerrado
+/**
+ * @brief It gets the id of the destination space through a link
+ * @author Francisco
+ *
+ * @param game a pointer to the game
+ * @param space_id the id of the origin space
+ * @param dir the direction of the movement
+ * @return the id of the destination space if the link is open, or NO_ID otherwise
  */
 Id game_get_connection(Game *game, Id space_id, Direction dir);
 

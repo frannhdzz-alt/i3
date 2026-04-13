@@ -4,7 +4,7 @@
  * @file object.c
  * @author Rodrigo
  * @version 1.0
- * @date 04-02-2025
+ * @date 05-04-2025
  * @copyright GNU Public License
  */
 

@@ -1,10 +1,10 @@
 /**
  * @brief It implements the inventory module
  *
- * @file link.c
+ * @file inventory.c
  * @author Mario
  * @version 1.0
- * @date 25-03-2026
+ * @date 10-04-2026
  * @copyright GNU Public License
  */
 

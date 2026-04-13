@@ -4,7 +4,7 @@
  * @file link_test.c
  * @author María Gómez
  * @version 2.0
- * @date 25-03-2026
+ * @date 13-04-2026
  * @copyright GNU Public License
  */
 

@@ -3,8 +3,8 @@
  *
  * @file game_actions.h
  * @author Rodrigo and Mario
- * @version 2.0
- * @date 10-03-2026
+ * @version 3.0
+ * @date 13-04-2026
  * @copyright GNU Public License
  */
 

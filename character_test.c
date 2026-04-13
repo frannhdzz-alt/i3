@@ -2,9 +2,9 @@
  * @brief It tests character module
  *
  * @file character_test.c
- * @author Rodrigo y Mario
+ * @author Rodrigo 
  * @version 2.0
- * @date 25-03-2026
+ * @date 13-04-2026
  * @copyright GNU Public License
  */
 

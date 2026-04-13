@@ -48,6 +48,9 @@ test: run
 vtest: vrun
 	make clean
 
+doc:
+	doxygen Doxyfile
+
 # Deletes temporary object files and the executable
 clean:
 	rm -f *.o $(EXEC) castle

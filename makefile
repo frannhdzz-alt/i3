@@ -4,119 +4,71 @@
 # Project: The Haunted Castle 
 # =================================================================
 
-# Compiler configurations
-# Use gcc as the compiler.
-# Flags: -Wall (warnings), -ansi (standard C), -pedantic, -g (for debugging).
+# --- Directorios (Requisito C4) ---
+SRC_DIR = src
+INC_DIR = include
+OBJ_DIR = obj
+LIB_DIR = lib
+DOC_DIR = doc
+
+# --- Compilador y Flags (Requisito C2) ---
 CC = gcc
-CFLAGS = -Wall -ansi -pedantic -g
+# Añadimos -I$(INC_DIR) para que gcc sepa buscar los .h en la carpeta include/
+CFLAGS = -Wall -ansi -pedantic -g -I$(INC_DIR)
 
-# Screen library:
-# Tells the compiler to look for the library in the current folder (.)
-LDFLAGS = -L. -lscreen
+# --- Librerías ---
+# Cambiamos -L. a -L$(LIB_DIR) para que busque libscreen.a en lib/
+LDFLAGS = -L$(LIB_DIR) -lscreen
 
-# List of all object files (.o) needed.
-OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o link.o
+# --- Archivos Objeto ---
+_OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o link.o
+OBJ = $(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
 
-# -----------------------------------------------------------------
-# MAIN RULES
-# -----------------------------------------------------------------
+EXEC = castle
 
-# Default rule: Compile the complete program
-all: castle
+.PHONY: all clean run vrun test vtest doc directories
 
-# Linking: Joins all object files (.o) and the library to create the executable
-castle: $(OBJ) 
-	$(CC) -o castle $(OBJ) $(LDFLAGS)
+all: directories $(EXEC)
 
-# -----------------------------------------------------------------
-# EXECUTION RULES
-# -----------------------------------------------------------------
 
-# Runs the game normally
-run: castle
-	./castle castle.dat -l registro.txt
+directories:
+	@mkdir -p $(OBJ_DIR) $(DOC_DIR) $(LIB_DIR)
 
-# Runs the game with valgrind
-vrun: castle
-	valgrind --leak-check=full ./castle castle.dat -l registro.txt
 
-# Test rule: Quick check (runs the game and then cleans up)
-test: run
-	make clean
+$(EXEC): $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
-# Test rule: Quick check (runs the game with valgrind and then cleans up)
-vtest: vrun
-	make clean
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+
+
+run: $(EXEC)
+	./$(EXEC) castle.dat -l registro.txt
+
+vrun: $(EXEC)
+	valgrind --leak-check=full ./$(EXEC) castle.dat -l registro.txt
+
+test: $(EXEC)
+	./$(EXEC) castle.dat -l log_normal.txt < test_normal.cmd
+	./$(EXEC) castle.dat -l log_errores.txt < test_errores.cmd
+
 
 doc:
 	doxygen Doxyfile
 
-# Deletes temporary object files and the executable
+set_test: directories $(OBJ_DIR)/set_test.o $(OBJ_DIR)/set.o
+	$(CC) -o $@ $(OBJ_DIR)/set_test.o $(OBJ_DIR)/set.o
+
+character_test: directories $(OBJ_DIR)/character_test.o $(OBJ_DIR)/character.o
+	$(CC) -o $@ $(OBJ_DIR)/character_test.o $(OBJ_DIR)/character.o
+
+space_test: directories $(OBJ_DIR)/space_test.o $(OBJ_DIR)/space.o $(OBJ_DIR)/set.o
+	$(CC) -o $@ $(OBJ_DIR)/space_test.o $(OBJ_DIR)/space.o $(OBJ_DIR)/set.o
+
+
 clean:
-	rm -f *.o $(EXEC) castle
+	rm -f obj/*.o castle set_test character_test space_test
 	rm -f *.txt
-# -----------------------------------------------------------------
-# MODULE COMPILATION (.c -> .o)
-# -----------------------------------------------------------------
-
-game_loop.o: game_loop.c game.h game_actions.h graphic_engine.h command.h game_reader.h
-	$(CC) $(CFLAGS) -c game_loop.c
-
-game.o: game.c game.h space.h types.h player.h object.h character.h
-	$(CC) $(CFLAGS) -c game.c
-
-game_actions.o: game_actions.c game_actions.h game.h
-	$(CC) $(CFLAGS) -c game_actions.c
-
-space.o: space.c space.h types.h
-	$(CC) $(CFLAGS) -c space.c
-
-command.o: command.c command.h types.h
-	$(CC) $(CFLAGS) -c command.c
-
-graphic_engine.o: graphic_engine.c graphic_engine.h game.h libscreen.h
-	$(CC) $(CFLAGS) -c graphic_engine.c
-
-game_reader.o: game_reader.c game_reader.h game.h space.h
-	$(CC) $(CFLAGS) -c game_reader.c
-
-object.o: object.c object.h types.h
-	$(CC) $(CFLAGS) -c object.c
-
-player.o: player.c player.h types.h
-	$(CC) $(CFLAGS) -c player.c
-
-set.o: set.c set.h types.h
-	$(CC) $(CFLAGS) -c set.c
-
-character.o: character.c character.h types.h
-	$(CC) $(CFLAGS) -c character.c
-
-inventory.o: inventory.c inventory.h set.h types.h
-	$(CC) $(CFLAGS) -c inventory.c
-
-link.o: link.c link.h types.h
-	$(CC) $(CFLAGS) -c link.c
-
-# -----------------------------------------------------------------
-# TEST RULES
-# -----------------------------------------------------------------
-set_test: set_test.o set.o
-	$(CC) -o set_test set_test.o set.o
-
-character_test: character_test.o character.o
-	$(CC) -o character_test character_test.o character.o
-
-space_test: space_test.o space.o set.o
-	$(CC) -o space_test space_test.o space.o set.o
-
-set_test.o: set_test.c set.h types.h
-	$(CC) $(CFLAGS) -c set_test.c
-
-character_test.o: character_test.c character.h types.h
-	$(CC) $(CFLAGS) -c character_test.c
-
-space_test.o: space_test.c space.h types.h set.h
-	$(CC) $(CFLAGS) -c space_test.c
-
-
+	rm -rf doc/html doc/latex

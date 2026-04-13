@@ -306,7 +306,6 @@ Status game_set_space_discovered(Game* game, Id space_id, Bool discovered);
 Bool game_get_space_discovered(Game* game, Id space_id);
 
 /**
-/**
  * @brief It gets the id of the destination space through a link
  * @author Francisco
  *

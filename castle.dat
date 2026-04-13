@@ -32,10 +32,10 @@
 #l:15|L_Bed_Bath|131|132|2|1|
 #l:16|L_Bath_Bed|132|131|3|1|
 
-#o:11|Sword|11|A sharp and very deadly iron sword
-#o:12|Shield|12|A sturdy and heavy metallic shield
-#o:13|Armour|13|A safe, heavy and strong chainmail
-#o:14|Bow|14|A very long and tense flexible bow
+#o:11|Sword|11|A sharp and very dark iron sword.
+#o:12|Shield|12|A hard and heavy metallic shield.
+#o:13|Armour|13|A safe, heavy and hard chainmail.
+#o:14|Bow|14|A very long and tense strong bow.
 
 #c:1|Goblin| \Go/ |5|0|Argh!|12|
 #c:2|Old man| \Om/ |5|1|Take the sword and face the dark.|11|

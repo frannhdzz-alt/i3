@@ -51,7 +51,11 @@ vtest: vrun
 # Deletes temporary object files and the executable
 clean:
 	rm -f *.o $(EXEC) castle
-	rm -f *.txt 
+	rm -f *.txt
+
+test:
+	./castle castle.dat -l log_normal.txt < test_normal.cmd
+	./castle castle.dat -l log_errores.txt < test_errores.cmd
 # -----------------------------------------------------------------
 # MODULE COMPILATION (.c -> .o)
 # -----------------------------------------------------------------

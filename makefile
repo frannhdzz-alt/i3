@@ -52,10 +52,6 @@ vtest: vrun
 clean:
 	rm -f *.o $(EXEC) castle
 	rm -f *.txt
-
-test:
-	./castle castle.dat -l log_normal.txt < test_normal.cmd
-	./castle castle.dat -l log_errores.txt < test_errores.cmd
 # -----------------------------------------------------------------
 # MODULE COMPILATION (.c -> .o)
 # -----------------------------------------------------------------

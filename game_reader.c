@@ -143,17 +143,23 @@ Status game_load_characters(Game *game, char *filename) {
     if (strncmp("#c:", line, 3) == 0) {
       toks = strtok(line + 3, "|");
       id = atol(toks);
+      
       toks = strtok(NULL, "|");
       strcpy(name, toks);
+      
       toks = strtok(NULL, "|");
       strcpy(gdesc, toks);
+      
       toks = strtok(NULL, "|");
       health = atoi(toks);
+      
       toks = strtok(NULL, "|");
       friendly = atoi(toks);
+      
       toks = strtok(NULL, "|");
       strcpy(message, toks);
-      toks = strtok(NULL, "|");
+  
+      toks = strtok(NULL, "|\r\n");
       location = atol(toks);
 
       character = character_create(id);
@@ -163,9 +169,8 @@ Status game_load_characters(Game *game, char *filename) {
         character_set_health(character, health);
         character_set_friendly(character, friendly == 1 ? TRUE : FALSE);
         character_set_message(character, message);
-
         game_add_character(game, character);
-        game_set_character_location(game, location, id);
+        game_set_character_location(game, id, location); 
       }
     }
   }

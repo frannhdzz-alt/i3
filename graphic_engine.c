@@ -357,7 +357,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   }
 
   /* Banner and Help Areas */
-  sprintf(str, "       Player %ld ", player_get_id(player));
+  sprintf(str, "        Player %ld ", player_get_id(player));
   screen_area_puts(ge->banner, str);
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");

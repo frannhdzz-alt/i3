@@ -33,6 +33,7 @@ Status game_create_from_file(Game **game, char *filename) {
   if (game_load_links(*game, filename) == ERROR) return ERROR;
   if (game_load_objects(*game, filename) == ERROR) return ERROR;
   if (game_load_players(*game, filename) == ERROR) return ERROR;
+  if (game_load_characters(*game, filename) == ERROR) return ERROR;
 
 
   return OK;
@@ -170,7 +171,7 @@ Status game_load_characters(Game *game, char *filename) {
         character_set_friendly(character, friendly == 1 ? TRUE : FALSE);
         character_set_message(character, message);
         game_add_character(game, character);
-        game_set_character_location(game, id, location); 
+        game_set_character_location(game, location, id); 
       }
     }
   }

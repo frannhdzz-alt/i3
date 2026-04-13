@@ -357,7 +357,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   }
 
   /* Banner and Help Areas */
-  screen_area_puts(ge->banner, " The haunted castle game ");
+  /* Banner Area (Turno del jugador activo) */
+  sprintf(str, "       Player %ld ", player_get_id(player));
+  screen_area_puts(ge->banner, str);
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
@@ -369,6 +371,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_puts(ge->feedback, str);
 
   /* Dump to terminal */
-  screen_paint(CYAN);
+  if (player_get_id(player) == 1) {
+      screen_paint(CYAN);
+  } else if (player_get_id(player) == 2) {
+      screen_paint(GREEN);
+  } else {
+      screen_paint(WHITE);
+  }
   printf("prompt:> ");
 }

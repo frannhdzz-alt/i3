@@ -1,16 +1,44 @@
-#s:11|Entry|-1|-1|12|-1| .===.   | [   ]   | [   ]   | [   ]   | '==='   |
-#s:12|Corridor|11|-1|13|121| #___#   | #___#   | #___#   | #___#   | #   #   |
-#s:13|Dinning room|12|131|14|-1| ....... | : ___ : | : [ ] : | :     : | ....... |
-#s:14|Kitchen|13|-1|15|-1|  ___    | /   \   |/ BDL \  |\ --- /  | \___/   |
-#s:15|Inner courtyard|14|-1|16|-1| * * !   |  ! * * | * * !   |  ! * * | * * !   |
-#s:16|Garden|15|-1|-1|-1|   /\    |  /  \   | /    \  |/______\ |   []    |
-#s:121|Dungeon|-1|-1|-1|-1| +-----+ | [x x x] | [ x x ] | [x x x] | +-----+ |
-#s:131|Bedroom|-1|132|-1|13| _______ | [     ] | [ ___ ] | [[___]] | [_____] |
-#s:132|Bathroom|-1|-1|-1|131|  _____  | [MMMMM] | [ (#) ] | [WWWWW] |  IIIII  |
-#o:11|Sword|11|A sharp and deadly iron sword.
-#o:12|Shield|12|A sturdy wooden shield reinforced with metal.
-#o:13|Armour|13|A heavy chainmail armour. It looks very safe.
-#o:14|Bow|14|A long wooden bow with a tense string.
-#c:21|Goblin| \Go/ |5|0|0|14|
-#c:22|Old man| \Om/ |5|1|Take the sword and face the dark.|11|
-#p:1|Knight|11|
+#s:11|Entry| .===.   | [   ]   | [   ]   | [   ]   | '==='   |
+#s:12|Corridor| #___#   | #___#   | #___#   | #___#   | #   #   |
+#s:13|Dinning room| ....... | : ___ : | : [ ] : | :     : | ....... |
+#s:14|Kitchen|  ___    | /   \   |/ BDL \  |\ --- /  | \___/   |
+#s:15|Inner courtyard| * * !   |  ! * * | * * !   |  ! * * | * * !   |
+#s:16|Garden|   /\    |  /  \   | /    \  |/______\ |   []    |
+#s:121|Dungeon| +-----+ | [x x x] | [ x x ] | [x x x] | +-----+ |
+#s:131|Bedroom| _______ | [     ] | [ ___ ] | [[___]] | [_____] |
+#s:132|Bathroom|  _____  | [MMMMM] | [ (#) ] | [WWWWW] |  IIIII  |
+
+#l:1|L_Entry_Corr|11|12|1|1|
+#l:2|L_Corr_Entry|12|11|0|1|
+
+#l:3|L_Corr_Dung|12|121|3|0|
+#l:4|L_Dung_Corr|121|12|2|0|
+
+#l:5|L_Corr_Din|12|13|1|1|
+#l:6|L_Din_Corr|13|12|0|1|
+
+#l:7|L_Din_Kit|13|14|1|1|
+#l:8|L_Kit_Din|14|13|0|1|
+
+#l:9|L_Kit_Court|14|15|1|1|
+#l:10|L_Court_Kit|15|14|0|1|
+
+#l:11|L_Court_Gar|15|16|1|1|
+#l:12|L_Gar_Court|16|15|0|1|
+
+#l:13|L_Din_Bed|13|131|2|1|
+#l:14|L_Bed_Din|131|13|3|1|
+
+#l:15|L_Bed_Bath|131|132|2|1|
+#l:16|L_Bath_Bed|132|131|3|1|
+
+#o:11|Sword|11|A sharp and very deadly iron sword
+#o:12|Shield|12|A sturdy and heavy metallic shield
+#o:13|Armour|13|A safe, heavy and strong chainmail
+#o:14|Bow|14|A very long and tense flexible bow
+
+#c:1|Goblin| \Go/ |5|0|Argh!|12|
+#c:2|Old man| \Om/ |5|1|Take the sword and face the dark.|11|
+
+#p:1|Knight|^C>|11|5|4|
+#p:2|Mage|^M>|11|3|5|

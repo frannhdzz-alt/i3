@@ -3,7 +3,7 @@
 #s:13|Dinning room| ....... | : ___ : | : [ ] : | :     : | ....... |
 #s:14|Kitchen|  ___    | /   \   |/ BDL \  |\ --- /  | \___/   |
 #s:15|Inner courtyard| * * !   |  ! * * | * * !   |  ! * * | * * !   |
-#s:16|Garden|  /\    |  /  \   | /    \  |/______\ |   []    |
+#s:16|Garden|   /\    |  /  \   | /    \  |/______\ |   []    |
 #s:121|Dungeon| +-----+ | [x x x] | [ x x ] | [x x x] | +-----+ |
 #s:131|Bedroom| _______ | [     ] | [ ___ ] | [[___]] | [_____] |
 #s:132|Bathroom|  _____  | [MMMMM] | [ (#) ] | [WWWWW] |  IIIII  |
@@ -37,8 +37,8 @@
 #o:13|Armour|13|A safe, heavy and strong chainmail
 #o:14|Bow|14|A very long and tense flexible bow
 
-#c:21|Goblin| \Go/ |5|0|Argh!|12|
-#c:22|Old man| \Om/ |5|1|Take the sword and face the dark.|11|
+#c:1|Goblin| \Go/ |5|0|Argh!|12|
+#c:2|Old man| \Om/ |5|1|Take the sword and face the dark.|11|
 
 #p:1|Knight|^C>|11|5|4|
 #p:2|Mage|^M>|11|3|5|

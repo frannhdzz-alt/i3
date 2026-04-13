@@ -222,7 +222,6 @@ Status game_load_players(Game *game, char *filename) {
         player_set_gdesc(player, gdesc);
         player_set_location(player, location);
         player_set_health(player, health);
-        /*player_set_max_objects(player, max_objs); */
         game_add_player(game, player);
         game_set_space_discovered(game, location, TRUE);
       }

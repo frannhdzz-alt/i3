@@ -2,7 +2,7 @@
  * @brief It implements the game reader module
  *
  * @file game_reader.c
- * @author Rodrigo and Mario
+ * @author Rodrigo, Mario and Francisco
  * @version 2.0
  * @date 13-04-2026
  * @copyright GNU Public License

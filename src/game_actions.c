@@ -165,12 +165,45 @@ Status game_actions_attack(Game *game) {
   return ERROR;
 }
 
-Status game_actions_inspect(Game *game) {
-  return ERROR; 
+Status game_actions_chat(Game *game) {
+  Id p_loc = NO_ID;
+  Space *current_space = NULL;
+  Id char_id = NO_ID;
+
+  if (!game) return ERROR;
+
+  p_loc = game_get_player_location(game);
+  current_space = game_get_space(game, p_loc);
+  
+  if (!current_space) return ERROR;
+
+  char_id = space_get_character(current_space);
+
+
+  if (char_id != NO_ID) {
+    return OK;
+  }
+
+
+  return ERROR;
 }
 
-Status game_actions_chat(Game *game) {
-  return ERROR;
+Status game_actions_inspect(Game *game) {
+  const char *arg = NULL;
+  Command *cmd = NULL;
+
+  if (!game) return ERROR;
+
+  cmd = game_get_last_command(game);
+  arg = command_get_arg(cmd);
+
+
+  if (arg && arg[0] != '\0') {
+    return OK;
+  }
+
+
+  return ERROR; 
 }
 
 Status game_actions_update(Game *game, Command *command) {

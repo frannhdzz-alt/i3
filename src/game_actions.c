@@ -112,6 +112,10 @@ Status game_actions_move(Game *game) {
     dir = E;
   } else if (strcmp(arg, "west") == 0 || strcmp(arg, "w") == 0) {
     dir = W;
+    } else if (strcmp(arg, "up") == 0 || strcmp(arg, "u") == 0) {
+    dir = U;
+    } else if (strcmp(arg, "down") == 0 || strcmp(arg, "d") == 0) {
+    dir = D;
   } else {
     return ERROR;
   }

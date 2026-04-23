@@ -33,7 +33,7 @@ typedef enum { FALSE, TRUE } Bool;
 typedef enum { ERROR, OK } Status;
 
 /**
- * @brief Enumeration of cardinal directions
+ * @brief Enumeration of cardinal directions1
  */
 typedef enum { N, S, E, W, U, D} Direction;
 

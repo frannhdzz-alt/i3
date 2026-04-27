@@ -19,9 +19,13 @@
  * This struct stores all the information of an object.
  */
 struct _Object {
-  Id id;                    /*!< Object identifier */
-  char name[WORD_SIZE + 1]; /*!< Object name */
-  char description[WORD_SIZE + 1]; /*!< Object description */
+  Id id;                            /*!< Object identifier */
+  char name[WORD_SIZE + 1];         /*!< Object name */
+  char description[WORD_SIZE + 1];  /*!< Object description */
+  int health;                       /*!< Points of health the object gives/takes */
+  Bool movable;                     /*!< TRUE if the object can be moved */
+  Id dependency;                    /*!< Id of the object required to take this one */
+  Id open;                          /*!< Id of the link this object can open */
 };
 
 Object* object_create(Id id) {
@@ -36,6 +40,10 @@ Object* object_create(Id id) {
 
   newObject->id = id;
   newObject->name[0] = '\0';
+  newObject->health = 0;
+  newObject->movable = FALSE;
+  newObject->dependency = NO_ID;
+  newObject->open = NO_ID;
 
   return newObject;
 }
@@ -80,7 +88,8 @@ Status object_print(Object* object) {
     return ERROR;
   }
 
-  fprintf(stdout, "--> Object (Id: %ld; Name: %s)\n", object->id, object->name);
+  fprintf(stdout, "--> Object (Id: %ld; Name: %s; Health: %d; Movable: %d; Dependency: %ld; Open: %ld)\n", 
+          object->id, object->name, object->health, object->movable, object->dependency, object->open);
 
   return OK;
 }
@@ -94,4 +103,48 @@ Status object_set_description(Object* object, char* desc) {
 const char* object_get_description(Object* object) {
   if (!object) return NULL;
   return object->description;
+}
+
+Status object_set_health(Object* object, int health) {
+  if (!object) return ERROR;
+  object->health = health;
+  return OK;
+}
+
+int object_get_health(Object* object) {
+  if (!object) return 0;
+  return object->health;
+}
+
+Status object_set_movable(Object* object, Bool movable) {
+  if (!object) return ERROR;
+  object->movable = movable;
+  return OK;
+}
+
+Bool object_get_movable(Object* object) {
+  if (!object) return FALSE;
+  return object->movable;
+}
+
+Status object_set_dependency(Object* object, Id dependency) {
+  if (!object) return ERROR;
+  object->dependency = dependency;
+  return OK;
+}
+
+Id object_get_dependency(Object* object) {
+  if (!object) return NO_ID;
+  return object->dependency;
+}
+
+Status object_set_open(Object* object, Id open) {
+  if (!object) return ERROR;
+  object->open = open;
+  return OK;
+}
+
+Id object_get_open(Object* object) {
+  if (!object) return NO_ID;
+  return object->open;
 }

@@ -334,4 +334,23 @@ void game_print(Game *game);
  */
 Status game_next_turn(Game *game);
 
+/**
+ * @brief It gets a character by its name
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @return a pointer to the character with the given name, or NULL if it does not exist
+ */
+Character* game_get_character_by_name(Game *game, const char *name);
+
+/**
+ * @brief It recruits a character to follow the active player
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @return OK if successful or ERROR in case of error
+ */
+Status game_recruit_character(Game *game, Id player_id, const char *char_name);
+
+
 #endif

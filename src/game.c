@@ -592,3 +592,33 @@ Status game_next_turn(Game *game)
 
   return OK;
 }
+
+Character* game_get_character_by_name(Game *game, const char *name) {
+  int i;
+  Character *c = NULL;
+
+  if (!game || !name) return NULL;
+
+  for (i = 0; i < game->n_characters; i++) {
+    c = game->characters[i];
+    if (c && strcasecmp(character_get_name(c), name) == 0) {
+      return c;
+    }
+  }
+  return NULL;
+}
+
+Status game_recruit_character(Game *game, Id player_id, const char *char_name) {
+  Character *c = NULL;
+
+  if (!game || player_id == NO_ID || !char_name) return ERROR;
+
+  c = game_get_character_by_name(game, char_name);
+  if (!c) return ERROR;
+
+  /* Solo personajes amigos */
+  if (character_get_friendly(c) == FALSE) return ERROR;
+
+  /* Asignar follower */
+  return character_set_following(c, player_id);
+}

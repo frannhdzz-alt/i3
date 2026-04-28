@@ -1,44 +1,58 @@
-#s:11|Entry| .===.   | [   ]   | [   ]   | [   ]   | '==='   |
-#s:12|Corridor| #___#   | #___#   | #___#   | #___#   | #   #   |
-#s:13|Dinning room| ....... | : ___ : | : [ ] : | :     : | ....... |
-#s:14|Kitchen|  ___    | /   \   |/ BDL \  |\ --- /  | \___/   |
-#s:15|Inner courtyard| * * !   |  ! * * | * * !   |  ! * * | * * !   |
-#s:16|Garden|   /\    |  /  \   | /    \  |/______\ |   []    |
-#s:121|Dungeon| +-----+ | [x x x] | [ x x ] | [x x x] | +-----+ |
-#s:131|Bedroom| _______ | [     ] | [ ___ ] | [[___]] | [_____] |
-#s:132|Bathroom|  _____  | [MMMMM] | [ (#) ] | [WWWWW] |  IIIII  |
+#s:11|pit| .===.   | [   ]   | [   ]   | [   ]   | '==='   |
+#s:12|path| #___#   | #___#   | #___#   | #___#   | #   #   |
+#s:13|hall| ....... | : ___ : | : [ ] : | :     : | ....... |
+#s:14|fire|  ___    | /   \   |/ BDL \  |\ --- /  | \___/   |
+#s:15|yard| * * !   |  ! * * | * * !   |  ! * * | * * !   |
+#s:16|hedge|  /\    |  /  \   | /    \  |/______\ |   []    |
+#s:121|mine| +-----+ | [x x x] | [ x x ] | [x x x] | +-----+ |
+#s:131|bed| _______ | [     ] | [ ___ ] | [[___]] | [_____] |
+#s:132|bath|  _____  | [MMMMM] | [ (#) ] | [WWWWW] |  IIIII  |
+#s:133|peak|   /_\   |  ( * )  |   | |   |   | |   |  _===_  |
 
-#l:1|L_Entry_Corr|11|12|1|1|
-#l:2|L_Corr_Entry|12|11|0|1|
+#l:1|l_pit_path|11|12|1|1|
+#l:2|l_path_pit|12|11|0|1|
+#l:3|l_path_mine|12|121|3|0|
+#l:4|l_mine_path|121|12|2|1|
+#l:5|l_path_hall|12|13|1|1|
+#l:6|l_hall_path|13|12|0|1|
+#l:7|l_hall_fire|13|14|1|1|
+#l:8|l_fire_hall|14|13|0|1|
+#l:9|l_fire_yard|14|15|1|1|
+#l:10|l_yard_fire|15|14|0|1|
+#l:11|l_yard_hedge|15|16|1|1|
+#l:12|l_hedge_yard|16|15|0|1|
+#l:13|l_hall_bed|13|131|2|1|
+#l:14|l_bed_hall|131|13|3|1|
+#l:15|l_bed_bath|131|132|2|1|
+#l:16|l_bath_bed|132|131|3|1|
+#l:17|l_hedge_peak|16|133|0|1|
+#l:18|l_peak_hedge|133|16|1|1|
 
-#l:3|L_Corr_Dung|12|121|3|0|
-#l:4|L_Dung_Corr|121|12|2|0|
+#o:11|dirk|11|short rusted edge.
+#o:12|lid|12|old braced wood.
+#o:13|mail|13|heavy iron mesh.
+#o:14|bow|14|bent yew wood.
+#o:15|vial|14|bright red fluid.
+#o:16|key|15|black runic metal.
+#o:17|twig|11|dry wood to burn.
+#o:18|wax|14|black endless wax.
+#o:19|fig|14|shriveled gray fruit.
+#o:20|book|131|old skin pages.
+#o:21|ring|133|gold with blue gem.
+#o:22|coin|12|dirty silver coin.
+#o:23|map|11|blurred paper lines.
+#o:24|rope|15|strong hemp cord.
+#o:25|bone|121|some warrior remains.
+#o:26|loaf|14|piece of hard bread.
+#o:27|cup|13|silver with wolves.
+#o:28|wand|133|wood with live magic.
+#o:29|helm|121|steel with dents.
+#o:30|dust|132|fine star sand.
 
-#l:5|L_Corr_Din|12|13|1|1|
-#l:6|L_Din_Corr|13|12|0|1|
+#c:1|void| \Vo/ |5|0|...die...|12|
+#c:2|seer| \Se/ |5|1|the path is dark.|11|
+#c:3|ooze| \Oo/ |8|0|*bubbling*|121|
+#c:4|fay| \Fa/ |3|1|beware up there.|133|
 
-#l:7|L_Din_Kit|13|14|1|1|
-#l:8|L_Kit_Din|14|13|0|1|
-
-#l:9|L_Kit_Court|14|15|1|1|
-#l:10|L_Court_Kit|15|14|0|1|
-
-#l:11|L_Court_Gar|15|16|1|1|
-#l:12|L_Gar_Court|16|15|0|1|
-
-#l:13|L_Din_Bed|13|131|2|1|
-#l:14|L_Bed_Din|131|13|3|1|
-
-#l:15|L_Bed_Bath|131|132|2|1|
-#l:16|L_Bath_Bed|132|131|3|1|
-
-#o:11|Sword|11|A sharp and very dark iron sword.
-#o:12|Shield|12|A hard and heavy metallic shield.
-#o:13|Armour|13|A safe, heavy and hard chainmail.
-#o:14|Bow|14|A very long and tense strong bow.
-
-#c:1|Goblin| \Go/ |5|0|Argh!|12|
-#c:2|Old man| \Om/ |5|1|Take the sword and face the dark.|11|
-
-#p:1|Knight|^C>|11|5|4|
-#p:2|Mage|^M>|11|3|5|
+#p:1|erin|^E>|11|5|4|
+#p:2|kael|^K>|11|3|5|

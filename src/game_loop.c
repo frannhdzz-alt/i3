@@ -3,7 +3,7 @@
  *
  * @file game_loop.c
  * @author Rodrigo, Mario y Francisco
- * @version 4.0
+ * @version 4.1
  * @date 23-03-2026
  * @copyright GNU Public License
  */
@@ -18,17 +18,18 @@
 #include "game_actions.h"
 #include "graphic_engine.h"
 #include "game_reader.h"
+#include "game_rules.h"
 
 
 int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
 void game_loop_cleanup(Game *game, Graphic_engine *gengine);
+
 
 extern char *cmd_to_str[N_CMD][N_CMDT];
 
 int main(int argc, char *argv[]) {
   Game *game = NULL;
   Graphic_engine *gengine = NULL;
-  int result;
   Command *last_cmd;
   
   FILE *f_log = NULL; 
@@ -36,25 +37,35 @@ int main(int argc, char *argv[]) {
   CommandCode cmd_code;
   const char *cmd_arg;
 
-  srand(time(NULL));
+  /* F16: Variables for Deterministic Mode and argument parsing */
+  /* We declare them here at the top to comply with ANSI C standards */
+  int i;
+  int seed = -1;
+  int result;
 
   if (argc < 2) {
     fprintf(stderr, "Use: %s <game_data_file> [-l <log_file>] [-d <seed>]\n", argv[0]);
     return 1;
   }
 
-
-  if (argc >= 4 && strcmp(argv[2], "-l") == 0) {
-    f_log = fopen(argv[3], "w");
-    if (f_log == NULL) {
-      fprintf(stderr, "Warning: Could not open log file '%s'\n", argv[3]);
+  /* Parse command line arguments for Log and Seed */
+  for (i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "-l") == 0 && (i + 1) < argc) {
+      f_log = fopen(argv[i + 1], "w");
+      if (f_log == NULL) {
+        fprintf(stderr, "Warning: Could not open log file '%s'\n", argv[i + 1]);
+      }
+    } 
+    else if (strcmp(argv[i], "-d") == 0 && (i + 1) < argc) {
+      seed = atoi(argv[i + 1]);
     }
   }
 
+  /* F16: Initialize random number generator with explicit casting to unsigned int */
   if (seed != -1) {
-    srand(seed); 
+    srand((unsigned int)seed); 
   } else {
-    srand(time(NULL)); 
+    srand((unsigned int)time(NULL)); 
   }
 
   result = game_loop_init(&game, &gengine, argv[1]);
@@ -75,14 +86,12 @@ int main(int argc, char *argv[]) {
     graphic_engine_paint_game(gengine, game);
     command_get_user_input(last_cmd);
     
-
-    current_player_id = player_get_id(game_get_active_player(game));
-
     action_status = game_actions_update(game, last_cmd);
 
     if (action_status == OK && command_get_code(last_cmd) != UNKNOWN && command_get_code(last_cmd) != NO_CMD) {
       game_next_turn(game);
 
+      /* F15: Evaluate game rules */
       game_rules_random_event(game);
     }
     
@@ -91,9 +100,8 @@ int main(int argc, char *argv[]) {
       cmd_arg = command_get_arg(last_cmd);
       
       if (cmd_arg != NULL && cmd_arg[0] != '\0') {
-        fprintf(f_log, "%s %s: %s (P%ld)\n", cmd_to_str[cmd_code - NO_CMD][CMDL], cmd_arg, (action_status == OK) ? "OK" : "ERROR", current_player_id);
+        fprintf(f_log, "%s %s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], cmd_arg, (action_status == OK) ? "OK" : "ERROR");
       } else {
-
         fprintf(f_log, "%s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], (action_status == OK) ? "OK" : "ERROR");
       }
     }

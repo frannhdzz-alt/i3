@@ -16,7 +16,7 @@
 
 #define CMD_LENGHT 50
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"i", "Inspect"}, {"c", "Chat"}, {"u", "Use"}, {"o", "Open"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"i", "Inspect"}, {"c", "Chat"},  {"r", "Recruit"}, {"u", "Use"}, {"o", "Open"}};
 
 struct _Command
 {

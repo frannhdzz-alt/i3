@@ -146,4 +146,23 @@ const char* character_get_message(Character* character);
  */
 Status character_print(Character* character);
 
+/**
+ * @brief It sets the player that the character is following
+ * @author Mario
+ *
+ * @param character A pointer to the character
+ * @param player_id The ID of the player to follow
+ * @return OK if everything goes well, ERROR otherwise
+ */
+Status character_set_following(Character *character, Id player_id);
+
+/**
+ * @brief It gets the ID of the player that the character is following
+ * @author Mario
+ *
+ * @param character A pointer to the character
+ * @return The ID of the player being followed, or NO_ID if error
+ */
+Id character_get_following(Character *character);
+
 #endif

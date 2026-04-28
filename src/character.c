@@ -24,7 +24,8 @@ struct _Character {
   char gdesc[7];            /*!< Character graphic description (6 chars + \0) */
   int health;               /*!< Character health points */
   Bool friendly;            /*!< Character friendliness */
-  char message[WORD_SIZE + 1]; /*!< Character message */
+  char message[WORD_SIZE + 1];/*!< Character message */
+  Id following;             /*!< Character following */
 };
 
 Character* character_create(Id id) {
@@ -43,6 +44,7 @@ Character* character_create(Id id) {
   newCharacter->health = 0;
   newCharacter->friendly = FALSE;
   newCharacter->message[0] = '\0';
+  newCharacter->following = NO_ID;
 
   return newCharacter;
 }
@@ -161,6 +163,17 @@ Status character_print(Character* character) {
   fprintf(stdout, "---> Health: %d\n", character->health);
   fprintf(stdout, "---> Friendly: %s\n", character->friendly == TRUE ? "TRUE" : "FALSE");
   fprintf(stdout, "---> Message: %s\n", character->message);
-
+  fprintf(stdout, "---> Following: %ld\n", character->following);
   return OK;
+}
+
+Status character_set_following(Character *character, Id player_id) {
+  if (!character) return ERROR;
+  character->following = player_id;
+  return OK;
+}
+
+Id character_get_following(Character *character) {
+  if (!character) return NO_ID;
+  return character->following;
 }

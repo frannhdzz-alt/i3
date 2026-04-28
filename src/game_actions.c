@@ -18,6 +18,7 @@
 Status game_actions_unknown(Game *game) { return ERROR; }
 Status game_actions_exit(Game *game) { return OK; }
 Status game_actions_open(Game *game);
+Status game_actions_recruit(Game *game);
 
 Status game_actions_take(Game *game) {
   Id p_loc = NO_ID;
@@ -211,6 +212,31 @@ Status game_actions_inspect(Game *game) {
   return ERROR; 
 }
 
+Status game_actions_recruit(Game *game) {
+    Command *cmd = NULL;
+    const char *name = NULL;
+    Player *player = NULL;
+    Id player_id = NO_ID;
+
+    if (!game) return ERROR;
+
+    cmd = game_get_last_command(game);
+    name = command_get_arg(cmd);
+    player = game_get_player(game);
+    player_id = player_get_id(player);
+
+    if (!name || name[0] == '\0') {
+        return ERROR;
+    }
+
+    if (game_recruit_character(game, player_id, name) == OK) {
+        return OK;
+    }
+
+    return ERROR;
+}
+
+
 Status game_actions_use(Game *game) {
   Player *player = NULL;
   Command *cmd = NULL;
@@ -356,6 +382,7 @@ Status game_actions_update(Game *game, Command *command) {
     case ATTACK: status = game_actions_attack(game); break;
     case INSPECT: status = game_actions_inspect(game); break;
     case CHAT: status = game_actions_chat(game); break;
+    case RECRUIT: status = game_actions_recruit(game); break;
     case USE: status = game_actions_use(game); break;
     case OPEN: status = game_actions_open(game); break;
     default: break;

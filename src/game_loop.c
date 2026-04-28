@@ -18,11 +18,10 @@
 #include "game_actions.h"
 #include "graphic_engine.h"
 #include "game_reader.h"
-
+#include "player.h"
 
 int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
 void game_loop_cleanup(Game *game, Graphic_engine *gengine);
-
 
 extern char *cmd_to_str[N_CMD][N_CMDT];
 
@@ -32,11 +31,11 @@ int main(int argc, char *argv[]) {
   int result;
   Command *last_cmd;
   
-
   FILE *f_log = NULL; 
   Status action_status = ERROR;
   CommandCode cmd_code;
   const char *cmd_arg;
+  Id current_player_id = NO_ID;
 
   srand(time(NULL));
 
@@ -44,7 +43,6 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Use: %s <game_data_file> [-l <log_file>]\n", argv[0]);
     return 1;
   }
-
 
   if (argc >= 4 && strcmp(argv[2], "-l") == 0) {
     f_log = fopen(argv[3], "w");
@@ -71,6 +69,9 @@ int main(int argc, char *argv[]) {
     graphic_engine_paint_game(gengine, game);
     command_get_user_input(last_cmd);
     
+
+    current_player_id = player_get_id(game_get_active_player(game));
+
     action_status = game_actions_update(game, last_cmd);
 
     if (action_status == OK && command_get_code(last_cmd) != UNKNOWN && command_get_code(last_cmd) != NO_CMD) {
@@ -83,10 +84,9 @@ int main(int argc, char *argv[]) {
       
 
       if (cmd_arg != NULL && cmd_arg[0] != '\0') {
-        fprintf(f_log, "%s %s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], cmd_arg, (action_status == OK) ? "OK" : "ERROR");
+        fprintf(f_log, "%s %s: %s (P%ld)\n", cmd_to_str[cmd_code - NO_CMD][CMDL], cmd_arg, (action_status == OK) ? "OK" : "ERROR", current_player_id);
       } else {
-
-        fprintf(f_log, "%s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], (action_status == OK) ? "OK" : "ERROR");
+        fprintf(f_log, "%s: %s (P%ld)\n", cmd_to_str[cmd_code - NO_CMD][CMDL], (action_status == OK) ? "OK" : "ERROR", current_player_id);
       }
     }
   }
@@ -98,7 +98,6 @@ int main(int argc, char *argv[]) {
 
   game_loop_cleanup(game, gengine);
   
-
   if (f_log != NULL) {
     fclose(f_log);
   }

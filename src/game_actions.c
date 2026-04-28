@@ -210,6 +210,78 @@ Status game_actions_inspect(Game *game) {
   return ERROR; 
 }
 
+Status game_actions_use(Game *game) {
+  Player *player = NULL;
+  Command *cmd = NULL;
+  const char *arg = NULL;
+  char obj_name[WORD_SIZE] = "";
+  char chr_name[WORD_SIZE] = "";
+  Id obj_id = NO_ID;
+  Object *obj = NULL;
+  int i, parsed, health_effect;
+
+  if (!game) return ERROR;
+
+  player = game_get_player(game);
+  cmd = game_get_last_command(game);
+  arg = command_get_arg(cmd);
+
+  if (!arg || arg[0] == '\0') return ERROR;
+
+
+  parsed = sscanf(arg, "%s over %s", obj_name, chr_name);
+  if (parsed < 1) return ERROR;
+
+
+  for (i = 1; i < MAX_OBJECTS; i++) {
+    obj = game_get_object(game, i);
+    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+      obj_id = i;
+      break;
+    }
+  }
+
+  if (obj_id == NO_ID) return ERROR;
+
+
+  if (player_has_object(player, obj_id) == FALSE) return ERROR;
+
+
+  health_effect = object_get_health(obj);
+  if (health_effect == 0) return ERROR;
+
+
+  if (parsed == 1) {
+
+    player_set_health(player, player_get_health(player) + health_effect);
+    
+  } else if (parsed == 2) {
+
+    Id char_id = NO_ID;
+    Character *c = NULL;
+    
+
+    for (i = 1; i < MAX_CHARACTERS; i++) {
+      c = game_get_character(game, i);
+      if (c && strcasecmp(character_get_name(c), chr_name) == 0) {
+        char_id = i;
+        break;
+      }
+    }
+    if (char_id == NO_ID) return ERROR;
+    
+
+    if (character_get_following(c) != player_get_id(player)) return ERROR;
+    
+    character_set_health(c, character_get_health(c) + health_effect);
+  }
+
+
+  player_del_object(player, obj_id);
+
+  return OK;
+}
+
 Status game_actions_update(Game *game, Command *command) {
   CommandCode cmd;
   Status status = OK; 
@@ -229,6 +301,7 @@ Status game_actions_update(Game *game, Command *command) {
     case ATTACK: status = game_actions_attack(game); break;
     case INSPECT: status = game_actions_inspect(game); break;
     case CHAT: status = game_actions_chat(game); break;
+    case USE: status = game_actions_use(game); break;
     default: break;
   }
   

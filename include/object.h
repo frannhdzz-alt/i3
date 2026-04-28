@@ -91,6 +91,7 @@ const char* object_get_description(Object* object);
 
 /**
  * @brief It sets the health value of an object
+ * @author Maria
  *
  * @param object A pointer to the object
  * @param health The health points to add/subtract
@@ -100,6 +101,7 @@ Status object_set_health(Object* object, int health);
 
 /**
  * @brief It gets the health value of an object
+ * @author Maria
  *
  * @param object A pointer to the object
  * @return The health points of the object
@@ -108,6 +110,7 @@ int object_get_health(Object* object);
 
 /**
  * @brief It sets if an object is movable
+ * @author Maria
  *
  * @param object A pointer to the object
  * @param movable TRUE if it can be moved, FALSE otherwise
@@ -117,6 +120,7 @@ Status object_set_movable(Object* object, Bool movable);
 
 /**
  * @brief It gets if an object is movable
+ * @author Maria
  *
  * @param object A pointer to the object
  * @return TRUE if it can be moved, FALSE otherwise
@@ -125,6 +129,7 @@ Bool object_get_movable(Object* object);
 
 /**
  * @brief It sets the dependency of an object
+ * @author Maria
  *
  * @param object A pointer to the object
  * @param dependency The id of the object it depends on
@@ -134,6 +139,7 @@ Status object_set_dependency(Object* object, Id dependency);
 
 /**
  * @brief It gets the dependency of an object
+ * @author Maria
  *
  * @param object A pointer to the object
  * @return The id of the object it depends on, or NO_ID
@@ -142,6 +148,7 @@ Id object_get_dependency(Object* object);
 
 /**
  * @brief It sets the link id an object can open
+ * @author Maria
  *
  * @param object A pointer to the object
  * @param open The id of the link it opens
@@ -151,6 +158,7 @@ Status object_set_open(Object* object, Id open);
 
 /**
  * @brief It gets the link id an object can open
+ * @author Maria
  *
  * @param object A pointer to the object
  * @return The id of the link it opens, or NO_ID

@@ -1,44 +1,66 @@
-#s:11|Entry| .===.   | [   ]   | [   ]   | [   ]   | '==='   |
-#s:12|Corridor| #___#   | #___#   | #___#   | #___#   | #   #   |
-#s:13|Dinning room| ....... | : ___ : | : [ ] : | :     : | ....... |
-#s:14|Kitchen|  ___    | /   \   |/ BDL \  |\ --- /  | \___/   |
-#s:15|Inner courtyard| * * !   |  ! * * | * * !   |  ! * * | * * !   |
-#s:16|Garden|   /\    |  /  \   | /    \  |/______\ |   []    |
-#s:121|Dungeon| +-----+ | [x x x] | [ x x ] | [x x x] | +-----+ |
-#s:131|Bedroom| _______ | [     ] | [ ___ ] | [[___]] | [_____] |
-#s:132|Bathroom|  _____  | [MMMMM] | [ (#) ] | [WWWWW] |  IIIII  |
+#s:11|Forsaken Gates| .===.   | [   ]   | [   ]   | [   ]   | '==='   |
+#s:12|Echoing Corridor| #___#   | #___#   | #___#   | #___#   | #   #   |
+#s:13|Raven Banquet| ....... | : ___ : | : [ ] : | :     : | ....... |
+#s:14|Ash Kitchen|  ___    | /   \   |/ BDL \  |\ --- /  | \___/   |
+#s:15|Weeping Courtyard| * * !   |  ! * * | * * !   |  ! * * | * * !   |
+#s:16|Statue Garden|  /\    |  /  \   | /    \  |/______\ |   []    |
+#s:121|Abyssal Dungeon| +-----+ | [x x x] | [ x x ] | [x x x] | +-----+ |
+#s:131|Dusty Quarters| _______ | [     ] | [ ___ ] | [[___]] | [_____] |
+#s:132|Bloodstained Bath|  _____  | [MMMMM] | [ (#) ] | [WWWWW] |  IIIII  |
+#s:133|Astral Observatory|   /_\   |  ( * )  |   | |   |   | |   |  _===_  |
 
-#l:1|L_Entry_Corr|11|12|1|1|
-#l:2|L_Corr_Entry|12|11|0|1|
+#l:1|L_Gates_Corr|11|12|1|1|
+#l:2|L_Corr_Gates|12|11|0|1|
 
-#l:3|L_Corr_Dung|12|121|3|0|
-#l:4|L_Dung_Corr|121|12|2|0|
+#l:3|L_Corr_Abyss|12|121|3|0|
+#l:4|L_Abyss_Corr|121|12|2|0|
 
-#l:5|L_Corr_Din|12|13|1|1|
-#l:6|L_Din_Corr|13|12|0|1|
+#l:5|L_Corr_Raven|12|13|1|1|
+#l:6|L_Raven_Corr|13|12|0|1|
 
-#l:7|L_Din_Kit|13|14|1|1|
-#l:8|L_Kit_Din|14|13|0|1|
+#l:7|L_Raven_Ash|13|14|1|1|
+#l:8|L_Ash_Raven|14|13|0|1|
 
-#l:9|L_Kit_Court|14|15|1|1|
-#l:10|L_Court_Kit|15|14|0|1|
+#l:9|L_Ash_Weeping|14|15|1|1|
+#l:10|L_Weeping_Ash|15|14|0|1|
 
-#l:11|L_Court_Gar|15|16|1|1|
-#l:12|L_Gar_Court|16|15|0|1|
+#l:11|L_Weeping_Garden|15|16|1|1|
+#l:12|L_Garden_Weeping|16|15|0|1|
 
-#l:13|L_Din_Bed|13|131|2|1|
-#l:14|L_Bed_Din|131|13|3|1|
+#l:13|L_Raven_Quarters|13|131|2|1|
+#l:14|L_Quarters_Raven|131|13|3|1|
 
-#l:15|L_Bed_Bath|131|132|2|1|
-#l:16|L_Bath_Bed|132|131|3|1|
+#l:15|L_Quarters_Bath|131|132|2|1|
+#l:16|L_Bath_Quarters|132|131|3|1|
 
-#o:11|Sword|11|A sharp and very dark iron sword.
-#o:12|Shield|12|A hard and heavy metallic shield.
-#o:13|Armour|13|A safe, heavy and hard chainmail.
-#o:14|Bow|14|A very long and tense strong bow.
+#l:17|L_Garden_Astral|16|133|0|1|
+#l:18|L_Astral_Garden|133|16|1|1|
 
-#c:1|Goblin| \Go/ |5|0|Argh!|12|
-#c:2|Old man| \Om/ |5|1|Take the sword and face the dark.|11|
+#o:11|Abyssal_Blade|11|A sword forged in the deepest shadows.
+#o:12|Meteor_Shield|12|A heavy shield made from a fallen star.
+#o:13|Void_Mail|13|Chainmail that feels cold to the touch.
+#o:14|Lunar_Bow|14|A bow that glows faintly in the dark.
+#o:15|Crimson_Tear|14|A flask filled with a healing red liquid.
+#o:16|Rusted_Cog|15|An old mechanical piece covered in moss.
+#o:17|Bone_Flute|121|An instrument carved from a human femur.
+#o:18|Gorgon_Eye|131|A petrified eye that stares back at you.
+#o:19|Silver_Key|11|A heavy key with a skull engraving.
+#o:20|Sun_Stone|13|A warm gem radiating golden light.
+#o:21|Cinder_Ash|14|Remains of a fire that never truly died.
+#o:22|Nightshade|15|A poisonous purple flower.
+#o:23|Telescope_Lens|133|A cracked crystal lens facing the cosmos.
+#o:24|Star_Map|133|A parchment showing unknown constellations.
+#o:25|Iron_Shackle|121|Broken chains stained with old blood.
+#o:26|Dream_Catcher|131|A web of feathers trapping nightmares.
+#o:27|Torn_Diary|132|Pages filled with mad, unreadable scribbles.
+#o:28|Golden_Seed|16|A seed pulsating with pure life energy.
+#o:29|Wraith_Cloak|12|A torn fabric that floats on its own.
+#o:30|Moon_Chalice|132|An elegant cup filled with dark water.
 
-#p:1|Knight|^C>|11|5|4|
-#p:2|Mage|^M>|11|3|5|
+#c:1|Gloom_Crawler| \Gc/ |5|0|*Hisses from the shadows*|12|
+#c:2|Blind_Seer| \Bs/ |5|1|The stars are dead, but you are not.|11|
+#c:3|Cursed_Statue| \Cs/ |8|0|*Stone grinding noise*|16|
+#c:4|Luna_Moth| \Lm/ |3|1|*Flutters gently around you*|133|
+
+#p:1|Void_Knight|^V>|11|5|4|
+#p:2|Star_Weaver|^S>|11|3|5|

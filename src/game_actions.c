@@ -17,6 +17,7 @@
 /* Private functions */
 Status game_actions_unknown(Game *game) { return ERROR; }
 Status game_actions_exit(Game *game) { return OK; }
+Status game_actions_open(Game *game);
 
 Status game_actions_take(Game *game) {
   Id p_loc = NO_ID;
@@ -282,6 +283,60 @@ Status game_actions_use(Game *game) {
   return OK;
 }
 
+Status game_actions_open(Game *game) {
+  Player *player = NULL;
+  Command *cmd = NULL;
+  const char *arg = NULL;
+  char lnk_name[WORD_SIZE] = "";
+  char obj_name[WORD_SIZE] = "";
+  Id obj_id = NO_ID;
+  Id lnk_id = NO_ID;
+  Object *obj = NULL;
+  Link *lnk = NULL;
+  int i, parsed;
+
+  if (!game) return ERROR;
+
+  player = game_get_player(game);
+  cmd = game_get_last_command(game);
+  arg = command_get_arg(cmd);
+
+  if (!arg || arg[0] == '\0') return ERROR;
+
+  parsed = sscanf(arg, "%s with %s", lnk_name, obj_name);
+  if (parsed != 2) return ERROR;
+
+
+  for (i = 1; i < MAX_OBJECTS; i++) {
+    obj = game_get_object(game, i);
+    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+      obj_id = i;
+      break;
+    }
+  }
+  if (obj_id == NO_ID) return ERROR;
+
+
+  for (i = 1; i < MAX_LINKS; i++) {
+    lnk = game_get_link(game, i);
+    if (lnk && strcasecmp(link_get_name(lnk), lnk_name) == 0) {
+      lnk_id = i;
+      break;
+    }
+  }
+  if (lnk_id == NO_ID) return ERROR;
+
+  if (player_has_object(player, obj_id) == FALSE) return ERROR;
+
+  if (object_get_open(obj) != lnk_id) return ERROR;
+
+  if (link_set_open(lnk, TRUE) == OK) {
+    return OK;
+  }
+
+  return ERROR;
+}
+
 Status game_actions_update(Game *game, Command *command) {
   CommandCode cmd;
   Status status = OK; 
@@ -302,6 +357,7 @@ Status game_actions_update(Game *game, Command *command) {
     case INSPECT: status = game_actions_inspect(game); break;
     case CHAT: status = game_actions_chat(game); break;
     case USE: status = game_actions_use(game); break;
+    case OPEN: status = game_actions_open(game); break;
     default: break;
   }
   

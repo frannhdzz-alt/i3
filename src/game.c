@@ -601,7 +601,7 @@ Character* game_get_character_by_name(Game *game, const char *name) {
 
   for (i = 0; i < game->n_characters; i++) {
     c = game->characters[i];
-    if (c && strcasecmp(character_get_name(c), name) == 0) {
+    if (c && strcmp(character_get_name(c), name) == 0) {
       return c;
     }
   }

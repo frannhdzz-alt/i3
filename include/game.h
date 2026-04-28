@@ -352,5 +352,14 @@ Character* game_get_character_by_name(Game *game, const char *name);
  */
 Status game_recruit_character(Game *game, Id player_id, const char *char_name);
 
+/**
+ * @brief It abandons a character that is currently following the active player
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @return OK if successful or ERROR in case of error
+ */
+Status game_abandon_character(Game *game, Id player_id, const char *char_name);
+
 
 #endif

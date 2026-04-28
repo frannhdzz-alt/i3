@@ -622,3 +622,18 @@ Status game_recruit_character(Game *game, Id player_id, const char *char_name) {
   /* Asignar follower */
   return character_set_following(c, player_id);
 }
+
+Status game_abandon_character(Game *game, Id player_id, const char *char_name) {
+    Character *c = NULL;
+
+    if (!game || player_id == NO_ID || !char_name) return ERROR;
+
+    c = game_get_character_by_name(game, char_name);
+    if (!c) return ERROR;
+
+    /* Solo se puede abandonar si realmente seguía al jugador */
+    if (character_get_following(c) != player_id) return ERROR;
+
+    /* Dejar de seguir */
+    return character_set_following(c, NO_ID);
+}

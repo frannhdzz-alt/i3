@@ -1,8 +1,8 @@
 /**
- * @brief Defines the game rules module for Helios Station (F15)
+ * @brief Defines the game rules module for Helios Station
  *
  * @file game_rules.h
- * @author Your Team
+ * @author Rodrigo
  * @version 1.0
  * @date 28-04-2026
  * @copyright GNU Public License

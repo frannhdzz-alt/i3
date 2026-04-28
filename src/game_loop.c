@@ -3,7 +3,7 @@
  *
  * @file game_loop.c
  * @author Rodrigo, Mario y Francisco
- * @version 3.0
+ * @version 4.0
  * @date 23-03-2026
  * @copyright GNU Public License
  */
@@ -18,6 +18,7 @@
 #include "game_actions.h"
 #include "graphic_engine.h"
 #include "game_reader.h"
+#include "game_rules.h"
 
 
 int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
@@ -32,25 +33,37 @@ int main(int argc, char *argv[]) {
   int result;
   Command *last_cmd;
   
-
   FILE *f_log = NULL; 
   Status action_status = ERROR;
   CommandCode cmd_code;
   const char *cmd_arg;
-
-  srand(time(NULL));
+  
+  int i;
+  int seed = -1;
 
   if (argc < 2) {
-    fprintf(stderr, "Use: %s <game_data_file> [-l <log_file>]\n", argv[0]);
+    fprintf(stderr, "Use: %s <game_data_file> [-l <log_file>] [-d <seed>]\n", argv[0]);
     return 1;
   }
 
-
-  if (argc >= 4 && strcmp(argv[2], "-l") == 0) {
-    f_log = fopen(argv[3], "w");
-    if (f_log == NULL) {
-      fprintf(stderr, "Warning: Could not open log file '%s'\n", argv[3]);
+  for (i = 2; i < argc; i++) {
+    if (strcmp(argv[i], "-l") == 0 && (i + 1) < argc) {
+      f_log = fopen(argv[i + 1], "w");
+      if (f_log == NULL) {
+        fprintf(stderr, "Warning: Could not open log file '%s'\n", argv[i + 1]);
+      }
+      i++; 
+    } 
+    else if (strcmp(argv[i], "-d") == 0 && (i + 1) < argc) {
+      seed = atoi(argv[i + 1]);
+      i++; 
     }
+  }
+
+  if (seed != -1) {
+    srand(seed); 
+  } else {
+    srand(time(NULL)); 
   }
 
   result = game_loop_init(&game, &gengine, argv[1]);
@@ -75,17 +88,17 @@ int main(int argc, char *argv[]) {
 
     if (action_status == OK && command_get_code(last_cmd) != UNKNOWN && command_get_code(last_cmd) != NO_CMD) {
       game_next_turn(game);
+
+      game_rules_random_event(game);
     }
     
     if (f_log != NULL) {
       cmd_code = command_get_code(last_cmd);
       cmd_arg = command_get_arg(last_cmd);
       
-
       if (cmd_arg != NULL && cmd_arg[0] != '\0') {
         fprintf(f_log, "%s %s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], cmd_arg, (action_status == OK) ? "OK" : "ERROR");
       } else {
-
         fprintf(f_log, "%s: %s\n", cmd_to_str[cmd_code - NO_CMD][CMDL], (action_status == OK) ? "OK" : "ERROR");
       }
     }
@@ -98,7 +111,6 @@ int main(int argc, char *argv[]) {
 
   game_loop_cleanup(game, gengine);
   
-
   if (f_log != NULL) {
     fclose(f_log);
   }

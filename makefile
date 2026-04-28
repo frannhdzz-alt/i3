@@ -21,7 +21,7 @@ CFLAGS = -Wall -ansi -pedantic -g -I$(INC_DIR)
 LDFLAGS = -L$(LIB_DIR) -lscreen
 
 # --- Archivos Objeto ---
-_OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o link.o
+_OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o link.o game_rules.o
 OBJ = $(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
 
 EXEC = castle

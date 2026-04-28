@@ -113,7 +113,7 @@ void _prepare_space_view(Game *game, Space *s, Id p_loc, SpaceView *view) {
     }
 }
 
-/* --------------------------------------- */
+
 
 Graphic_engine *graphic_engine_create() {
   static Graphic_engine *ge = NULL;
@@ -253,129 +253,119 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     }
   }
 
-  /* Description Area */
+
   screen_area_clear(ge->descript);
   
-  sprintf(str, "  Objects Location:");
+
+  screen_area_puts(ge->descript, "  =========================================");
+  sprintf(str, "    PLAYER %ld STATUS   |   HEALTH: %d pts", player_get_id(player), player_get_health(player));
   screen_area_puts(ge->descript, str);
+  screen_area_puts(ge->descript, "  =========================================");
+  
+  sprintf(str, "  > Current Location : %ld", game_get_player_location(game));
+  screen_area_puts(ge->descript, str);
+  
+
+  {
+      char player_objs[255] = ""; 
+      Object *po_inv = NULL;
+      for (i = 1; i <= MAX_OBJECTS; i++) {
+          po_inv = game_get_object(game, i);
+          if (po_inv != NULL && player_has_object(player, object_get_id(po_inv)) == TRUE) {
+              if (strlen(player_objs) > 0) strcat(player_objs, ", ");
+              strcat(player_objs, object_get_name(po_inv));
+          }
+      }
+      if (strlen(player_objs) > 0) {
+          sprintf(str, "  > Backpack       : %s", player_objs);
+      } else {
+          sprintf(str, "  > Backpack       : [EMPTY]");
+      }
+      screen_area_puts(ge->descript, str);
+  }
+
+  screen_area_puts(ge->descript, "  -----------------------------------------");
+  screen_area_puts(ge->descript, "  VISIBLE ENTITIES (Discovered Spaces):");
+
+
   for (i = 1; i <= MAX_OBJECTS; i++) {
       o = game_get_object(game, i);
       if (o) {
           Id o_loc = game_get_object_location(game, i);
           Space *o_space = game_get_space(game, o_loc);
           if (o_space && space_get_discovered(o_space) == TRUE) {
-              sprintf(str, "  %-12s:%ld", object_get_name(o), o_loc);
+              sprintf(str, "   [Obj] %-10s at Space %ld", object_get_name(o), o_loc);
               screen_area_puts(ge->descript, str);
           }
       }
   }
 
-  screen_area_puts(ge->descript, " ");
-  sprintf(str, "  Characters:");
-  screen_area_puts(ge->descript, str);
   for (i = 1; i <= MAX_CHARACTERS; i++) {
       c = game_get_character(game, i);
       if (c) {
           Id c_loc = game_get_character_location(game, i);
           Space *c_space = game_get_space(game, c_loc);
           if (c_space && space_get_discovered(c_space) == TRUE) {
-            sprintf(str, "  %-6s:%ld (%d pts)", character_get_gdesc(c), c_loc, character_get_health(c));
+            sprintf(str, "   [Chr] %-6s at Space %ld (HP:%d)", character_get_gdesc(c), c_loc, character_get_health(c));
             screen_area_puts(ge->descript, str);
           }
       }
   }
 
-  screen_area_puts(ge->descript, " ");
-  
-  /* Player info */
-  sprintf(str, "  Player loc :%ld (%d pts)", game_get_player_location(game), player_get_health(player));
-  screen_area_puts(ge->descript, str);
-  
-  /* Player inventory */
-  {
-      char player_objs[255] = ""; 
-      Object *po_inv = NULL;
+  screen_area_puts(ge->descript, "  -----------------------------------------");
 
-      for (i = 1; i <= MAX_OBJECTS; i++) {
-          po_inv = game_get_object(game, i);
-          if (po_inv != NULL) {
-              if (player_has_object(player, object_get_id(po_inv)) == TRUE) {
-                  if (strlen(player_objs) > 0) {
-                      strcat(player_objs, ", ");
-                  }
-                  strcat(player_objs, object_get_name(po_inv));
-              }
-          }
-      }
-
-      if (strlen(player_objs) > 0) {
-          sprintf(str, "  Player objects: %s", player_objs);
-      } else {
-          sprintf(str, "  Player has no objects");
-      }
-      screen_area_puts(ge->descript, str);
-  }
 
   last_cmd = command_get_code(game_get_last_command(game));
   
-  /* Inspect System*/
   if (last_cmd == INSPECT) {
     const char *arg_name = command_get_arg(game_get_last_command(game));
     int found = 0;
-    
-    screen_area_puts(ge->descript, " ");
     if (arg_name && arg_name[0] != '\0') {
       for (i = 1; i <= MAX_OBJECTS; i++) {
         o = game_get_object(game, i);
         if (o && strcasecmp(object_get_name(o), arg_name) == 0) {
           if (player_has_object(player, object_get_id(o)) == TRUE || 
               space_has_object(game_get_space(game, p_loc), object_get_id(o)) == TRUE) {
-            sprintf(str, "  Inspect: %s", object_get_description(o));
+            sprintf(str, "  [INSPECT] %s", object_get_description(o));
             screen_area_puts(ge->descript, str);
             found = 1;
             break;
           }
         }
       }
-      if (!found) screen_area_puts(ge->descript, "  Inspect: You can't inspect that here.");
+      if (!found) screen_area_puts(ge->descript, "  [INSPECT] You can't inspect that here.");
     }
   }
 
-  /* Chat System */
   if (last_cmd == CHAT) {
-      screen_area_puts(ge->descript, " "); 
       if (space_act != NULL && (char_id = space_get_character(space_act)) != NO_ID) {
           c = game_get_character(game, char_id);
           if (c != NULL) {
-              if (character_get_friendly(c) == TRUE) sprintf(str, "  Chat: %s", character_get_message(c));
-              else sprintf(str, "  Chat: The %s is hostile! No talking.", character_get_name(c));
+              if (character_get_friendly(c) == TRUE) sprintf(str, "  [CHAT] %s: \"%s\"", character_get_name(c), character_get_message(c));
+              else sprintf(str, "  [CHAT] The %s is hostile!", character_get_name(c));
               screen_area_puts(ge->descript, str);
           }
       } else {
-          screen_area_puts(ge->descript, "  Chat: There is no one here to talk to.");
+          screen_area_puts(ge->descript, "  [CHAT] Nobody is here.");
       }
   }
 
-  /* Banner and Help Areas */
-  sprintf(str, "        Player %ld ", player_get_id(player));
+
+  sprintf(str, "   THE HAUNTED CASTLE");
   screen_area_puts(ge->banner, str);
+  
   screen_area_clear(ge->help);
-  sprintf(str, " The commands you can use are:");
-  screen_area_puts(ge->help, str);
-  sprintf(str, " move(m) [direction], take(t) [obj], drop(d) [obj], attack(a), inspect(i) [obj], chat(c), exit(e)");
+  screen_area_puts(ge->help, " Commands:");
+  sprintf(str, " m [dir] | t/d [obj] | a | i [obj] | c | u [obj] | o [lnk] with [obj] | e");
   screen_area_puts(ge->help, str);
 
-  /* Feedback Area */
   sprintf(str, " %s (%s)", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
   screen_area_puts(ge->feedback, str);
 
-  /* Dump to terminal */
-  if (player_get_id(player) == 1) {
-      screen_paint(CYAN);
-  } else if (player_get_id(player) == 2) {
-      screen_paint(GREEN);
-  } else {
-      screen_paint(WHITE);
-  }
+
+  if (player_get_id(player) == 1) screen_paint(CYAN);
+  else if (player_get_id(player) == 2) screen_paint(GREEN);
+  else screen_paint(WHITE);
+  
   printf("prompt:> ");
 }

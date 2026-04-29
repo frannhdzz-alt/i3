@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2
-#define N_CMD 12
+#define N_CMD 13
 
 typedef enum { CMDS, CMDL } CommandType;
 

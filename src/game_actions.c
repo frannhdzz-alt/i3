@@ -196,8 +196,10 @@ Status game_actions_attack(Game *game)
   Space *current_space = NULL;
   Player *player = NULL;
   Id char_id = NO_ID;
-  Character *c = NULL;
+  Character *enemy = NULL;
   int roll = 0;
+  int followers = 0;
+  int damage = 0;
 
   if (!game)
     return ERROR;
@@ -207,32 +209,61 @@ Status game_actions_attack(Game *game)
   player = game_get_player(game);
   char_id = space_get_character(current_space);
 
-  if (char_id != NO_ID)
+  if (char_id == NO_ID)
+    return ERROR;
+
+  enemy = game_get_character(game, char_id);
+  if (!enemy || character_get_friendly(enemy) == TRUE)
+    return ERROR;
+
+  
+  roll = rand() % 10;
+
+  
+  followers = game_count_followers(game, player_get_id(player));
+
+  if (roll <= 4)
   {
-    c = game_get_character(game, char_id);
-    if (c && character_get_friendly(c) == FALSE)
+    
+    int total_targets = followers + 1; /* jugador + followers */
+    int target = rand() % total_targets;
+
+    if (target == 0)
     {
-      roll = rand() % 10;
-      if (roll <= 4)
+      
+      player_set_health(player, player_get_health(player) - 1);
+      if (player_get_health(player) <= 0)
       {
-        player_set_health(player, player_get_health(player) - 1);
-        if (player_get_health(player) <= 0)
+        game_set_finished(game, TRUE);
+      }
+    }
+    else
+    {
+      
+      Character *f = game_get_follower_by_index(game, player_get_id(player), target - 1);
+      if (f)
+      {
+        character_set_health(f, character_get_health(f) - 1);
+        if (character_get_health(f) <= 0)
         {
-          game_set_finished(game, TRUE);
+          character_set_following(f, NO_ID);
         }
       }
-      else
-      {
-        character_set_health(c, character_get_health(c) - 1);
-        if (character_get_health(c) <= 0)
-        {
-          space_set_character(current_space, NO_ID);
-        }
-      }
-      return OK;
     }
   }
-  return ERROR;
+  else
+  {
+    
+    damage = 1 + followers;
+    character_set_health(enemy, character_get_health(enemy) - damage);
+
+    if (character_get_health(enemy) <= 0)
+    {
+      space_set_character(current_space, NO_ID);
+    }
+  }
+
+  return OK;
 }
 
 Status game_actions_chat(Game *game)

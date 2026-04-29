@@ -339,6 +339,7 @@ Status game_next_turn(Game *game);
  * @author Mario
  *
  * @param game a pointer to the game
+ * @param name the name of the character
  * @return a pointer to the character with the given name, or NULL if it does not exist
  */
 Character* game_get_character_by_name(Game *game, const char *name);
@@ -348,6 +349,8 @@ Character* game_get_character_by_name(Game *game, const char *name);
  * @author Mario
  *
  * @param game a pointer to the game
+ * @param player_id the id of the player
+ * @param char_name the name of the character to recruit
  * @return OK if successful or ERROR in case of error
  */
 Status game_recruit_character(Game *game, Id player_id, const char *char_name);
@@ -357,9 +360,31 @@ Status game_recruit_character(Game *game, Id player_id, const char *char_name);
  * @author Mario
  *
  * @param game a pointer to the game
+ * @param player_id the id of the player
+ * @param char_name the name of the character to abandon
  * @return OK if successful or ERROR in case of error
  */
 Status game_abandon_character(Game *game, Id player_id, const char *char_name);
 
+/**
+ * @brief It counts the number of characters currently following a specific player
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @param player_id the id of the player
+ * @return the number of characters currently following the specified player
+ */
+int game_count_followers(Game *game, Id player_id);
+
+/**
+ * @brief It gets a follower character by its index in the list of followers of a specific player
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @param player_id the id of the player
+ * @param index the index of the follower character
+ * @return a pointer to the follower character, or NULL if it does not exist
+ */
+Character* game_get_follower_by_index(Game *game, Id player_id, int index);
 
 #endif

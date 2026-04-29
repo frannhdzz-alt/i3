@@ -637,3 +637,33 @@ Status game_abandon_character(Game *game, Id player_id, const char *char_name) {
     /* Dejar de seguir */
     return character_set_following(c, NO_ID);
 }
+
+int game_count_followers(Game *game, Id player_id) {
+    int i, count = 0;
+    Character *c = NULL;
+
+    if (!game || player_id == NO_ID) return 0;
+
+    for (i = 0; i < game->n_characters; i++) {
+        c = game->characters[i];
+        if (c && character_get_following(c) == player_id) {
+            count++;
+        }
+    }
+    return count;
+}
+
+Character* game_get_follower_by_index(Game *game, Id player_id, int index) {
+    int i, count = 0;
+    Character *c = NULL;
+
+    for (i = 0; i < game->n_characters; i++) {
+        c = game->characters[i];
+        if (c && character_get_following(c) == player_id) {
+            if (count == index) return c;
+            count++;
+        }
+    }
+    return NULL;
+}
+

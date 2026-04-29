@@ -2,7 +2,7 @@
  * @brief It defines the space module interface
  *
  * @file space.h
- * @author Rodrigo and Mario
+ * @author Rodrigo
  * @version 2.0
  * @date 08-04-2026
  * @copyright GNU Public License
@@ -19,7 +19,7 @@ typedef struct _Space Space;
 /**
  * @brief It creates a new space, allocating memory and initializing its members
  * @author Rodrigo
- *
+ * 
  * @param id the identification number for the new space
  * @return a new space, initialized
  */
@@ -28,7 +28,7 @@ Space *space_create(Id id);
 /**
  * @brief It destroys a space, freeing the allocated memory
  * @author Rodrigo
- *
+ * 
  * @param space a pointer to the space that must be destroyed
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
@@ -85,7 +85,7 @@ Status space_del_object(Space *space, Id id);
 /**
  * @brief It checks if an object is in the space
  * @author Rodrigo
- *
+ * 
  * @param space a pointer to the space
  * @param id the id of the object
  * @return TRUE if the object is in the space, FALSE otherwise
@@ -95,30 +95,40 @@ Bool space_has_object(Space *space, Id id);
 /**
  * @brief It gets the set of objects in the space
  * @author Rodrigo
- *
+ * 
  * @param space a pointer to the space
  * @return A pointer to the set of objects
  */
 Set *space_get_objects(Space *space);
 
 /**
- * @brief It sets the character in the space
- * @author Rodrigo
+ * @brief It adds a character to the space
+ * @author Mario
  *
  * @param space a pointer to the space
  * @param id the id of the character
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status space_set_character(Space *space, Id id);
+Status space_add_character(Space *space, Id id);
 
 /**
- * @brief It gets the character in the space
- * @author Rodrigo
+ * @brief It deletes a character from the space
+ * @author Mario
  *
  * @param space a pointer to the space
- * @return the id of the character in the space
+ * @param id the id of the character
+ * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Id space_get_character(Space *space);
+Status space_del_character(Space *space, Id id);
+
+/**
+ * @brief It gets the set of characters in the space
+ * @author Mario
+ *
+ * @param space a pointer to the space
+ * @return A pointer to the set of characters
+ */
+Set *space_get_characters(Space *space);
 
 /**
  * @brief It sets a line of the graphic description of the space
@@ -149,6 +159,7 @@ const char *space_get_gdesc(Space *space, int line);
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status space_print(Space* space);
+
 /**
  * @brief It sets the discovered status of the space
  * @author Rodrigo

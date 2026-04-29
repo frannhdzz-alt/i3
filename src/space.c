@@ -23,7 +23,7 @@ struct _Space
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */
   Set *objects;             /*!< Set of object ids in the space */
-  Id character;             /*!< Id of the character in the space */
+  Set *characters;          /*!< Set of character ids in the space */
   char gdesc[5][10];        /*!< Graphic description (5 lines of 9 chars + \0) */
   Bool discovered;          /*!< Indicates if the space has been discovered */
 };
@@ -45,7 +45,7 @@ Space *space_create(Id id)
   newSpace->id = id;
   newSpace->name[0] = '\0';
   newSpace->objects = set_create();
-  newSpace->character = NO_ID;
+  newSpace->characters = set_create();
   newSpace->discovered = FALSE;
 
   /* Initialize graphic description with spaces */
@@ -65,6 +65,7 @@ Status space_destroy(Space *space)
   }
 
   set_destroy(space->objects);
+  set_destroy(space->characters);
   free(space);
   return OK;
 }
@@ -137,23 +138,25 @@ Set *space_get_objects(Space *space)
   return space->objects;
 }
 
-Status space_set_character(Space *space, Id id)
+Status space_add_character(Space *space, Id id)
 {
-  if (!space)
-  {
+  if (!space || id == NO_ID)
     return ERROR;
-  }
-  space->character = id;
-  return OK;
+  return set_add(space->characters, id);
 }
 
-Id space_get_character(Space *space)
+Status space_del_character(Space *space, Id id)
+{
+  if (!space || id == NO_ID)
+    return ERROR;
+  return set_del(space->characters, id);
+}
+
+Set *space_get_characters(Space *space)
 {
   if (!space)
-  {
-    return NO_ID;
-  }
-  return space->character;
+    return NULL;
+  return space->characters;
 }
 
 Status space_set_gdesc(Space *space, int line, char *gdesc)
@@ -206,7 +209,7 @@ Status space_print(Space *space)
   fprintf(stdout, "---> Objects in the space:\n");
   set_print(space->objects);
 
-  idaux = space_get_character(space);
+  idaux = set_get_first(space->characters);
   if (idaux != NO_ID)
   {
     fprintf(stdout, "---> Character in the space: %ld.\n", idaux);

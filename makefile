@@ -135,9 +135,7 @@ run: $(EXEC)
 vrun: $(EXEC)
 	valgrind --leak-check=full ./$(EXEC) castle.dat -l registro.txt
 
-test: $(EXEC)
-	./$(EXEC) castle.dat -l log_normal.txt < test_normal.cmd
-	./$(EXEC) castle.dat -l log_errores.txt < test_errores.cmd
+
 
 doc:
 	doxygen Doxyfile

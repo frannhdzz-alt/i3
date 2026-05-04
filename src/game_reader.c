@@ -92,6 +92,9 @@ Status game_load_objects(Game *game, char *filename) {
   Id id = NO_ID, location = NO_ID;
   Object *object = NULL;
   Status status = OK;
+  
+  int health = 0, movable = 0;
+  Id dependency = NO_ID, open = NO_ID;
 
   if (!filename) return ERROR;
 
@@ -102,16 +105,34 @@ Status game_load_objects(Game *game, char *filename) {
     if (strncmp("#o:", line, 3) == 0) {
       toks = strtok(line + 3, "|");
       id = atol(toks);
+      
       toks = strtok(NULL, "|");
       strcpy(name, toks);
+      
       toks = strtok(NULL, "|");
       location = atol(toks);
-      toks = strtok(NULL, "|\n");
+
+      toks = strtok(NULL, "|");
 
       object = object_create(id);
       if (object != NULL) {
         object_set_name(object, name);
         if (toks) object_set_description(object, toks);
+
+        toks = strtok(NULL, "|");
+        if (toks) health = atoi(toks);
+        object_set_health(object, health);
+
+        toks = strtok(NULL, "|");
+        if (toks) movable = atoi(toks);
+        object_set_movable(object, movable == 1 ? TRUE : FALSE);
+
+        toks = strtok(NULL, "|");
+        if (toks) dependency = atol(toks);
+        object_set_dependency(object, dependency);
+        toks = strtok(NULL, "|\r\n");
+        if (toks) open = atol(toks);
+        object_set_open(object, open);
         game_add_object(game, object);
         game_set_object_location(game, location, id);
       }

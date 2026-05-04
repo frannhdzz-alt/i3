@@ -9,6 +9,8 @@
  */
 
 #include "space.h"
+#include "set.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -209,7 +211,7 @@ Status space_print(Space *space)
   fprintf(stdout, "---> Objects in the space:\n");
   set_print(space->objects);
 
-  idaux = set_get_first(space->characters);
+  idaux = set_get_id_at(space->characters, 0);
   if (idaux != NO_ID)
   {
     fprintf(stdout, "---> Character in the space: %ld.\n", idaux);

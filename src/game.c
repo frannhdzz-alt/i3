@@ -448,14 +448,15 @@ Status game_set_character_location(Game *game, Id space_id, Id char_id)
   }
 
 
-  if (space_id != NO_ID)
+if (space_id != NO_ID)
+{
+  new_space = game_get_space(game, space_id);
+  if (new_space)
   {
-    new_space = game_get_space(game, space_id);
-    if (new_space)
-    {
-      space_set_character(new_space, char_id);
-    }
+    space_add_character(new_space, char_id);
   }
+}
+
 
   return OK;
 }

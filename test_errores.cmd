@@ -1,9 +1,11 @@
-move n
-move w
-take Bow
-drop Shield
-inspect Dragon
-move s
-move w
-take Armour
+move u
+take dragon
+drop shield
+inspect unicorn
+chat
+attack
+use rock
+open door with spoon
+recruit king
+abandon dog
 exit

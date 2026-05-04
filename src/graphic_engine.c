@@ -423,12 +423,36 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   sprintf(str, "           inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | exit(e)");
   screen_area_puts(ge->help, str);
 
-  if (player_get_id(player) == 1)
-    screen_paint(CYAN);
-  else if (player_get_id(player) == 2)
-    screen_paint(GREEN);
-  else
-    screen_paint(WHITE);
+/* Asignamos un color diferente a cada uno de los 8 posibles jugadores */
+  switch (player_get_id(player)) {
+    case 1:
+      screen_paint(CYAN);
+      break;
+    case 2:
+      screen_paint(GREEN);
+      break;
+    case 3:
+      screen_paint(YELLOW);
+      break;
+    case 4:
+      screen_paint(PURPLE);
+      break;
+    case 5:
+      screen_paint(RED);
+      break;
+    case 6:
+      screen_paint(BLUE);
+      break;
+    case 7:
+      screen_paint(WHITE);
+      break;
+    case 8:
+      screen_paint(BLACK); 
+      break;
+    default:
+      screen_paint(WHITE); 
+      break;
+  }
 
   printf("prompt:> ");
 }

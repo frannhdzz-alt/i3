@@ -295,6 +295,12 @@ Status game_actions_inspect(Game *game)
 {
   const char *arg = NULL;
   Command *cmd = NULL;
+  Player *player = NULL;
+  Space *current_space = NULL;
+  Id p_loc = NO_ID;
+  Id obj_id = NO_ID;
+  Object *obj = NULL;
+  int i;
 
   if (!game)
     return ERROR;
@@ -302,7 +308,30 @@ Status game_actions_inspect(Game *game)
   cmd = game_get_last_command(game);
   arg = command_get_arg(cmd);
 
-  if (arg && arg[0] != '\0')
+  if (!arg || arg[0] == '\0')
+    return ERROR;
+
+
+  for (i = 1; i < MAX_OBJECTS; i++)
+  {
+    obj = game_get_object(game, i);
+    if (obj && strcasecmp(object_get_name(obj), arg) == 0)
+    {
+      obj_id = i;
+      break;
+    }
+  }
+
+
+  if (obj_id == NO_ID)
+    return ERROR;
+
+  player = game_get_player(game);
+  p_loc = game_get_player_location(game);
+  current_space = game_get_space(game, p_loc);
+
+
+  if (space_has_object(current_space, obj_id) == TRUE || player_has_object(player, obj_id) == TRUE)
   {
     return OK;
   }

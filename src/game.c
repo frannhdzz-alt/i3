@@ -418,7 +418,7 @@ Id game_get_character_location(Game *game, Id char_id)
 
   for (i = 0; i < game->n_spaces; i++)
   {
-    if (space_get_character(game->spaces[i]) == char_id)
+    if (set_find(space_get_characters(game->spaces[i]), char_id) == TRUE)
     {
       return space_get_id(game->spaces[i]);
     }
@@ -443,7 +443,8 @@ Status game_set_character_location(Game *game, Id space_id, Id char_id)
   if (current_space_id != NO_ID)
   {
     current_space = game_get_space(game, current_space_id);
-    space_set_character(current_space, NO_ID);
+    space_del_character(current_space, char_id);
+
   }
 
 

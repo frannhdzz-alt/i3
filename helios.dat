@@ -1,85 +1,82 @@
-# --- ESPACIOS (12 en total) ---
-#s:11|Muelle Carga| ^^^ | / \ | ___ |
-#s:12|Pasillo Servicio| | | | | | | | | |
-#s:13|Cuarteles| [ ] | zZz | ___ |
-#s:14|Comedor| / \ | \ / | ___ |
-#s:15|Bahia Medica|  +  | [ ] | ___ |
-#s:16|Invernadero| \i/ | -+- | / \ |
-#s:17|Servidores| ||| | ||| | ||| |
-#s:18|Reactor| ( ) | / \ | \ / |
-#s:19|Puente Mando| / \ | O_o | \ / |
-#s:20|Esclusa Aire| | | | | | | ___ |
-#s:21|Sala Maquinas| ⚙⚙⚙ | /_\ | ___ |
-#s:22|Capsula Escape| <=> | [-] | ___ |
+# =============================================================
+# DATA FILE: HELIOS STATION 
+# =============================================================
 
-# --- ENLACES ---
-# NIVEL INFERIOR
-#l:1|L_Muelle_Pasillo|11|12|0|1
-#l:2|L_Pasillo_Muelle|12|11|1|1
-#l:3|L_Pasillo_Reactor|12|18|2|1
-#l:4|L_Reactor_Pasillo|18|12|3|1
-#l:18|L_Reactor_Maquinas|18|21|2|1
-#l:19|L_Maquinas_Reactor|21|18|3|1
+# --- SPACES (12) ---
+# Format: #s:id|name|graphic1|graphic2|graphic3|description|discovered
+#s:11|Loading Bay| ^^^ | / \ | ___ |Main entry for cargo ships.|0
+#s:12|Service Corridor| | | | | | | | | |Narrow maintenance path.|0
+#s:13|Crew Quarters| [ ] | zZz | ___ |Personal cabins for the staff.|0
+#s:14|Canteen| / \ | \ / | ___ |Smells like synthetic protein.|0
+#s:15|Medbay:  +  | [ ] | ___ |Advanced medical facility.|0
+#s:16|Greenhouse| \i/ | -+- | / \ |Experimental hydroponic garden.|0
+#s:17|Server Room| ||| | ||| | ||| |AI Core processing center.|0
+#s:18|Reactor| ( ) | / \ | \ / |Warning: High radiation levels.|0
+#s:19|Bridge| / \ | O_o | \ / |Main command and control deck.|0
+#s:20|Airlock| | | | | | | ___ |Depressurization danger zone.|0
+#s:21|Engine Room| ⚙⚙⚙ | /_\ | ___ |Main propulsion control.|0
+#s:22|Escape Pod| <=> | [-] | ___ |Last chance for survival.|0
 
-# CONEXIÓN VERTICAL (Ascensor 1)
-#l:5|L_Subir_a_Servidores|12|17|4|1
-#l:6|L_Bajar_a_Servicio|17|12|5|1
+# --- LINKS (22) ---
+# Format: #l:id|name|origin|destination|direction|open
+#l:1|L_Bay_Hall|11|12|0|1
+#l:2|L_Hall_Bay|12|11|1|1
+#l:3|L_Hall_Reactor|12|18|2|1
+#l:4|L_Reactor_Hall|18|12|3|1
+#l:5|L_Up_to_Servers|12|17|4|1
+#l:6|L_Down_to_Service|17|12|5|1
+#l:7|L_Server_Quarters|17|13|3|1
+#l:8|L_Quarters_Server|13|17|2|1
+#l:9|L_Server_Canteen|17|14|0|1
+#l:10|L_Canteen_Server|14|17|1|1
+#l:11|L_Server_Medbay|17|15|2|1
+#l:12|L_Medbay_Server|15|17|3|1
+#l:13|L_Medbay_Greenhouse|15|16|0|1
+#l:14|L_Greenhouse_Medbay|16|15|1|1
+#l:15|L_Up_to_Bridge|17|19|4|0
+#l:16|L_Down_to_Servers|19|17|5|1
+#l:17|L_Bridge_Airlock|19|20|0|1
+#l:20|L_Airlock_Bridge|20|19|1|1
+#l:21|L_Airlock_Pod|20|22|0|0
+#l:22|L_Pod_Airlock|22|20|1|1
 
-# NIVEL CENTRAL
-#l:7|L_Servid_Cuartel|17|13|3|1
-#l:8|L_Cuartel_Servid|13|17|2|1
-#l:9|L_Servid_Comedor|17|14|0|1
-#l:10|L_Comedor_Servid|14|17|1|1
-#l:11|L_Servid_Medica|17|15|2|1
-#l:12|L_Medica_Servid|15|17|3|1
-#l:13|L_Medica_Invern|15|16|0|1
-#l:14|L_Invern_Medica|16|15|1|1
+# --- OBJECTS (25) ---
+# Format: #o:id|name|location|description|movable|dependency|opens|health
+#o:1|Level_1_Card|11|Blue security card.|1|-1|15|0
+#o:2|Plasma_Cutter|12|Industrial tool.|1|-1|-1|0
+#o:3|Space_Suit|13|Anti-vacuum gear.|1|-1|-1|0
+#o:4|Oxygen_Tank|15|Breathable air.|1|-1|-1|0
+#o:5|Ion_Battery|18|Power cell.|1|-1|-1|0
+#o:6|Extinguisher|14|Safety equipment.|1|-1|-1|0
+#o:7|Medkit|15|Heals wounds.|1|-1|-1|5
+#o:8|Adrenaline|13|Quick boost.|1|-1|-1|2
+#o:9|Motion_Tracker|17|Ping... ping...|1|-1|-1|0
+#o:10|Captains_Log|19|Digital records.|1|-1|-1|0
+#o:11|Broken_Tablet|11|Worthless now.|1|-1|-1|0
+#o:12|Medical_File|15|Patient zero data.|1|-1|-1|0
+#o:13|Nutrient_Bar|14|Tastes like ash.|1|-1|-1|1
+#o:14|Coffee_Mug|14|World's Best Dad.|1|-1|-1|0
+#o:15|Master_Fuse|18|Critical part.|1|-1|-1|0
+#o:16|Iron_Pipe|12|Heavy and cold.|1|-1|-1|0
+#o:17|AI_Module|17|Mother's brain.|1|9|-1|0
+#o:18|Xeno_Sample|16|Acidic tissue.|1|-1|-1|-1
+#o:19|Old_Radio|19|Faint static.|1|-1|-1|0
+#o:20|Flare_Gun|11|Signal for help.|1|-1|-1|0
+#o:21|Level_3_Card|19|Red security card.|1|-1|21|0
+#o:22|Engine_Key|21|Mechanical tool.|1|-1|-1|0
+#o:23|Weld_Torch|21|Hot and bright.|1|-1|-1|0
+#o:24|Escape_Manual|22|Step 1: Run.|1|-1|-1|0
+#o:25|Strange_Statue|13|Ominous relic.|1|-1|-1|0
 
-# CONEXIÓN VERTICAL (Ascensor 2)
-#l:15|L_Subir_a_Puente|17|19|4|0
-#l:16|L_Bajar_a_Servidores|19|17|5|1
+# --- PLAYERS (2) ---
+# Format: #p:id|name|location|health|max_health
+#p:1|Ripley|11|5|5
+#p:2|Dallas|13|5|5
 
-# NIVEL SUPERIOR
-#l:17|L_Puente_Esclusa|19|20|0|1
-#l:20|L_Esclusa_Puente|20|19|1|1
-#l:21|L_Esclusa_Capsula|20|22|0|0
-#l:22|L_Capsula_Esclusa|22|20|1|1
-
-# --- OBJETOS (24 en total) ---
-#o:1|Tarjeta_Nivel_1|11|Tarjeta de seguridad basica.|0
-#o:2|Cortador_Plasma|12|Herramienta de corte industrial.|0
-#o:3|Traje_Espacial|13|Proteccion contra el vacio.|0
-#o:4|Tanque_Oxigeno|15|Suministro de aire vital.|0
-#o:5|Bateria_Iones|18|Celda de energia inestable.|0
-#o:6|Extintor|14|Util para incendios o defensa.|0
-#o:7|Botiquin|15|Vendas y desinfectante.|0
-#o:8|Adrenalina|13|Inyeccion de emergencia.|0
-#o:9|Detector|17|Rastreador de movimiento proximo.|0
-#o:10|Diario|19|Ultimas palabras del capitan.|0
-#o:11|Tableta|11|Datos de navegacion corruptos.|0
-#o:12|Registro|15|Informe de la infeccion inicial.|0
-#o:13|Racion|14|Sabor a plastico, pero alimenta.|0
-#o:14|Cafe|14|Taza de cafe flotante.|0
-#o:15|Fusible|18|Pieza electrica quemada.|0
-#o:16|Llave_Inglesa|12|Herramienta contundente.|0
-#o:17|IA_Nucleo|17|Nucleo de procesamiento de la nave.|0
-#o:18|Muestra|16|Tejido biologico en formol.|0
-#o:19|Transmisor|19|Radio de largo alcance averiada.|0
-#o:20|Bengala|11|Luz quimica roja de emergencia.|0
-#o:21|Tarjeta_Nivel_3|19|Acceso a la capsula de escape.|0
-#o:22|Llave_Maestra|21|Llave mecanica muy pesada.|0
-#o:23|Pistola_Clavos|21|Arma improvisada letal.|0
-#o:24|Manual_Vuelo|22|Instrucciones de la capsula.|0
-
-# --- JUGADORES (2 en total) ---
-# El Jugador 1 empieza en el Muelle (11) y el Jugador 2 en los Cuarteles (13)
-#p:1 Ripley O_o|11|5|5|
-#p:2 Dallas -_-|13|5|5|
-
-# --- PERSONAJES (5 en total) ---
-# ID | Nombre | Localizacion | Salud | Friendly (1=Si, 0=No) | Mensaje
-#c:1 Xenomorfo /X\|18|10|0|Ghrrrrr...|
-#c:2 Ingeniero +_+|13|3|1|Ayudame a salir de aqui.|
-#c:3 Dron_Medico [+]|15|5|1|Bip bop. Iniciando curacion.|
-#c:4 Androide_Ash 0_0|17|4|0|No teneis posibilidades de sobrevivir.|
-#c:5 Gato_Jonesy =^.^=|14|2|1|Miau.|
+# --- CHARACTERS (5) ---
+# Format: #c:id|name|location|health|friendly|message
+#c:1|Xenomorph|18|10|0|Hiss...
+#c:2|Engineer|13|3|1|Watch the airlock!
+#c:3|Medical_Unit|15|5|1|Treatment required.
+#c:4|Synthetic_Ash|17|4|0|I can't lie to you.
+#c:5|Jonesy_Cat|14|2|1|Meow...

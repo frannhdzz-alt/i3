@@ -49,7 +49,7 @@ Link *link_create(Id id)
     newlink->name[0] = '\0';
     newlink->origin = NO_ID;
     newlink->destination = NO_ID;
-    newlink->direction = N;
+    newlink->direction = DIR_UNKNOWN;
     newlink->open = FALSE;
 
     return newlink;
@@ -164,7 +164,7 @@ Direction link_get_direction(Link *link)
 {
     if (link == NULL)
     {
-        return N;
+        return DIR_UNKNOWN;
     }
     return link->direction;
 }

@@ -20,7 +20,8 @@
  */
 struct _Game
 {
-  Player *players[2];                    /*!< Array of pointers to the players of the game */
+  Player *players[MAX_PLAYERS];          /*!< Array of pointers to the players of the game */
+  int n_players;                         /*!< Number of players currently in the game */
   int turn;                              /*!< Current turn (0 or 1) */
   Object *objects[MAX_OBJECTS];          /*!< Array of pointers to the objects of the game */
   int n_objects;                         /*!< Number of objects in the game */
@@ -72,8 +73,11 @@ Status game_create(Game **game)
   }
   newGame->n_links = 0;
 
-  newGame->players[0] = NULL;
-  newGame->players[1] = NULL;
+for (i = 0; i < MAX_PLAYERS; i++)
+  {
+    newGame->players[i] = NULL;
+  }
+  newGame->n_players = 0;
   newGame->turn = 0;
 
   newGame->last_cmd = command_create();
@@ -117,7 +121,7 @@ Status game_destroy(Game *game)
   }
 
 
-  for (i = 0; i < 2; i++)
+for (i = 0; i < game->n_players; i++)
   {
     if (game->players[i] != NULL)
     {
@@ -224,24 +228,15 @@ Player *game_get_active_player(Game *game)
 
 Status game_add_player(Game *game, Player *player)
 {
-  int i;
-
-  if (game == NULL || player == NULL)
+  if (game == NULL || player == NULL || game->n_players >= MAX_PLAYERS)
   {
     return ERROR;
   }
 
+  game->players[game->n_players] = player;
+  game->n_players++;
 
-  for (i = 0; i < 2; i++)
-  {
-    if (game->players[i] == NULL)
-    {
-      game->players[i] = player;
-      return OK;
-    }
-  }
-
-  return ERROR; 
+  return OK;
 }
 
 Player *game_get_player(Game *game)
@@ -563,15 +558,8 @@ Id game_get_connection(Game *game, Id space_id, Direction dir)
 
     if (link != NULL && link_get_origin(link) == space_id && link_get_direction(link) == dir)
     {
-      if (link_get_open(link) == TRUE)
-      {
-        return link_get_destination(link);
-      }
-      else
-      {
-
-        return NO_ID;
-      }
+      
+      return link_get_destination(link);
     }
   }
 
@@ -580,13 +568,12 @@ Id game_get_connection(Game *game, Id space_id, Direction dir)
 
 Status game_next_turn(Game *game)
 {
-  if (game == NULL) {
+  if (game == NULL || game->n_players == 0) {
     return ERROR;
   }
 
-  if (game->turn == 0) {
-    game->turn = 1;
-  } else {
+  game->turn++;
+  if (game->turn >= game->n_players) {
     game->turn = 0;
   }
 

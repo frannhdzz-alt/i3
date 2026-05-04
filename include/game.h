@@ -23,6 +23,7 @@
 #define MAX_OBJECTS 100
 #define MAX_CHARACTERS 100
 #define MAX_LINKS 100
+#define MAX_PLAYERS 8
 
 typedef struct _Game Game;
 

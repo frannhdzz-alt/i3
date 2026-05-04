@@ -12,7 +12,7 @@
 #l:1|l_pit_path|11|12|1|1|
 #l:2|l_path_pit|12|11|0|1|
 #l:3|l_path_mine|12|121|3|0|
-#l:4|l_mine_path|121|12|2|1|
+#l:4|l_mine_path|121|12|2|0|
 #l:5|l_path_hall|12|13|1|1|
 #l:6|l_hall_path|13|12|0|1|
 #l:7|l_hall_fire|13|14|1|1|
@@ -27,6 +27,7 @@
 #l:16|l_bath_bed|132|131|3|1|
 #l:17|l_hedge_peak|16|133|0|1|
 #l:18|l_peak_hedge|133|16|1|1|
+#l:19|l_mine_hedge|121|16|1|1|
 
 #o:11|dirk|11|short rusted edge.
 #o:12|lid|12|old braced wood.

@@ -207,7 +207,7 @@ Status game_actions_attack(Game *game)
   p_loc = game_get_player_location(game);
   current_space = game_get_space(game, p_loc);
   player = game_get_player(game);
-  char_id = space_get_character(current_space);
+  char_id = set_get_id_at(space_get_characters(current_space), 0);
 
   if (char_id == NO_ID)
     return ERROR;
@@ -257,10 +257,10 @@ Status game_actions_attack(Game *game)
     damage = 1 + followers;
     character_set_health(enemy, character_get_health(enemy) - damage);
 
-    if (character_get_health(enemy) <= 0)
-    {
-      space_set_character(current_space, NO_ID);
-    }
+  if (character_get_health(enemy) <= 0)
+   {
+   space_del_character(current_space, char_id);
+   }
   }
 
   return OK;
@@ -281,12 +281,13 @@ Status game_actions_chat(Game *game)
   if (!current_space)
     return ERROR;
 
-  char_id = space_get_character(current_space);
+  char_id = set_get_id_at(space_get_characters(current_space), 0);
 
   if (char_id != NO_ID)
-  {
-    return OK;
-  }
+ {
+  return OK;
+}
+
 
   return ERROR;
 }

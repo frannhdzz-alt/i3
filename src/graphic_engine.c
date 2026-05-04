@@ -80,7 +80,7 @@ void _get_character_sym(Game *game, Id space_id, char *out_sym)
   if (space_id == NO_ID)
     return;
 
-  char_id = space_get_character(game_get_space(game, space_id));
+  char_id = set_get_id_at(space_get_characters(game_get_space(game, space_id)), 0);
   if (char_id != NO_ID)
   {
     c = game_get_character(game, char_id);
@@ -394,7 +394,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   if (last_cmd == CHAT)
   {
-    if (space_act != NULL && (char_id = space_get_character(space_act)) != NO_ID)
+    if (space_act != NULL && (char_id = set_get_id_at(space_get_characters(space_act), 0)) != NO_ID)
     {
       c = game_get_character(game, char_id);
       if (c != NULL)

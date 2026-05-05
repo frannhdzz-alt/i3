@@ -196,6 +196,7 @@ Status game_actions_move(Game *game)
     if (dest_id != NO_ID)
     {
       game_set_player_location(game, dest_id);
+      game_move_followers(game, player_get_id(game_get_active_player(game)), dest_id);
       return OK;
     }
   }

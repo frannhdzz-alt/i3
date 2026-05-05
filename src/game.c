@@ -656,3 +656,23 @@ Character* game_get_follower_by_index(Game *game, Id player_id, int index) {
     return NULL;
 }
 
+Status game_move_followers(Game *game, Id player_id, Id new_space_id)
+{
+  int i;
+  Character *c = NULL;
+
+  if (!game || player_id == NO_ID || new_space_id == NO_ID)
+    return ERROR;
+
+  for (i = 1; i <= MAX_CHARACTERS; i++)
+  {
+    c = game_get_character(game, i);
+    if (c && character_get_following(c) == player_id)
+    {
+      game_set_character_location(game, new_space_id, i);
+    }
+  }
+
+  return OK;
+}
+

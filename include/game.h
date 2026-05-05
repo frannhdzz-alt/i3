@@ -388,4 +388,15 @@ int game_count_followers(Game *game, Id player_id);
  */
 Character* game_get_follower_by_index(Game *game, Id player_id, int index);
 
+/**
+ * @brief It moves all followers of a player to a new location
+ * @author Mario
+ *
+ * @param game a pointer to the game
+ * @param player_id the id of the player
+ * @param new_space_id the id of the new space
+ * @return OK if successful or ERROR in case of error
+ */
+Status game_move_followers(Game *game, Id player_id, Id new_space_id);
+
 #endif

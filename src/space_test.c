@@ -85,13 +85,13 @@ void test2_space_set_gdesc() {
 
 void test1_space_set_character() {
   Space *s = space_create(1);
-  PRINT_TEST_RESULT(space_set_character(s, 22) == OK, "test1_space_set_character");
+  PRINT_TEST_RESULT(space_add_character(s, 22) == OK, "test1_space_set_character");
   space_destroy(s);
 }
 
 void test2_space_set_character() {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_set_character(s, 22) == ERROR, "test2_space_set_character");
+  PRINT_TEST_RESULT(space_add_character(s, 22) == ERROR, "test2_space_set_character");
 }
 
 void test1_space_set_discovered() {

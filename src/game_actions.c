@@ -20,6 +20,7 @@ Status game_actions_exit(Game *game) { return OK; }
 Status game_actions_open(Game *game);
 Status game_actions_recruit(Game *game);
 Status game_actions_abandon(Game *game);
+Status game_actions_teleport(Game *game);
 
 Status game_actions_take(Game *game)
 {
@@ -82,7 +83,8 @@ Status game_actions_take(Game *game)
   return ERROR;
 }
 
-Status game_actions_drop(Game *game) {
+Status game_actions_drop(Game *game)
+{
   Id p_loc = NO_ID;
   Space *current_space = NULL;
   Player *player = NULL;
@@ -92,7 +94,8 @@ Status game_actions_drop(Game *game) {
   Object *obj = NULL;
   int i;
 
-  if (!game) return ERROR;
+  if (!game)
+    return ERROR;
 
   p_loc = game_get_player_location(game);
   current_space = game_get_space(game, p_loc);
@@ -100,26 +103,35 @@ Status game_actions_drop(Game *game) {
   cmd = game_get_last_command(game);
   obj_name = command_get_arg(cmd);
 
-  if (!obj_name || obj_name[0] == '\0') return ERROR;
+  if (!obj_name || obj_name[0] == '\0')
+    return ERROR;
 
-  for (i = 1; i < MAX_OBJECTS; i++) {
+  for (i = 1; i < MAX_OBJECTS; i++)
+  {
     obj = game_get_object(game, i);
-    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0) {
+    if (obj && strcasecmp(object_get_name(obj), obj_name) == 0)
+    {
       obj_id = i;
       break;
     }
   }
 
-  if (obj_id == NO_ID) return ERROR;
-  if (player_has_object(player, obj_id) == FALSE) return ERROR;
+  if (obj_id == NO_ID)
+    return ERROR;
+  if (player_has_object(player, obj_id) == FALSE)
+    return ERROR;
 
-  if (player_del_object(player, obj_id) == OK) {
+  if (player_del_object(player, obj_id) == OK)
+  {
     space_add_object(current_space, obj_id);
-    
-    for (i = 1; i < MAX_OBJECTS; i++) {
-      if (player_has_object(player, i) == TRUE) {
+
+    for (i = 1; i < MAX_OBJECTS; i++)
+    {
+      if (player_has_object(player, i) == TRUE)
+      {
         Object *dep_obj = game_get_object(game, i);
-        if (dep_obj && object_get_dependency(dep_obj) == obj_id) {
+        if (dep_obj && object_get_dependency(dep_obj) == obj_id)
+        {
           player_del_object(player, i);
           space_add_object(current_space, i);
         }
@@ -216,21 +228,19 @@ Status game_actions_attack(Game *game)
   if (!enemy || character_get_friendly(enemy) == TRUE)
     return ERROR;
 
-  
   roll = rand() % 10;
 
-  
   followers = game_count_followers(game, player_get_id(player));
 
   if (roll <= 4)
   {
-    
+
     int total_targets = followers + 1; /* jugador + followers */
     int target = rand() % total_targets;
 
     if (target == 0)
     {
-      
+
       player_set_health(player, player_get_health(player) - 1);
       if (player_get_health(player) <= 0)
       {
@@ -239,7 +249,7 @@ Status game_actions_attack(Game *game)
     }
     else
     {
-      
+
       Character *f = game_get_follower_by_index(game, player_get_id(player), target - 1);
       if (f)
       {
@@ -253,14 +263,14 @@ Status game_actions_attack(Game *game)
   }
   else
   {
-    
+
     damage = 1 + followers;
     character_set_health(enemy, character_get_health(enemy) - damage);
 
-  if (character_get_health(enemy) <= 0)
-   {
-   space_del_character(current_space, char_id);
-   }
+    if (character_get_health(enemy) <= 0)
+    {
+      space_del_character(current_space, char_id);
+    }
   }
 
   return OK;
@@ -284,10 +294,9 @@ Status game_actions_chat(Game *game)
   char_id = set_get_id_at(space_get_characters(current_space), 0);
 
   if (char_id != NO_ID)
- {
-  return OK;
-}
-
+  {
+    return OK;
+  }
 
   return ERROR;
 }
@@ -312,7 +321,6 @@ Status game_actions_inspect(Game *game)
   if (!arg || arg[0] == '\0')
     return ERROR;
 
-
   for (i = 1; i < MAX_OBJECTS; i++)
   {
     obj = game_get_object(game, i);
@@ -323,14 +331,12 @@ Status game_actions_inspect(Game *game)
     }
   }
 
-
   if (obj_id == NO_ID)
     return ERROR;
 
   player = game_get_player(game);
   p_loc = game_get_player_location(game);
   current_space = game_get_space(game, p_loc);
-
 
   if (space_has_object(current_space, obj_id) == TRUE || player_has_object(player, obj_id) == TRUE)
   {
@@ -540,6 +546,75 @@ Status game_actions_open(Game *game)
   return ERROR;
 }
 
+Status game_actions_teleport(Game *game)
+{
+  Player *player = NULL;
+  Command *cmd = NULL;
+  const char *dest_name = NULL;
+  Id player_id = NO_ID, dest_id = NO_ID, obj_id = NO_ID;
+  Object *tp_obj = NULL, *o = NULL;
+  Space *s = NULL;
+  Character *c = NULL;
+  int i;
+
+  if (!game)
+    return ERROR;
+
+  player = game_get_player(game);
+  cmd = game_get_last_command(game);
+  dest_name = command_get_arg(cmd);
+  player_id = player_get_id(player);
+
+  if (!dest_name || dest_name[0] == '\0')
+    return ERROR;
+
+  for (i = 0; i < MAX_SPACES; i++)
+  {
+    s = game_get_space(game, game_get_space_id_at(game, i));
+    if (s && strcasecmp(space_get_name(s), dest_name) == 0)
+    {
+      dest_id = space_get_id(s);
+      break;
+    }
+  }
+
+  if (dest_id == NO_ID)
+    return ERROR;
+
+  for (i = 1; i < MAX_OBJECTS; i++)
+  {
+    o = game_get_object(game, i);
+    if (o && player_has_object(player, i) == TRUE && object_get_can_teleport(o) == TRUE)
+    {
+      tp_obj = o;
+      obj_id = i;
+      break;
+    }
+  }
+
+  if (!tp_obj)
+    return ERROR;
+
+  if (game_set_player_location(game, dest_id) == ERROR)
+    return ERROR;
+
+  for (i = 1; i < MAX_CHARACTERS; i++)
+  {
+    c = game_get_character(game, i);
+    if (c && character_get_following(c) == player_id)
+    {
+      game_set_character_location(game, dest_id, character_get_id(c));
+    }
+  }
+
+  if (object_get_single_use(tp_obj) == TRUE)
+  {
+    player_del_object(player, obj_id);
+  }
+
+  return OK;
+}
+
 Status game_actions_update(Game *game, Command *command)
 {
   CommandCode cmd;
@@ -588,6 +663,9 @@ Status game_actions_update(Game *game, Command *command)
     break;
   case OPEN:
     status = game_actions_open(game);
+    break;
+  case TELEPORT:
+    status = game_actions_teleport(game);
     break;
   default:
     break;

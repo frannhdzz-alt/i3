@@ -30,6 +30,7 @@ char *cmd_to_str[N_CMD][N_CMDT] = {
   {"ab", "Abandon"},
   {"u", "Use"},
   {"o", "Open"},
+  {"tp", "Teleport"}
 };
 
 

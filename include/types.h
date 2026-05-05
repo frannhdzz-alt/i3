@@ -35,6 +35,6 @@ typedef enum { ERROR, OK } Status;
 /**
  * @brief Enumeration of cardinal directions1
  */
-typedef enum { DIR_UNKNOWN, N, S, E, W, U, D} Direction;
+typedef enum { N, S, E, W, U, D, DIR_UNKNOWN} Direction;
 
 #endif

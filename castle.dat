@@ -29,26 +29,26 @@
 #l:18|l_peak_hedge|133|16|1|1|
 #l:19|l_mine_hedge|121|16|1|1|
 
-#o:11|dirk|11|short rusted edge.
-#o:12|lid|12|old braced wood.
-#o:13|mail|13|heavy iron mesh.
-#o:14|bow|14|bent yew wood.
-#o:15|vial|14|bright red fluid.
-#o:16|key|15|black runic metal.
-#o:17|twig|11|dry wood to burn.
-#o:18|wax|14|black endless wax.
-#o:19|fig|14|shriveled gray fruit.
-#o:20|book|131|old skin pages.
-#o:21|ring|133|gold with blue gem.
-#o:22|coin|12|dirty silver coin.
-#o:23|map|11|blurred paper lines.
-#o:24|rope|15|strong hemp cord.
-#o:25|bone|121|some warrior remains.
-#o:26|loaf|14|piece of hard bread.
-#o:27|cup|13|silver with wolves.
-#o:28|wand|133|wood with live magic.
-#o:29|helm|121|steel with dents.
-#o:30|dust|132|fine star sand.
+#o:11|dirk|11|short rusted edge.|0|1|-1|-1|0|0
+#o:12|lid|12|old braced wood.|0|1|-1|-1|0|0
+#o:13|mail|13|heavy iron mesh.|0|1|-1|-1|0|0
+#o:14|bow|14|bent yew wood.|0|1|-1|-1|0|0
+#o:15|vial|14|bright red fluid.|2|1|-1|-1|0|0
+#o:16|key|15|black runic metal.|0|1|-1|3|0|0
+#o:17|portal|11|A glowing magic stone.|0|1|-1|-1|1|1
+#o:18|wax|14|black endless wax.|0|1|-1|-1|0|0
+#o:19|fig|14|shriveled gray fruit.|1|1|-1|-1|0|0
+#o:20|book|131|old skin pages.|0|1|-1|-1|0|0
+#o:21|ring|133|gold with blue gem.|0|1|-1|-1|0|0
+#o:22|coin|12|dirty silver coin.|0|1|-1|-1|0|0
+#o:23|map|11|blurred paper lines.|0|1|-1|-1|0|0
+#o:24|rope|15|strong hemp cord.|0|1|-1|-1|0|0
+#o:25|bone|121|some warrior remains.|0|1|-1|-1|0|0
+#o:26|loaf|14|piece of hard bread.|1|1|-1|-1|0|0
+#o:27|cup|13|silver with wolves.|0|1|-1|-1|0|0
+#o:28|wand|133|wood with live magic.|0|1|-1|-1|0|0
+#o:29|helm|121|steel with dents.|0|1|-1|-1|0|0
+#o:30|dust|132|fine star sand.|0|1|-1|-1|0|0
 
 #c:1|void| \Vo/ |5|0|...die...|12|
 #c:2|seer| \Se/ |5|1|the path is dark.|11|

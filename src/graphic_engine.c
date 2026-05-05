@@ -302,7 +302,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->descript, str);
   screen_area_puts(ge->descript, "  =========================================");
 
-  sprintf(str, "  > Current Location : %ld", game_get_player_location(game));
+  sprintf(str, "  > Current Location : %ld (%s)", game_get_player_location(game), space_get_name(game_get_space(game, game_get_player_location(game))));
   screen_area_puts(ge->descript, str);
 
   {
@@ -341,7 +341,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       Space *o_space = game_get_space(game, o_loc);
       if (o_space && space_get_discovered(o_space) == TRUE)
       {
-        sprintf(str, "   [Obj] %-10s at Space %ld", object_get_name(o), o_loc);
+        sprintf(str, "   [Obj] %-10s at Space %ld (%s)", object_get_name(o), o_loc, space_get_name(o_space));
         screen_area_puts(ge->descript, str);
       }
     }
@@ -356,7 +356,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       Space *c_space = game_get_space(game, c_loc);
       if (c_space && space_get_discovered(c_space) == TRUE)
       {
-        sprintf(str, "   [Chr] %-6s at Space %ld (HP:%d)", character_get_gdesc(c), c_loc, character_get_health(c));
+        sprintf(str, "   [Chr] %-6s at Space %ld (%s) (HP:%d)", character_get_gdesc(c), c_loc, space_get_name(c_space), character_get_health(c));
         screen_area_puts(ge->descript, str);
       }
     }
@@ -375,16 +375,27 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       for (i = 1; i <= MAX_OBJECTS; i++)
       {
         o = game_get_object(game, i);
-        if (o && strcasecmp(object_get_name(o), arg_name) == 0)
+        if (player_has_object(player, object_get_id(o)) == TRUE ||
+            space_has_object(game_get_space(game, p_loc), object_get_id(o)) == TRUE)
         {
-          if (player_has_object(player, object_get_id(o)) == TRUE ||
-              space_has_object(game_get_space(game, p_loc), object_get_id(o)) == TRUE)
+          char clean_desc[255];
+          int k;
+
+          strcpy(clean_desc, object_get_description(o));
+
+          for (k = 0; clean_desc[k] != '\0'; k++)
           {
-            sprintf(str, "  [INSPECT] %s", object_get_description(o));
-            screen_area_puts(ge->descript, str);
-            found = 1;
-            break;
+            if (clean_desc[k] == '\n' || clean_desc[k] == '\r')
+            {
+              clean_desc[k] = '\0';
+              break;
+            }
           }
+
+          sprintf(str, "  [INSPECT] %s", clean_desc);
+          screen_area_puts(ge->descript, str);
+          found = 1;
+          break;
         }
       }
       if (!found)
@@ -412,46 +423,62 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
 
+if (last_cmd == TELEPORT) {
+    const char *dest_name = command_get_arg(game_get_last_command(game));
+    Space *current_space = game_get_space(game, p_loc);
+    
+    if (!dest_name || dest_name[0] == '\0') {
+      screen_area_puts(ge->descript, "  [TELEPORT] Usage: tp <room_name>");
+    } else if (current_space && strcasecmp(space_get_name(current_space), dest_name) == 0) {
+
+      sprintf(str, "  [TELEPORT] Arrived at Space %ld: %s", p_loc, dest_name);
+      screen_area_puts(ge->descript, str);
+    } else {
+
+      screen_area_puts(ge->descript, "  [TELEPORT] Failed. Invalid room or no device.");
+    }
+  }
 
   sprintf(str, "                                             THE HAUNTED CASTLE");
   screen_area_puts(ge->banner, str);
 
   screen_area_clear(ge->help);
 
-  sprintf(str, " Commands: move(m) [dir] | take(t) [obj] | drop(d) [obj] | attack(a) | chat(c)");
+  sprintf(str, "           inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | tp [room] | exit(e)");
   screen_area_puts(ge->help, str);
   sprintf(str, "           inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | exit(e)");
   screen_area_puts(ge->help, str);
 
-/* Asignamos un color diferente a cada uno de los 8 posibles jugadores */
-  switch (player_get_id(player)) {
-    case 1:
-      screen_paint(CYAN);
-      break;
-    case 2:
-      screen_paint(GREEN);
-      break;
-    case 3:
-      screen_paint(YELLOW);
-      break;
-    case 4:
-      screen_paint(PURPLE);
-      break;
-    case 5:
-      screen_paint(RED);
-      break;
-    case 6:
-      screen_paint(BLUE);
-      break;
-    case 7:
-      screen_paint(WHITE);
-      break;
-    case 8:
-      screen_paint(BLACK); 
-      break;
-    default:
-      screen_paint(WHITE); 
-      break;
+  /* Asignamos un color diferente a cada uno de los 8 posibles jugadores */
+  switch (player_get_id(player))
+  {
+  case 1:
+    screen_paint(CYAN);
+    break;
+  case 2:
+    screen_paint(GREEN);
+    break;
+  case 3:
+    screen_paint(YELLOW);
+    break;
+  case 4:
+    screen_paint(PURPLE);
+    break;
+  case 5:
+    screen_paint(RED);
+    break;
+  case 6:
+    screen_paint(BLUE);
+    break;
+  case 7:
+    screen_paint(WHITE);
+    break;
+  case 8:
+    screen_paint(BLACK);
+    break;
+  default:
+    screen_paint(WHITE);
+    break;
   }
 
   printf("prompt:> ");

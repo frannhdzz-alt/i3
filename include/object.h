@@ -165,4 +165,38 @@ Status object_set_open(Object* object, Id open);
  */
 Id object_get_open(Object* object);
 
+/**
+ * @brief Sets the teleportation property of an object
+ * @author Francisco
+ * @param object pointer to the object
+ * @param can_tp TRUE if the object allows teleportation, FALSE otherwise
+ * @return OK if successful, ERROR if the pointer is NULL
+ */
+Status object_set_can_teleport(Object *object, Bool can_tp);
+
+/**
+ * @brief Gets the teleportation property of an object
+ * @author Francisco
+ * @param object pointer to the object
+ * @return TRUE if the object allows teleportation, FALSE otherwise or if the pointer is NULL
+ */
+Bool object_get_can_teleport(Object *object);
+
+/**
+ * @brief Sets the single-use property of an object
+ * @author Francisco
+ * @param object pointer to the object
+ * @param su TRUE if the object is consumed upon use, FALSE otherwise
+ * @return OK if successful, ERROR if the pointer is NULL
+ */
+Status object_set_single_use(Object *object, Bool su);
+
+/**
+ * @brief Gets the single-use property of an object
+ * @author Francisco
+ * @param object pointer to the object
+ * @return TRUE if the object is single-use, FALSE otherwise or if the pointer is NULL
+ */
+Bool object_get_single_use(Object *object);
+
 #endif

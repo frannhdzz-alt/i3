@@ -24,22 +24,30 @@ Status game_load_characters(Game *game, char *filename);
 Status game_load_players(Game *game, char *filename);
 Status game_load_links(Game *game, char *filename);
 
-Status game_create_from_file(Game **game, char *filename) {
-  if (game_create(game) == ERROR) {
+
+Status game_create_from_file(Game **game, char *filename)
+{
+  if (game_create(game) == ERROR)
+  {
     return ERROR;
   }
 
-  if (game_load_spaces(*game, filename) == ERROR) return ERROR;
-  if (game_load_links(*game, filename) == ERROR) return ERROR;
-  if (game_load_objects(*game, filename) == ERROR) return ERROR;
-  if (game_load_players(*game, filename) == ERROR) return ERROR;
-  if (game_load_characters(*game, filename) == ERROR) return ERROR;
-
+  if (game_load_spaces(*game, filename) == ERROR)
+    return ERROR;
+  if (game_load_links(*game, filename) == ERROR)
+    return ERROR;
+  if (game_load_objects(*game, filename) == ERROR)
+    return ERROR;
+  if (game_load_players(*game, filename) == ERROR)
+    return ERROR;
+  if (game_load_characters(*game, filename) == ERROR)
+    return ERROR;
 
   return OK;
 }
 
-Status game_load_spaces(Game *game, char *filename) {
+Status game_load_spaces(Game *game, char *filename)
+{
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
@@ -49,28 +57,34 @@ Status game_load_spaces(Game *game, char *filename) {
   Status status = OK;
   int i;
 
-  if (!filename) return ERROR;
+  if (!filename)
+    return ERROR;
 
   file = fopen(filename, "r");
-  if (!file) return ERROR;
+  if (!file)
+    return ERROR;
 
-  while (fgets(line, WORD_SIZE, file)) {
-    if (strncmp("#s:", line, 3) == 0) {
+  while (fgets(line, WORD_SIZE, file))
+  {
+    if (strncmp("#s:", line, 3) == 0)
+    {
 
       toks = strtok(line + 3, "|");
       id = atol(toks);
-      
+
       toks = strtok(NULL, "|");
       strcpy(name, toks);
 
       space = space_create(id);
-      if (space != NULL) {
+      if (space != NULL)
+      {
         space_set_name(space, name);
 
-
-        for (i = 0; i < 5; i++) {
+        for (i = 0; i < 5; i++)
+        {
           toks = strtok(NULL, "|");
-          if (toks) {
+          if (toks)
+          {
             space_set_gdesc(space, i, toks);
           }
         }
@@ -79,72 +93,99 @@ Status game_load_spaces(Game *game, char *filename) {
     }
   }
 
-  if (ferror(file)) status = ERROR;
+  if (ferror(file))
+    status = ERROR;
   fclose(file);
   return status;
 }
 
-Status game_load_objects(Game *game, char *filename) {
+Status game_load_objects(Game *game, char *filename)
+{
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
-  char name[WORD_SIZE] = "";
-  char *toks = NULL;
-  Id id = NO_ID, location = NO_ID;
-  Object *object = NULL;
   Status status = OK;
-  
-  int health = 0, movable = 0;
-  Id dependency = NO_ID, open = NO_ID;
 
-  if (!filename) return ERROR;
+  if (!filename)
+    return ERROR;
 
   file = fopen(filename, "r");
-  if (file == NULL) return ERROR;
+  if (file == NULL)
+    return ERROR;
 
-  while (fgets(line, WORD_SIZE, file)) {
-    if (strncmp("#o:", line, 3) == 0) {
-      toks = strtok(line + 3, "|");
-      id = atol(toks);
-      
-      toks = strtok(NULL, "|");
-      strcpy(name, toks);
-      
-      toks = strtok(NULL, "|");
-      location = atol(toks);
+  while (fgets(line, WORD_SIZE, file))
+  {
+    if (strncmp("#o:", line, 3) == 0)
+    {
+      char name[WORD_SIZE] = "", desc[WORD_SIZE] = "";
+      Id id = NO_ID, location = NO_ID, dependency = NO_ID, open_link = NO_ID;
+      int health = 0, movable = 0, can_tp = 0, single_use = 0;
+      Object *object = NULL;
+
+      char *toks = strtok(line + 3, "|");
+      if (toks)
+        id = atol(toks);
 
       toks = strtok(NULL, "|");
+      if (toks)
+        strcpy(name, toks);
+
+      toks = strtok(NULL, "|");
+      if (toks)
+        location = atol(toks);
+
+      toks = strtok(NULL, "|");
+      if (toks)
+        strcpy(desc, toks);
+
+      toks = strtok(NULL, "|");
+      if (toks)
+        health = atoi(toks);
+
+      toks = strtok(NULL, "|");
+      if (toks)
+        movable = atoi(toks);
+
+      toks = strtok(NULL, "|");
+      if (toks)
+        dependency = atol(toks);
+
+      toks = strtok(NULL, "|");
+      if (toks)
+        open_link = atol(toks);
+
+      toks = strtok(NULL, "|");
+      if (toks)
+        can_tp = atoi(toks);
+
+      toks = strtok(NULL, "|\r\n");
+      if (toks)
+        single_use = atoi(toks);
 
       object = object_create(id);
-      if (object != NULL) {
+      if (object != NULL)
+      {
         object_set_name(object, name);
-        if (toks) object_set_description(object, toks);
-
-        toks = strtok(NULL, "|");
-        if (toks) health = atoi(toks);
+        object_set_description(object, desc);
         object_set_health(object, health);
-
-        toks = strtok(NULL, "|");
-        if (toks) movable = atoi(toks);
         object_set_movable(object, movable == 1 ? TRUE : FALSE);
-
-        toks = strtok(NULL, "|");
-        if (toks) dependency = atol(toks);
         object_set_dependency(object, dependency);
-        toks = strtok(NULL, "|\r\n");
-        if (toks) open = atol(toks);
-        object_set_open(object, open);
+        object_set_open(object, open_link);
+        object_set_can_teleport(object, can_tp == 1 ? TRUE : FALSE);
+        object_set_single_use(object, single_use == 1 ? TRUE : FALSE);
         game_add_object(game, object);
         game_set_object_location(game, location, id);
       }
     }
   }
 
-  if (ferror(file)) status = ERROR;
+  if (ferror(file))
+    status = ERROR;
   fclose(file);
   return status;
 }
 
-Status game_load_characters(Game *game, char *filename) {
+Status game_load_characters(Game *game, char *filename)
+{
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
@@ -156,53 +197,60 @@ Status game_load_characters(Game *game, char *filename) {
   Character *character = NULL;
   Status status = OK;
 
-  if (!filename) return ERROR;
+  if (!filename)
+    return ERROR;
 
   file = fopen(filename, "r");
-  if (file == NULL) return ERROR;
+  if (file == NULL)
+    return ERROR;
 
-  while (fgets(line, WORD_SIZE, file)) {
-    if (strncmp("#c:", line, 3) == 0) {
+  while (fgets(line, WORD_SIZE, file))
+  {
+    if (strncmp("#c:", line, 3) == 0)
+    {
       toks = strtok(line + 3, "|");
       id = atol(toks);
-      
+
       toks = strtok(NULL, "|");
       strcpy(name, toks);
-      
+
       toks = strtok(NULL, "|");
       strcpy(gdesc, toks);
-      
+
       toks = strtok(NULL, "|");
       health = atoi(toks);
-      
+
       toks = strtok(NULL, "|");
       friendly = atoi(toks);
-      
+
       toks = strtok(NULL, "|");
       strcpy(message, toks);
-  
+
       toks = strtok(NULL, "|\r\n");
       location = atol(toks);
 
       character = character_create(id);
-      if (character != NULL) {
+      if (character != NULL)
+      {
         character_set_name(character, name);
         character_set_gdesc(character, gdesc);
         character_set_health(character, health);
         character_set_friendly(character, friendly == 1 ? TRUE : FALSE);
         character_set_message(character, message);
         game_add_character(game, character);
-        game_set_character_location(game, location, id); 
+        game_set_character_location(game, location, id);
       }
     }
   }
 
-  if (ferror(file)) status = ERROR;
+  if (ferror(file))
+    status = ERROR;
   fclose(file);
   return status;
 }
 
-Status game_load_players(Game *game, char *filename) {
+Status game_load_players(Game *game, char *filename)
+{
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
@@ -213,32 +261,37 @@ Status game_load_players(Game *game, char *filename) {
   Player *player = NULL;
   Status status = OK;
 
-  if (!filename) return ERROR;
+  if (!filename)
+    return ERROR;
 
   file = fopen(filename, "r");
-  if (!file) return ERROR;
+  if (!file)
+    return ERROR;
 
-  while (fgets(line, WORD_SIZE, file)) {
-    if (strncmp("#p:", line, 3) == 0) {
+  while (fgets(line, WORD_SIZE, file))
+  {
+    if (strncmp("#p:", line, 3) == 0)
+    {
       toks = strtok(line + 3, "|");
       id = atol(toks);
-      
+
       toks = strtok(NULL, "|");
       strcpy(name, toks);
-      
+
       toks = strtok(NULL, "|");
       strcpy(gdesc, toks);
-      
+
       toks = strtok(NULL, "|");
       location = atol(toks);
-      
+
       toks = strtok(NULL, "|");
       health = atoi(toks);
-      
+
       toks = strtok(NULL, "|");
 
       player = player_create(id);
-      if (player != NULL) {
+      if (player != NULL)
+      {
         player_set_name(player, name);
         player_set_gdesc(player, gdesc);
         player_set_location(player, location);
@@ -249,12 +302,14 @@ Status game_load_players(Game *game, char *filename) {
     }
   }
 
-  if (ferror(file)) status = ERROR;
+  if (ferror(file))
+    status = ERROR;
   fclose(file);
   return status;
 }
 
-Status game_load_links(Game *game, char *filename) {
+Status game_load_links(Game *game, char *filename)
+{
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
@@ -265,46 +320,51 @@ Status game_load_links(Game *game, char *filename) {
   Link *link = NULL;
   Status status = OK;
 
-  if (!filename) return ERROR;
+  if (!filename)
+    return ERROR;
 
   file = fopen(filename, "r");
-  if (!file) return ERROR;
+  if (!file)
+    return ERROR;
 
-  while (fgets(line, WORD_SIZE, file)) {
-    if (strncmp("#l:", line, 3) == 0) {
+  while (fgets(line, WORD_SIZE, file))
+  {
+    if (strncmp("#l:", line, 3) == 0)
+    {
       toks = strtok(line + 3, "|");
       id = atol(toks);
-      
+
       toks = strtok(NULL, "|");
       strcpy(name, toks);
-      
+
       toks = strtok(NULL, "|");
       origin = atol(toks);
-      
+
       toks = strtok(NULL, "|");
       dest = atol(toks);
-      
+
       toks = strtok(NULL, "|");
       dir = (Direction)atoi(toks);
-      
+
       toks = strtok(NULL, "|");
       open = atoi(toks);
 
       link = link_create(id);
-      if (link != NULL) {
+      if (link != NULL)
+      {
         link_set_name(link, name);
         link_set_origin(link, origin);
         link_set_destination(link, dest);
         link_set_direction(link, dir);
         link_set_open(link, open == 1 ? TRUE : FALSE);
-        
-        game_add_link(game, link); 
+
+        game_add_link(game, link);
       }
     }
   }
 
-  if (ferror(file)) status = ERROR;
+  if (ferror(file))
+    status = ERROR;
   fclose(file);
   return status;
 }
-

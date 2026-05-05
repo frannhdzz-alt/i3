@@ -26,6 +26,8 @@ struct _Object {
   Bool movable;                     /*!< TRUE if the object can be moved */
   Id dependency;                    /*!< Id of the object required to take this one */
   Id open;                          /*!< Id of the link this object can open */
+  Bool can_teleport;                /*!< TRUE if the object allows teleportation */ 
+  Bool single_use;                  /*!< TRUE if the object is single-use */
 };
 
 Object* object_create(Id id) {
@@ -44,6 +46,8 @@ Object* object_create(Id id) {
   newObject->movable = FALSE;
   newObject->dependency = NO_ID;
   newObject->open = NO_ID;
+  newObject->can_teleport = FALSE;
+  newObject->single_use = FALSE;
 
   return newObject;
 }
@@ -147,4 +151,26 @@ Status object_set_open(Object* object, Id open) {
 Id object_get_open(Object* object) {
   if (!object) return NO_ID;
   return object->open;
+}
+
+Status object_set_can_teleport(Object *object, Bool can_tp) {
+  if (!object) return ERROR;
+  object->can_teleport = can_tp;
+  return OK;
+}
+
+Bool object_get_can_teleport(Object *object) {
+  if (!object) return FALSE;
+  return object->can_teleport;
+}
+
+Status object_set_single_use(Object *object, Bool su) {
+  if (!object) return ERROR;
+  object->single_use = su;
+  return OK;
+}
+
+Bool object_get_single_use(Object *object) {
+  if (!object) return FALSE;
+  return object->single_use;
 }

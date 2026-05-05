@@ -423,19 +423,25 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
 
-if (last_cmd == TELEPORT) {
+  if (last_cmd == TELEPORT)
+  {
     const char *dest_name = command_get_arg(game_get_last_command(game));
     Space *current_space = game_get_space(game, p_loc);
-    
-    if (!dest_name || dest_name[0] == '\0') {
+
+    if (!dest_name || dest_name[0] == '\0')
+    {
       screen_area_puts(ge->descript, "  [TELEPORT] Usage: tp <room_name>");
-    } else if (current_space && strcasecmp(space_get_name(current_space), dest_name) == 0) {
+    }
+    else if (current_space && strcasecmp(space_get_name(current_space), dest_name) == 0)
+    {
 
       sprintf(str, "  [TELEPORT] Arrived at Space %ld: %s", p_loc, dest_name);
       screen_area_puts(ge->descript, str);
-    } else {
+    }
+    else
+    {
 
-      screen_area_puts(ge->descript, "  [TELEPORT] Failed. Invalid room or no device.");
+      screen_area_puts(ge->descript, "  [TELEPORT] Failed (Invalid room/device)");
     }
   }
 
@@ -444,12 +450,11 @@ if (last_cmd == TELEPORT) {
 
   screen_area_clear(ge->help);
 
+  sprintf(str, " Commands: move(m) [dir] | take(t) [obj] | drop(d) [obj] | attack(a) | chat(c)");
+  screen_area_puts(ge->help, str);
   sprintf(str, "           inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | tp [room] | exit(e)");
   screen_area_puts(ge->help, str);
-  sprintf(str, "           inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | exit(e)");
-  screen_area_puts(ge->help, str);
 
-  /* Asignamos un color diferente a cada uno de los 8 posibles jugadores */
   switch (player_get_id(player))
   {
   case 1:

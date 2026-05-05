@@ -1,82 +1,78 @@
 # =============================================================
-# DATA FILE: HELIOS STATION 
+# DATA FILE: HELIOS STATION (FINAL UI FIX)
 # =============================================================
 
-# --- SPACES (12) ---
-# Format: #s:id|name|graphic1|graphic2|graphic3|description|discovered
-#s:11|Loading Bay| ^^^ | / \ | ___ |Main entry for cargo ships.|0
-#s:12|Service Corridor| | | | | | | | | |Narrow maintenance path.|0
-#s:13|Crew Quarters| [ ] | zZz | ___ |Personal cabins for the staff.|0
-#s:14|Canteen| / \ | \ / | ___ |Smells like synthetic protein.|0
-#s:15|Medbay:  +  | [ ] | ___ |Advanced medical facility.|0
-#s:16|Greenhouse| \i/ | -+- | / \ |Experimental hydroponic garden.|0
-#s:17|Server Room| ||| | ||| | ||| |AI Core processing center.|0
-#s:18|Reactor| ( ) | / \ | \ / |Warning: High radiation levels.|0
-#s:19|Bridge| / \ | O_o | \ / |Main command and control deck.|0
-#s:20|Airlock| | | | | | | ___ |Depressurization danger zone.|0
-#s:21|Engine Room| ⚙⚙⚙ | /_\ | ___ |Main propulsion control.|0
-#s:22|Escape Pod| <=> | [-] | ___ |Last chance for survival.|0
+# --- SPACES ---
+# Format: #s: ID | Name | g1 | g2 | g3 | g4 | g5 |
+#s:11|Dock Bay| ^^^ | / \ | ___ |     |     |
+#s:12|Corridor| l l | l l | l l |     |     |
+#s:13|Quarters| [ ] | zZz | ___ |     |     |
+#s:14|Canteen| / \ | \ / | ___ |     |     |
+#s:15|Medbay|  +  | [ ] | ___ |     |     |
+#s:16|Garden| \i/ | -+- | / \ |     |     |
+#s:17|Servers| [I] | [I] | [I] |     |     |
+#s:18|Reactor| ( ) | / \ | \ / |     |     |
+#s:19|Bridge| / \ | O_o | \ / |     |     |
+#s:20|Airlock| l l | l l | ___ |     |     |
+#s:21|Engines| 000 | /_\ | ___ |     |     |
+#s:22|Pod| <=> | [-] | ___ |     |     |
 
-# --- LINKS (22) ---
-# Format: #l:id|name|origin|destination|direction|open
-#l:1|L_Bay_Hall|11|12|0|1
-#l:2|L_Hall_Bay|12|11|1|1
-#l:3|L_Hall_Reactor|12|18|2|1
-#l:4|L_Reactor_Hall|18|12|3|1
-#l:5|L_Up_to_Servers|12|17|4|1
-#l:6|L_Down_to_Service|17|12|5|1
-#l:7|L_Server_Quarters|17|13|3|1
-#l:8|L_Quarters_Server|13|17|2|1
-#l:9|L_Server_Canteen|17|14|0|1
-#l:10|L_Canteen_Server|14|17|1|1
-#l:11|L_Server_Medbay|17|15|2|1
-#l:12|L_Medbay_Server|15|17|3|1
-#l:13|L_Medbay_Greenhouse|15|16|0|1
-#l:14|L_Greenhouse_Medbay|16|15|1|1
-#l:15|L_Up_to_Bridge|17|19|4|0
-#l:16|L_Down_to_Servers|19|17|5|1
-#l:17|L_Bridge_Airlock|19|20|0|1
-#l:20|L_Airlock_Bridge|20|19|1|1
-#l:21|L_Airlock_Pod|20|22|0|0
-#l:22|L_Pod_Airlock|22|20|1|1
+# --- LINKS ---
+# Format: #l: ID | Name | Origin | Dest | Direction | Open
+#l:1|L_Bay_Cor|11|12|1|1
+#l:2|L_Cor_Bay|12|11|0|1
+#l:3|L_Cor_Rea|12|18|2|1
+#l:4|L_Rea_Cor|18|12|3|1
+#l:5|L_Up_Serv|12|17|4|1
+#l:6|L_Dwn_Cor|17|12|5|1
+#l:7|L_Ser_Qrt|17|13|3|1
+#l:8|L_Qrt_Ser|13|17|2|1
+#l:9|L_Ser_Can|17|14|0|1
+#l:10|L_Can_Ser|14|17|1|1
+#l:11|L_Ser_Med|17|15|2|1
+#l:12|L_Med_Ser|15|17|3|1
+#l:13|L_Med_Gar|15|16|0|1
+#l:14|L_Gar_Med|16|15|1|1
+#l:15|L_Up_Bdg|17|19|4|0
+#l:16|L_Dwn_Ser|19|17|5|1
+#l:17|L_Bdg_Air|19|20|1|1
+#l:20|L_Air_Bdg|20|19|0|1
+#l:21|L_Air_Pod|20|22|1|0
+#l:22|L_Pod_Air|22|20|0|1
 
-# --- OBJECTS (25) ---
-# Format: #o:id|name|location|description|movable|dependency|opens|health
-#o:1|Level_1_Card|11|Blue security card.|1|-1|15|0
-#o:2|Plasma_Cutter|12|Industrial tool.|1|-1|-1|0
-#o:3|Space_Suit|13|Anti-vacuum gear.|1|-1|-1|0
-#o:4|Oxygen_Tank|15|Breathable air.|1|-1|-1|0
-#o:5|Ion_Battery|18|Power cell.|1|-1|-1|0
-#o:6|Extinguisher|14|Safety equipment.|1|-1|-1|0
-#o:7|Medkit|15|Heals wounds.|1|-1|-1|5
-#o:8|Adrenaline|13|Quick boost.|1|-1|-1|2
-#o:9|Motion_Tracker|17|Ping... ping...|1|-1|-1|0
-#o:10|Captains_Log|19|Digital records.|1|-1|-1|0
-#o:11|Broken_Tablet|11|Worthless now.|1|-1|-1|0
-#o:12|Medical_File|15|Patient zero data.|1|-1|-1|0
-#o:13|Nutrient_Bar|14|Tastes like ash.|1|-1|-1|1
-#o:14|Coffee_Mug|14|World's Best Dad.|1|-1|-1|0
-#o:15|Master_Fuse|18|Critical part.|1|-1|-1|0
-#o:16|Iron_Pipe|12|Heavy and cold.|1|-1|-1|0
-#o:17|AI_Module|17|Mother's brain.|1|9|-1|0
-#o:18|Xeno_Sample|16|Acidic tissue.|1|-1|-1|-1
-#o:19|Old_Radio|19|Faint static.|1|-1|-1|0
-#o:20|Flare_Gun|11|Signal for help.|1|-1|-1|0
-#o:21|Level_3_Card|19|Red security card.|1|-1|21|0
-#o:22|Engine_Key|21|Mechanical tool.|1|-1|-1|0
-#o:23|Weld_Torch|21|Hot and bright.|1|-1|-1|0
-#o:24|Escape_Manual|22|Step 1: Run.|1|-1|-1|0
-#o:25|Strange_Statue|13|Ominous relic.|1|-1|-1|0
+# --- OBJECTS ---
+# Format: #o: ID | Name | Location | Desc | Health | Movable | Dependency | OpenLink | CanTP | SingleUse
+#o:1|Card_1|11|Blue card.|0|1|-1|15|0|0
+#o:2|Cutter|12|Laser tool.|0|1|-1|-1|0|0
+#o:3|Suit|13|Vacuum gear.|0|1|-1|-1|0|0
+#o:4|O2_Tank|15|Air supply.|0|1|-1|-1|0|0
+#o:5|Battery|18|Power cell.|0|1|-1|-1|0|0
+#o:6|Exting.|14|For fires.|0|1|-1|-1|0|0
+#o:7|Medkit|15|Heals you.|5|1|-1|-1|0|1
+#o:8|Stim|13|Quick boost.|2|1|-1|-1|0|1
+#o:9|Tracker|17|Motion ping.|0|1|-1|-1|0|0
+#o:10|Log|19|Data record.|0|1|-1|-1|0|0
+#o:11|Tablet|11|Broken pad.|0|1|-1|-1|0|0
+#o:12|MedFile|15|Patient 0.|0|1|-1|-1|0|0
+#o:13|Food|14|Tastes bad.|1|1|-1|-1|0|1
+#o:14|Mug|14|Best Boss.|0|1|-1|-1|0|0
+#o:15|Fuse|18|Spare part.|0|1|-1|-1|0|0
+#o:16|Pipe|12|Heavy metal.|0|1|-1|-1|0|0
+#o:17|AI_Core|17|Main brain.|0|1|9|-1|0|0
+#o:18|Sample|16|Acidic blob.|-1|1|-1|-1|0|0
+#o:19|Radio|19|SOS signal.|0|1|-1|-1|0|0
+#o:20|Flare|11|Red light.|0|1|-1|-1|0|1
+#o:21|Card_3|19|Red card.|0|1|-1|21|0|0
 
-# --- PLAYERS (2) ---
-# Format: #p:id|name|location|health|max_health
-#p:1|Ripley|11|5|5
-#p:2|Dallas|13|5|5
+# --- PLAYERS ---
+# Format: #p: ID | Name | gdesc | Location | Health | Extra
+#p:1|Ripley|O_o|11|5|0
+#p:2|Dallas|-_-|13|5|0
 
-# --- CHARACTERS (5) ---
-# Format: #c:id|name|location|health|friendly|message
-#c:1|Xenomorph|18|10|0|Hiss...
-#c:2|Engineer|13|3|1|Watch the airlock!
-#c:3|Medical_Unit|15|5|1|Treatment required.
-#c:4|Synthetic_Ash|17|4|0|I can't lie to you.
-#c:5|Jonesy_Cat|14|2|1|Meow...
+# --- CHARACTERS ---
+# Format: #c: ID | Name | gdesc | Health | Friendly | Message | Location
+#c:1|Alien|/X\|10|0|Hiss...|18
+#c:2|Engie|+_+|3|1|Airlock!|13
+#c:3|Medic|[+]|5|1|Healing.|15
+#c:4|Ash|0_0|4|0|I cant lie.|17
+#c:5|Cat|=^.^=|2|1|Meow...|14

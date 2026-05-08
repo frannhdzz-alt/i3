@@ -690,3 +690,14 @@ const char *game_get_last_message(Game *game) {
     if (!game) return NULL;
     return game->last_message;
 }
+
+Player *game_get_player_by_id(Game *game, Id id) {
+  int i;
+  if (!game || id == NO_ID) return NULL;
+  for (i = 0; i < game->n_players; i++) {
+    if (game->players[i] != NULL && player_get_id(game->players[i]) == id) {
+      return game->players[i];
+    }
+  }
+  return NULL;
+}

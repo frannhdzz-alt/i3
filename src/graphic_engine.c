@@ -3,9 +3,7 @@
  *
  * @file graphic_engine.c
  * @author Rodrigo and Mario
- * @version 4.0
- * @date 05-04-2026
- * @copyright GNU Public License
+ * @version 9.0
  */
 
 #include "graphic_engine.h"
@@ -27,7 +25,7 @@
 #define WIDTH_BAN 25
 #define HEIGHT_MAP 24
 #define HEIGHT_BAN 1
-#define HEIGHT_HLP 2
+#define HEIGHT_HLP 3
 #define HEIGHT_FDB 3
 
 extern char *cmd_to_str[N_CMD][N_CMDT];
@@ -84,7 +82,8 @@ void _get_character_sym(Game *game, Id space_id, char *out_sym)
   if (char_id != NO_ID)
   {
     c = game_get_character(game, char_id);
-    if (c)
+    /* Solo dibujamos el personaje en el mapa si está vivo */
+    if (c && character_get_health(c) > 0)
     {
       strncpy(out_sym, character_get_gdesc(c), 6);
       out_sym[6] = '\0';
@@ -170,6 +169,7 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
+  static Id last_turn_player_id = 1;
 
   Id p_loc = NO_ID;
   Space *space_act = NULL, *space_back = NULL, *space_next = NULL;
@@ -177,6 +177,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   char str[512];
   int i;
+  int obj_count = 0; 
 
   CommandCode last_cmd = UNKNOWN;
 
@@ -185,12 +186,22 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   Object *o = NULL;
   Character *c = NULL;
   Id char_id = NO_ID;
+  
+  Player *cmd_player = NULL;
+  Id cmd_loc = NO_ID;
+  Space *cmd_space = NULL;
 
   if (!game)
     return;
 
   player = game_get_player(game);
   p_loc = game_get_player_location(game);
+
+  cmd_player = game_get_player_by_id(game, last_turn_player_id);
+  if (!cmd_player) cmd_player = player; 
+  
+  cmd_loc = player_get_location(cmd_player);
+  cmd_space = game_get_space(game, cmd_loc);
 
   /* Map Area */
   screen_area_clear(ge->map);
@@ -297,7 +308,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   screen_area_clear(ge->descript);
 
-  /* MODIFICACIÓN: Mostrar Nombre y Símbolo del Jugador */
   screen_area_puts(ge->descript, "  =========================================");
   if (player_get_name(player) && player_get_gdesc(player)) {
       sprintf(str, "  %s (%s) | HEALTH: %d pts", player_get_name(player), player_get_gdesc(player), player_get_health(player));
@@ -337,6 +347,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->descript, "  -----------------------------------------");
   screen_area_puts(ge->descript, "  VISIBLE ENTITIES (Discovered Spaces):");
 
+  obj_count = 0;
   for (i = 1; i <= MAX_OBJECTS; i++)
   {
     o = game_get_object(game, i);
@@ -346,17 +357,27 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       Space *o_space = game_get_space(game, o_loc);
       if (o_space && space_get_discovered(o_space) == TRUE)
       {
-        sprintf(str, "   [Obj] %-10s at %ld (%s)", object_get_name(o), o_loc, space_get_name(o_space));
-        screen_area_puts(ge->descript, str);
+        if (obj_count < 10) 
+        {
+          sprintf(str, "   [Obj] %-10s at %ld (%s)", object_get_name(o), o_loc, space_get_name(o_space));
+          screen_area_puts(ge->descript, str);
+        }
+        obj_count++;
       }
     }
   }
 
-  /* MODIFICACIÓN: Mostrar Personajes más compactos (Nombre, Dibujo, Sala) */
+  if (obj_count > 10) 
+  {
+      sprintf(str, "   [Obj] ... (+ %d hidden items)", obj_count - 10);
+      screen_area_puts(ge->descript, str);
+  }
+
   for (i = 1; i <= MAX_CHARACTERS; i++)
   {
     c = game_get_character(game, i);
-    if (c)
+    /* MODIFICACIÓN AQUÍ: Solo entra si el personaje tiene vida > 0 */
+    if (c && character_get_health(c) > 0)
     {
       Id c_loc = game_get_character_location(game, i);
       Space *c_space = game_get_space(game, c_loc);
@@ -381,8 +402,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       for (i = 1; i <= MAX_OBJECTS; i++)
       {
         o = game_get_object(game, i);
-        if (player_has_object(player, object_get_id(o)) == TRUE ||
-            space_has_object(game_get_space(game, p_loc), object_get_id(o)) == TRUE)
+        if (player_has_object(cmd_player, object_get_id(o)) == TRUE ||
+            space_has_object(cmd_space, object_get_id(o)) == TRUE)
         {
           char clean_desc[255];
           int k;
@@ -411,16 +432,21 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   if (last_cmd == CHAT)
   {
-    if (space_act != NULL && (char_id = set_get_id_at(space_get_characters(space_act), 0)) != NO_ID)
+    if (cmd_space != NULL && (char_id = set_get_id_at(space_get_characters(cmd_space), 0)) != NO_ID)
     {
       c = game_get_character(game, char_id);
-      if (c != NULL)
+      /* Asegurarnos de que tampoco hablamos con muertos */
+      if (c != NULL && character_get_health(c) > 0)
       {
         if (character_get_friendly(c) == TRUE)
           sprintf(str, "  [CHAT] %s: \"%s\"", character_get_name(c), character_get_message(c));
         else
           sprintf(str, "  [CHAT] The %s is hostile!", character_get_name(c));
         screen_area_puts(ge->descript, str);
+      }
+      else
+      {
+        screen_area_puts(ge->descript, "  [CHAT] Nobody is here.");
       }
     }
     else
@@ -451,36 +477,37 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
 
-  /* MODIFICACIÓN: Nuevo Título en el Banner */
   sprintf(str, "                                   GUARDIANS OF THE GALAXY: ESCAPE FROM KYLN");
   screen_area_puts(ge->banner, str);
 
   screen_area_clear(ge->help);
 
-  /* MODIFICACIÓN: Mensajes de Reglas y Eventos justo encima de los Comandos */
+  sprintf(str, "                                                                                                              Commands: move(m) [dir] | take(t) [obj] | drop(d) [obj] | attack(a) | chat(c) | recruit(r) [char] ");
+  screen_area_puts(ge->help, str);
+  
+  sprintf(str, "  inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | tp [room] | exit(e) | abandon(ab) [char] ");
+  screen_area_puts(ge->help, str);
+
   if (game_get_last_message(game) != NULL && strlen(game_get_last_message(game)) > 0) {
       sprintf(str, "  >> EVENT: %s", game_get_last_message(game));
       screen_area_puts(ge->help, str); 
   } else {
-      screen_area_puts(ge->help, ""); /* Línea en blanco si no hay eventos */
+      screen_area_puts(ge->help, " ");
   }
-
-  sprintf(str, "  Commands: move(m)[dir] | take(t)[obj] | drop(d)[obj] | attack(a) | chat(c) | recruit(r)[char] | inspect(i)[obj] | use(u)[obj]");
-  screen_area_puts(ge->help, str);
 
   switch (player_get_id(player))
   {
   case 1:
-    screen_paint(CYAN);
+    screen_paint(BLACK);
     break;
   case 2:
-    screen_paint(GREEN);
+    screen_paint(PURPLE);
     break;
   case 3:
     screen_paint(YELLOW);
     break;
   case 4:
-    screen_paint(PURPLE);
+    screen_paint(GREEN);
     break;
   case 5:
     screen_paint(RED);
@@ -492,7 +519,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     screen_paint(WHITE);
     break;
   case 8:
-    screen_paint(BLACK);
+    screen_paint(CYAN);
     break;
   default:
     screen_paint(WHITE);
@@ -501,6 +528,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   screen_area_clear(ge->feedback);
   
-  /* El prompt nativo de libscreen */
+  last_turn_player_id = player_get_id(player);
+  
   printf("prompt:> ");
 }

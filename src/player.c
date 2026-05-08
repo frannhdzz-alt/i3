@@ -42,7 +42,6 @@ Player* player_create(Id id) {
   newPlayer->health = 5;
   newPlayer->gdesc[0] = '\0';
 
-  /* Create backpack with capacity 5 */
   newPlayer->backpack = inventory_create(5);
   if (!newPlayer->backpack) {
     free(newPlayer);

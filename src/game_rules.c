@@ -2,8 +2,10 @@
  * @brief It implements the game rules for Guardians of the Galaxy
  *
  * @file game_rules.c
- * @author Rodrigo, Mario and Francisco
- * @version 10.0
+ * @author Rodrigo
+ * @version 1.0
+ * @date 01-05-2026
+ * @copyright GNU Public License
  */
 
 #include "game_rules.h"
@@ -15,8 +17,8 @@
 #include <stdio.h>
 
 void game_rules_random_event(Game* game) {
-    /* 100% ANSI C COMPLIANT: Declaraciones al principio */
-    static Id last_turn_player_id = 1; /* MEMORIA DEL TURNO ANTERIOR */
+  
+    static Id last_turn_player_id = 1; 
     Player *p = NULL, *attacker = NULL;
     Id ronan_loc = NO_ID, attacker_id = NO_ID, random_dest = NO_ID;
     int health = 0, prob = 0, extra_dmg = 0;
@@ -48,9 +50,8 @@ void game_rules_random_event(Game* game) {
         if (ronan && character_get_health(ronan) > 0) {
             ronan_loc = game_get_character_location(game, 1);
             
-            /* Buscamos quién fue el que atacó basándonos en la memoria */
             attacker = game_get_player_by_id(game, last_turn_player_id);
-            if (!attacker) attacker = p; /* Fallback */
+            if (!attacker) attacker = p; 
 
             if (attacker && player_get_location(attacker) == ronan_loc) {
                 attacker_id = player_get_id(attacker);
@@ -86,7 +87,7 @@ void game_rules_random_event(Game* game) {
                 if (character_get_health(ronan) <= extra_dmg + 1) {
                     game_set_last_message(game, "*** VICTORY! RONAN HAS BEEN DEFEATED! ***");
                     game_set_finished(game, TRUE);
-                    /* Guardar la memoria antes de acabar el juego por seguridad */
+                   
                     last_turn_player_id = player_get_id(p);
                     return;
                 } else {
@@ -139,6 +140,5 @@ void game_rules_random_event(Game* game) {
         }
     }
 
-    /* ACTUALIZAR MEMORIA AL FINAL DEL TURNO */
     last_turn_player_id = player_get_id(p);
 }

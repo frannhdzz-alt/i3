@@ -1,9 +1,8 @@
 # =============================================================
-# DATA FILE: GUARDIANS OF THE GALAXY (15 SPACES - 3 FLOORS)
-# =============================================================
+# DATA FILE: GUARDIANS OF THE GALAXY
+# ===================================
 
 # --- SPACES (15) ---
-# Format: #s: ID | Name | g1 | g2 | g3 | g4 | g5 |
 #s:11|Cell|       | [lll] |  ME   | [lll] |       |
 #s:12|Block|       | : . : |  . .  | : . : |       |
 #s:13|Canteen|       | (___) | ( x ) | (___) |       |
@@ -21,10 +20,7 @@
 #s:27|Security|       | [CAM] |  ...  | [CAM] |       |
 
 # --- LINKS (28) ---
-# Format: #l: ID | Name | Origin | Dest | Direction | Open
-# (Directions: 0=North, 1=South, 2=East, 3=West, 4=Up, 5=Down)
 
-# -- PISO 1 (Bloque, Celda, Cafeteria, Duchas, Enfermeria) --
 #l:1|L_Cel_Blk|11|12|2|1
 #l:2|L_Blk_Cel|12|11|3|1
 #l:3|L_Blk_Can|12|13|0|1
@@ -34,7 +30,6 @@
 #l:7|L_Blk_Med|12|25|2|1
 #l:8|L_Med_Blk|25|12|3|1
 
-# -- PISO 2 (Torre, Armeria, Camara, Interrogatorio, Seguridad) --
 #l:9|L_Tow_Arm|15|16|2|0
 #l:10|L_Arm_Tow|16|15|3|1
 #l:11|L_Arm_Vlt|16|17|2|0
@@ -44,7 +39,6 @@
 #l:27|L_Tow_Sec|15|27|0|1
 #l:28|L_Sec_Tow|27|15|1|1
 
-# -- PISO 3 (Hangar y Milano) --
 #l:15|L_Hng_Air|18|19|2|1
 #l:16|L_Air_Hng|19|18|3|1
 #l:17|L_Air_Mil|19|20|2|1
@@ -54,14 +48,13 @@
 #l:21|L_Mil_Eng|20|22|1|1
 #l:22|L_Eng_Mil|22|20|0|1
 
-# -- ASCENSORES (Conectan los pisos) --
 #l:23|L_Blk_Tow|12|15|4|1
 #l:24|L_Tow_Blk|15|12|5|1
 #l:13|L_Tow_Hng|15|18|4|0
 #l:14|L_Hng_Tow|18|15|5|1
 
 # --- OBJECTS (20) ---
-# Format: #o: ID | Name | Location | Desc | Health | Movable | Dependency | OpenLink | CanTP | SingleUse
+
 #o:1|Walkman|11|Awesome Mix.|0|1|-1|-1|0|0
 #o:2|Tape|11|Music tape.|0|1|1|-1|0|0
 #o:3|Knife|26|Gamora blade.|0|1|-1|-1|0|0
@@ -84,12 +77,12 @@
 #o:20|Uniform|27|Nova uniform.|0|1|-1|-1|0|0
 
 # --- PLAYERS (2) ---
-# Format: #p: ID | Name | gdesc | Location | Health | Extra |
+
 #p:1|Starlord|O_o|11|10|0|
 #p:2|Gamora|-_-|13|10|0|
 
 # --- CHARACTERS (5) ---
-# Format: #c: ID | Name | gdesc | Health | Friendly | Message | Location
+
 #c:1|Ronan|/X\|15|0|I will find you!|17
 #c:2|Rocket|~*~|5|1|Need that eye!|14
 #c:3|Groot|\T/|8|1|I am Groot.|12

@@ -3,7 +3,7 @@
  *
  * @file graphic_engine.c
  * @author Rodrigo and Mario
- * @version 3.0
+ * @version 4.0
  * @date 05-04-2026
  * @copyright GNU Public License
  */
@@ -297,8 +297,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   screen_area_clear(ge->descript);
 
+  /* MODIFICACIÓN: Mostrar Nombre y Símbolo del Jugador */
   screen_area_puts(ge->descript, "  =========================================");
-  sprintf(str, "    PLAYER %ld STATUS   |   HEALTH: %d pts", player_get_id(player), player_get_health(player));
+  if (player_get_name(player) && player_get_gdesc(player)) {
+      sprintf(str, "  %s (%s) | HEALTH: %d pts", player_get_name(player), player_get_gdesc(player), player_get_health(player));
+  } else {
+      sprintf(str, "  PLAYER %ld STATUS   |   HEALTH: %d pts", player_get_id(player), player_get_health(player));
+  }
   screen_area_puts(ge->descript, str);
   screen_area_puts(ge->descript, "  =========================================");
 
@@ -341,12 +346,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       Space *o_space = game_get_space(game, o_loc);
       if (o_space && space_get_discovered(o_space) == TRUE)
       {
-        sprintf(str, "   [Obj] %-10s at Space %ld (%s)", object_get_name(o), o_loc, space_get_name(o_space));
+        sprintf(str, "   [Obj] %-10s at %ld (%s)", object_get_name(o), o_loc, space_get_name(o_space));
         screen_area_puts(ge->descript, str);
       }
     }
   }
 
+  /* MODIFICACIÓN: Mostrar Personajes más compactos (Nombre, Dibujo, Sala) */
   for (i = 1; i <= MAX_CHARACTERS; i++)
   {
     c = game_get_character(game, i);
@@ -356,7 +362,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       Space *c_space = game_get_space(game, c_loc);
       if (c_space && space_get_discovered(c_space) == TRUE)
       {
-        sprintf(str, "   [Chr] %-6s at Space %ld (%s) (HP:%d)", character_get_gdesc(c), c_loc, space_get_name(c_space), character_get_health(c));
+        sprintf(str, "   [Chr] %-8s (%s) at %ld (HP:%d)", character_get_name(c), character_get_gdesc(c), c_loc, character_get_health(c));
         screen_area_puts(ge->descript, str);
       }
     }
@@ -445,14 +451,21 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
 
-  sprintf(str, "                                             THE HAUNTED CASTLE");
+  /* MODIFICACIÓN: Nuevo Título en el Banner */
+  sprintf(str, "                                   GUARDIANS OF THE GALAXY: ESCAPE FROM KYLN");
   screen_area_puts(ge->banner, str);
 
   screen_area_clear(ge->help);
 
-    sprintf(str, "                                                                                                              Commands: move(m) [dir] | take(t) [obj] | drop(d) [obj] | attack(a) | chat(c) | recruit(r) [char] ");
-  screen_area_puts(ge->help, str);
-  sprintf(str, "  inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | tp [room] | exit(e) | abandon(f) [char] ");
+  /* MODIFICACIÓN: Mensajes de Reglas y Eventos justo encima de los Comandos */
+  if (game_get_last_message(game) != NULL && strlen(game_get_last_message(game)) > 0) {
+      sprintf(str, "  >> EVENT: %s", game_get_last_message(game));
+      screen_area_puts(ge->help, str); 
+  } else {
+      screen_area_puts(ge->help, ""); /* Línea en blanco si no hay eventos */
+  }
+
+  sprintf(str, "  Commands: move(m)[dir] | take(t)[obj] | drop(d)[obj] | attack(a) | chat(c) | recruit(r)[char] | inspect(i)[obj] | use(u)[obj]");
   screen_area_puts(ge->help, str);
 
   switch (player_get_id(player))
@@ -486,5 +499,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     break;
   }
 
+  screen_area_clear(ge->feedback);
+  
+  /* El prompt nativo de libscreen */
   printf("prompt:> ");
 }

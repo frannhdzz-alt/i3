@@ -399,4 +399,7 @@ Character* game_get_follower_by_index(Game *game, Id player_id, int index);
  */
 Status game_move_followers(Game *game, Id player_id, Id new_space_id);
 
+Status game_set_last_message(Game *game, const char *msg);
+const char *game_get_last_message(Game *game);
+
 #endif

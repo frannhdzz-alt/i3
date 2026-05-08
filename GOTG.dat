@@ -1,0 +1,79 @@
+# =============================================================
+# DATA FILE: GUARDIANS OF THE GALAXY (CENTERED GRAPHICS)
+# =============================================================
+
+# --- SPACES (12) ---
+# Format: #s: ID | Name | g1 | g2 | g3 | g4 | g5 |
+#s:11|Cell|       | [lll] |  ME   | [lll] |       |
+#s:12|Block|       | : . : |  . .  | : . : |       |
+#s:13|Canteen|       | (___) | ( x ) | (___) |       |
+#s:14|Showers|       | * * * |  . .  | * * * |       |
+#s:15|Tower|       |  /-\  |  O O  |  \_/  |       |
+#s:16|Armory|       |  >-<  |  [ ]  |  >-<  |       |
+#s:17|Vault|       | {   } | {Orb} | {   } |       |
+#s:18|Hangar|       |  ===  |  > <  |  ===  |       |
+#s:19|Airlock|       | +---+ |  ...  | +---+ |       |
+#s:20|Milano|       |  /_\  |  \ /  |  ===  |       |
+#s:21|Cockpit|       |  (o)  |  ---  |  ( )  |       |
+#s:22|Engine|       |  000  |  /_\  |  000  |       |
+
+# --- LINKS (22) ---
+# Format: #l: ID | Name | Origin | Dest | Direction | Open
+#l:1|L_Cel_Blk|11|12|1|1
+#l:2|L_Blk_Cel|12|11|0|1
+#l:3|L_Blk_Can|12|13|2|1
+#l:4|L_Can_Blk|13|12|3|1
+#l:5|L_Blk_Shw|12|14|3|1
+#l:6|L_Shw_Blk|14|12|2|1
+#l:7|L_Blk_Tow|12|15|1|1
+#l:8|L_Tow_Blk|15|12|0|1
+#l:9|L_Tow_Arm|15|16|2|0
+#l:10|L_Arm_Tow|16|15|3|1
+#l:11|L_Arm_Vlt|16|17|2|0
+#l:12|L_Vlt_Arm|17|16|3|1
+#l:13|L_Tow_Hng|15|18|5|0
+#l:14|L_Hng_Tow|18|15|4|1
+#l:15|L_Hng_Air|18|19|2|1
+#l:16|L_Air_Hng|19|18|3|1
+#l:17|L_Air_Mil|19|20|2|1
+#l:18|L_Mil_Air|20|19|3|1
+#l:19|L_Mil_Ckp|20|21|0|1
+#l:20|L_Ckp_Mil|21|20|1|1
+#l:21|L_Mil_Eng|20|22|1|1
+#l:22|L_Eng_Mil|22|20|0|1
+
+# --- OBJECTS (20) ---
+# Format: #o: ID | Name | Location | Desc | Health | Movable | Dependency | OpenLink | CanTP | SingleUse
+#o:1|Walkman|11|Awesome Mix.|0|1|-1|-1|0|0
+#o:2|Tape|11|Music tape.|0|1|1|-1|0|0
+#o:3|Knife|13|Gamora blade.|0|1|-1|-1|0|0
+#o:4|Leg|14|Fake leg.|0|1|-1|-1|0|0
+#o:5|Eye|14|Fake eye.|0|1|-1|-1|0|0
+#o:6|Keycard|15|Tower card.|0|1|-1|9|0|0
+#o:7|Blaster|16|Nova weapon.|0|1|-1|-1|0|0
+#o:8|Arrow|16|Yondu arrow.|0|1|-1|-1|0|0
+#o:9|Battery|15|Anulax battery.|0|1|-1|-1|0|0
+#o:10|Orb|17|The Power Stone.|0|1|9|-1|0|0
+#o:11|ShipKey|17|Milano keys.|0|1|-1|13|0|0
+#o:12|Medpack|16|Heals 5 HP.|5|1|-1|-1|0|1
+#o:13|Food|13|Unit rations.|2|1|-1|-1|0|1
+#o:14|AeroRig|14|Jetpack.|0|1|-1|-1|1|1
+#o:15|NovaPass|12|Vault access.|0|1|-1|11|0|0
+#o:16|Bomb|16|High explosive.|0|1|-1|-1|0|0
+#o:17|GrootLeaf|14|Heals 1 HP.|1|1|-1|-1|0|1
+#o:18|Radio|21|In the Milano.|0|1|-1|-1|0|0
+#o:19|Scrap|18|Metal junk.|0|1|-1|-1|0|0
+#o:20|Uniform|12|Nova uniform.|0|1|-1|-1|0|0
+
+# --- PLAYERS (2) ---
+# Format: #p: ID | Name | gdesc | Location | Health | Extra |
+#p:1|Starlord|O_o|11|10|0|
+#p:2|Gamora|-_-|13|10|0|
+
+# --- CHARACTERS (5) ---
+# Format: #c: ID | Name | gdesc | Health | Friendly | Message | Location
+#c:1|Ronan|/X\|15|0|I will find you!|17
+#c:2|Rocket|~*~|5|1|Need that eye!|14
+#c:3|Groot|\T/|8|1|I am Groot.|12
+#c:4|Drax|>-<|10|1|Die scum!|13
+#c:5|Guard|0_0|5|0|Stop there!|15

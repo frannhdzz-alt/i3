@@ -42,10 +42,11 @@ void game_rules_random_event(Game* game) {
     /* Rule 1: Vacuum in the Airlock (Room 20)
        Check if objects 3 (Suit) and 4 (Oxygen) are with the player.
        We check if their location matches the player location */
+    /* Rule 1: Vacuum in the Airlock (Room 20) */
     if (p_loc == 20) {
-        if (game_get_object_location(game, 3) != p_loc || 
-            game_get_object_location(game, 4) != p_loc) {
-            /* If the player doesn't have the equipment, health goes to 0 */
+        /* Si el jugador NO tiene el traje (3) o NO tiene el oxígeno (4)... */
+        if (player_has_object(p, 3) == FALSE || player_has_object(p, 4) == FALSE) {
+            /* Muerte por asfixia */
             player_set_health(p, 0);
             game_set_finished(game, TRUE);
             return;

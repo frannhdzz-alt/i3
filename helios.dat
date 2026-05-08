@@ -3,22 +3,19 @@
 # =============================================================
 
 # --- SPACES ---
-# Format: #s: ID | Name | g1 | g2 | g3 | g4 | g5 |
-#s:11|Dock Bay| ^^^ | / \ | ___ |     |     |
-#s:12|Corridor| l l | l l | l l |     |     |
-#s:13|Quarters| [ ] | zZz | ___ |     |     |
-#s:14|Canteen| / \ | \ / | ___ |     |     |
-#s:15|Medbay|  +  | [ ] | ___ |     |     |
-#s:16|Garden| \i/ | -+- | / \ |     |     |
-#s:17|Servers| [I] | [I] | [I] |     |     |
-#s:18|Reactor| ( ) | / \ | \ / |     |     |
-#s:19|Bridge| / \ | O_o | \ / |     |     |
-#s:20|Airlock| l l | l l | ___ |     |     |
-#s:21|Engines| 000 | /_\ | ___ |     |     |
-#s:22|Pod| <=> | [-] | ___ |     |     |
-
+#s:11|Dock Bay|       |  [===] |  >BAY< |  [===] |       |
+#s:12|Corridor|       |  : . : |    .   |  : . : |       |   
+#s:13|Quarters|       |   ___  |  [zZz] |   ---  |       |
+#s:14|Canteen|       |  (___) |  {(_)} |  (___) |       |
+#s:15|Medbay|       |   _ _  |  [ + ] |   - -  |       |
+#s:16|Garden|       |   \ /  |  --*-- |   / \  |       |
+#s:17|Servers|       |  [010] |  [101] |  [000] |       |
+#s:18|Reactor|       |  \\ // |  >( )< |  // \\ |       | 
+#s:19|Bridge|       |  /---\ |  [-o-] |  \---/ |       |
+#s:20|Airlock|       |  +---+ |  .   . |  +---+ |       | 
+#s:21|Engines|       |  =/ \= |  =: := |  =\_/= |       |
+#s:22|Pod|       |    ^   |   /-\  |   \_/  |       |
 # --- LINKS ---
-# Format: #l: ID | Name | Origin | Dest | Direction | Open
 #l:1|L_Bay_Cor|11|12|1|1
 #l:2|L_Cor_Bay|12|11|0|1
 #l:3|L_Cor_Rea|12|18|2|1
@@ -41,7 +38,6 @@
 #l:22|L_Pod_Air|22|20|0|1
 
 # --- OBJECTS ---
-# Format: #o: ID | Name | Location | Desc | Health | Movable | Dependency | OpenLink | CanTP | SingleUse
 #o:1|Card_1|11|Blue card.|0|1|-1|15|0|0
 #o:2|Cutter|12|Laser tool.|0|1|-1|-1|0|0
 #o:3|Suit|13|Vacuum gear.|0|1|-1|-1|0|0
@@ -65,12 +61,10 @@
 #o:21|Card_3|19|Red card.|0|1|-1|21|0|0
 
 # --- PLAYERS ---
-# Format: #p: ID | Name | gdesc | Location | Health | Extra
 #p:1|Ripley|O_o|11|5|0
 #p:2|Dallas|-_-|13|5|0
 
 # --- CHARACTERS ---
-# Format: #c: ID | Name | gdesc | Health | Friendly | Message | Location
 #c:1|Alien|/X\|10|0|Hiss...|18
 #c:2|Engie|+_+|3|1|Airlock!|13
 #c:3|Medic|[+]|5|1|Healing.|15

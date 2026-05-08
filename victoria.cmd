@@ -1,17 +1,16 @@
-take Tarjeta_Nivel_1
-move n
+take Card_1
+move s
 move u
-open L_Subir_a_Puente with Tarjeta_Nivel_1
 move w
-recruit Ingeniero
-take Traje_Espacial
+take Suit
 move e
 move e
-take Tanque_Oxigeno
+take O2_Tank
 move w
+open L_Up_Bdg with Card_1
 move u
-take Tarjeta_Nivel_3
-move n
-open L_Esclusa_Capsula with Tarjeta_Nivel_3
-move n
+take Card_3
+move s
+open L_Air_Pod with Card_3
+move s
 exit

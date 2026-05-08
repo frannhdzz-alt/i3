@@ -3,7 +3,7 @@
  *
  * @file graphic_engine.c
  * @author Rodrigo and Mario
- * @version 9.0
+ * @version 4.0
  */
 
 #include "graphic_engine.h"
@@ -82,7 +82,7 @@ void _get_character_sym(Game *game, Id space_id, char *out_sym)
   if (char_id != NO_ID)
   {
     c = game_get_character(game, char_id);
-    /* Solo dibujamos el personaje en el mapa si está vivo */
+    
     if (c && character_get_health(c) > 0)
     {
       strncpy(out_sym, character_get_gdesc(c), 6);
@@ -376,7 +376,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   for (i = 1; i <= MAX_CHARACTERS; i++)
   {
     c = game_get_character(game, i);
-    /* MODIFICACIÓN AQUÍ: Solo entra si el personaje tiene vida > 0 */
+    
     if (c && character_get_health(c) > 0)
     {
       Id c_loc = game_get_character_location(game, i);
@@ -435,7 +435,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     if (cmd_space != NULL && (char_id = set_get_id_at(space_get_characters(cmd_space), 0)) != NO_ID)
     {
       c = game_get_character(game, char_id);
-      /* Asegurarnos de que tampoco hablamos con muertos */
+      
       if (c != NULL && character_get_health(c) > 0)
       {
         if (character_get_friendly(c) == TRUE)

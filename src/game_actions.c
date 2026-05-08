@@ -4,7 +4,7 @@
  * @file game_actions.c
  * @author Rodrigo and Mario
  * @version 3.0
- * @date 13-04-2026
+ * @date 01-05-2026
  * @copyright GNU Public License
  */
 
@@ -213,25 +213,20 @@ Status game_actions_attack(Game *game) {
   p_loc = game_get_player_location(game);
   if (p_loc == NO_ID) return ERROR;
 
-  /* Buscamos en la sala actual algún personaje que sea ENEMIGO (friendly == FALSE) y esté VIVO */
   for (i = 1; i <= MAX_CHARACTERS; i++) {
     enemy = game_get_character(game, i);
     
-    /* Si el personaje existe y está en la misma sala que nosotros... */
     if (enemy && game_get_character_location(game, i) == p_loc) {
       
-      /* Si NO es amigo y tiene vida, es nuestro objetivo */
       if (character_get_friendly(enemy) == FALSE && character_get_health(enemy) > 0) {
         
-        /* Le restamos 1 de daño base (luego game_rules le sumará el extra) */
         character_set_health(enemy, character_get_health(enemy) - 1);
         
-        return OK; /* Ataque realizado con éxito */
+        return OK;
       }
     }
   }
 
-  /* Si el bucle termina y no ha devuelto OK, es que en esta sala solo hay amigos (o nadie) */
   return ERROR;
 }
 
@@ -339,16 +334,14 @@ Status game_actions_abandon(Game *game) {
 
   if (!game) return ERROR;
 
-  /* Obtenemos el argumento que escribió el jugador (ej: "Drax") */
   char_name = command_get_arg(game_get_last_command(game));
-  /* Obtenemos qué jugador está haciendo la acción */
+
   p_id = player_get_id(game_get_active_player(game));
 
   if (!char_name || char_name[0] == '\0') {
     return ERROR;
   }
 
-  /* Usamos la función del motor que busca al personaje por su nombre y comprueba si nos sigue */
   if (game_abandon_character(game, p_id, char_name) == OK) {
     return OK;
   }

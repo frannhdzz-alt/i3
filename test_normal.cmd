@@ -1,15 +1,15 @@
-inspect Card_1
-recruit Engie
-take Card_1
-chat Engie
+take Walkman
 move s
-take Stim
-move u
-use Stim
-open L_Up_Bdg with Card_1
 move e
+chat Groot
+take NovaPass
 move u
-attack Ash
-drop Card_1
-abandon Engie
+move u
+take Keycard
+inspect NovaPass
+open L_Tow_Arm with Keycard
+move e
+move e
+take Blaster
+move w
 exit

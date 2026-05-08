@@ -1,13 +1,21 @@
+move n
+move s
+take Orb
+take Leg
+chat Ronan
+recruit Ronan
+attack Groot
+open L_Tow_Arm with Walkman
+use Medpack
+inspect ShipKey
+move e
+move u
+take Walkman
+chat Rocket
+move s
+recruit Guard
+drop Blaster
+abandon Groot
 move w
-take Card_1
-drop Tablet
-attack Alien
-recruit Medic
-abandon Engie
-use Card_1
-inspect FakeObject
-open L_Air_Bdg with Tablet
-chat Alien
-take
-move up
+move n
 exit

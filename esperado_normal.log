@@ -1,15 +1,15 @@
-Inspect Card_1: OK
-Recruit Engie: OK
-Take Card_1: OK
-Chat Engie: OK
-Move s: OK
-Take Stim: OK
-Move u: OK
-Use Stim: OK
-Open L_Up_Bdg with Card_1: OK
-Move e: OK
-Move u: OK
-Attack Ash: OK
-Drop Card_1: OK
-Abandon Engie: OK
-Exit: OK
+Take Walkman: OK (P1)
+Move s: OK (P2)
+Move e: OK (P1)
+Chat Groot: OK (P2)
+Take NovaPass: OK (P1)
+Move u: OK (P2)
+Move u: OK (P1)
+Take Keycard: OK (P2)
+Inspect NovaPass: OK (P1)
+Open L_Tow_Arm with Keycard: OK (P2)
+Move e: OK (P1)
+Move e: OK (P2)
+Take Blaster: OK (P1)
+Move w: OK (P2)
+Exit: OK (P1)

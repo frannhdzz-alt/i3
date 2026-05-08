@@ -1,0 +1,13 @@
+Move w: ERROR
+Take Card_1: OK
+Drop Tablet: ERROR
+Attack Alien: ERROR
+Recruit Medic: OK
+Abandon Engie: ERROR
+Use Card_1: ERROR
+Inspect FakeObject: ERROR
+Open L_Air_Bdg with Tablet: ERROR
+Chat Alien: ERROR
+Take: ERROR
+Move up: ERROR
+Exit: OK

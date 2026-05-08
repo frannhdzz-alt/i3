@@ -136,15 +136,17 @@ vrun: $(EXEC)
 	valgrind --leak-check=full ./$(EXEC) castle.dat -l registro.txt
 
 test: $(EXEC)
-	./$(EXEC) castle.dat -l log_normal.txt < test_normal.cmd
-	./$(EXEC) castle.dat -l log_errores.txt < test_errores.cmd
-	./$(EXEC) castle_vacio.dat -l log_vacio.txt < test_vacio.cmd
-	./$(EXEC) castle_error.dat -l log_dat_error.txt < test_normal.cmd
+	./$(EXEC) helios.dat -d -l salida_temporal.log < test_normal.cmd
+	diff salida_temporal.log esperado_normal.log
+	./$(EXEC) helios.dat -d -l salida_temporal_err.log < test_errores.cmd
+	diff salida_temporal_err.log esperado_errores.log
+	./$(EXEC) helios.dat -d -l registro_victoria.log < victoria.cmd
+
 
 doc:
 	doxygen Doxyfile
 
 clean:
 	rm -f $(OBJ_DIR)/*.o $(EXEC) $(TESTS)
-	rm -f *.txt
+	rm -f salida_*.log registro.log *.txt
 	rm -rf $(DOC_DIR)/html $(DOC_DIR)/latex

@@ -1,20 +1,15 @@
-chat
-take map
-inspect map
-take dirk
+inspect Card_1
+recruit Engie
+take Card_1
+chat Engie
 move s
-recruit seer
-move s
-move s
-take vial
-use vial
-move s
-take key
-move n
-move n
-move n
-move w
-open l_mine_hedge with key
-attack
-abandon seer
+take Stim
+move u
+use Stim
+open L_Up_Bdg with Card_1
+move e
+move u
+attack Ash
+drop Card_1
+abandon Engie
 exit

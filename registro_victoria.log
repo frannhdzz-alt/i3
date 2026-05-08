@@ -1,0 +1,16 @@
+Take Card_1: OK
+Move s: ERROR
+Move u: ERROR
+Move w: ERROR
+Take Suit: OK
+Move e: ERROR
+Move e: ERROR
+Take O2_Tank: ERROR
+Move w: ERROR
+Open L_Up_Bdg with Card_1: OK
+Move u: ERROR
+Take Card_3: ERROR
+Move s: ERROR
+Open L_Air_Pod with Card_3: ERROR
+Move s: ERROR
+Exit: OK

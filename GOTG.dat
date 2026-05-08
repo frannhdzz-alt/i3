@@ -72,8 +72,8 @@
 
 # --- CHARACTERS (5) ---
 # Format: #c: ID | Name | gdesc | Health | Friendly | Message | Location
-#c:1|Ronan|/X\|15|0|I will find you!|17
-#c:2|Rocket|~*~|5|1|Need that eye!|14
-#c:3|Groot|\T/|8|1|I am Groot.|12
-#c:4|Drax|>-<|10|1|Die scum!|13
-#c:5|Guard|0_0|5|0|Stop there!|15
+#c:1|Ronan|/X\|15|0|I will find you!|17|
+#c:2|Rocket|~*~|5|1|Need that eye!|14|
+#c:3|Groot|\T/|8|1|I am Groot.|12|
+#c:4|Drax|>-<|10|1|Die scum!|13|
+#c:5|Guard|0_0|5|0|Stop there!|15|

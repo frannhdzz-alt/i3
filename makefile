@@ -1,7 +1,7 @@
 # =================================================================
 # File: Makefile
 # Authors: Rodrigo and Mario
-# Project: The Haunted Castle 
+# Project: The Haunted GOTG 
 # =================================================================
 
 # --- Directorios ---
@@ -20,7 +20,7 @@ LDFLAGS = -L$(LIB_DIR) -lscreen
 _OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o link.o game_rules.o
 OBJ = $(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
 
-EXEC = castle
+EXEC = GOTG
 
 
 TESTS = set_test character_test space_test inventory_test link_test object_test player_test
@@ -130,16 +130,16 @@ player_test: $(OBJ_DIR)/player_test.o $(OBJ_DIR)/player.o $(OBJ_DIR)/inventory.o
 
 
 run: $(EXEC)
-	./$(EXEC) castle.dat -l registro.txt
+	./$(EXEC) GOTG.dat -l registro.txt
 
 vrun: $(EXEC)
-	valgrind --leak-check=full ./$(EXEC) castle.dat -l registro.txt
+	valgrind --leak-check=full ./$(EXEC) GOTG.dat -l registro.txt
 
 test: $(EXEC)
-	./$(EXEC) castle.dat -l log_normal.txt < test_normal.cmd
-	./$(EXEC) castle.dat -l log_errores.txt < test_errores.cmd
-	./$(EXEC) castle_vacio.dat -l log_vacio.txt < test_vacio.cmd
-	./$(EXEC) castle_error.dat -l log_dat_error.txt < test_normal.cmd
+	./$(EXEC) GOTG.dat -l log_normal.txt < test_normal.cmd
+	./$(EXEC) GOTG.dat -l log_errores.txt < test_errores.cmd
+	./$(EXEC) GOTG_vacio.dat -l log_vacio.txt < test_vacio.cmd
+	./$(EXEC) GOTG_error.dat -l log_dat_error.txt < test_normal.cmd
 
 doc:
 	doxygen Doxyfile

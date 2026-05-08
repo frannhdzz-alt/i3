@@ -27,7 +27,7 @@ char *cmd_to_str[N_CMD][N_CMDT] = {
   {"i", "Inspect"},
   {"c", "Chat"},
   {"r", "Recruit"},
-  {"ab", "Abandon"},
+  {"f", "Abandon"},
   {"u", "Use"},
   {"o", "Open"},
   {"tp", "Teleport"}

@@ -1,8 +1,3 @@
-# =================================================================
-# File: Makefile
-# Authors: Rodrigo and Mario
-# Project: The Haunted Castle 
-# =================================================================
 
 # --- Directorios ---
 SRC_DIR = src
@@ -20,7 +15,7 @@ LDFLAGS = -L$(LIB_DIR) -lscreen
 _OBJ = game_loop.o game.o game_actions.o space.o command.o graphic_engine.o game_reader.o object.o player.o set.o character.o inventory.o link.o game_rules.o
 OBJ = $(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
 
-EXEC = castle
+EXEC = GOTG
 
 
 TESTS = set_test character_test space_test inventory_test link_test object_test player_test
@@ -130,17 +125,17 @@ player_test: $(OBJ_DIR)/player_test.o $(OBJ_DIR)/player.o $(OBJ_DIR)/inventory.o
 
 
 run: $(EXEC)
-	./$(EXEC) castle.dat -l registro.txt
+	./$(EXEC) GOTG.dat -l registro.txt
 
 vrun: $(EXEC)
-	valgrind --leak-check=full ./$(EXEC) castle.dat -l registro.txt
+	valgrind --leak-check=full ./$(EXEC) GOTG.dat -l registro.txt
 
 test: $(EXEC)
-	./$(EXEC) helios.dat -d -l salida_temporal.log < test_normal.cmd
+	./$(EXEC) GOTG.dat -d -l salida_temporal.log < test_normal.cmd
 	diff salida_temporal.log esperado_normal.log
-	./$(EXEC) helios.dat -d -l salida_temporal_err.log < test_errores.cmd
+	./$(EXEC) GOTG.dat -d -l salida_temporal_err.log < test_errores.cmd
 	diff salida_temporal_err.log esperado_errores.log
-	./$(EXEC) helios.dat -d -l registro_victoria.log < victoria.cmd
+	./$(EXEC) GOTG.dat -d -l registro_victoria.log < victoria.cmd
 
 
 doc:

@@ -450,9 +450,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   screen_area_clear(ge->help);
 
-  sprintf(str, " Commands: move(m) [dir] | take(t) [obj] | drop(d) [obj] | attack(a) | chat(c) | recruit(r) [char] | abandon(f) [char] ");
+    sprintf(str, "                                                                                                              Commands: move(m) [dir] | take(t) [obj] | drop(d) [obj] | attack(a) | chat(c) | recruit(r) [char] ");
   screen_area_puts(ge->help, str);
-  sprintf(str, "           inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | tp [room] | exit(e)");
+  sprintf(str, "  inspect(i) [obj] | use(u) [obj] | open(o) [lnk] with [obj] | tp [room] | exit(e) | abandon(f) [char] ");
   screen_area_puts(ge->help, str);
 
   switch (player_get_id(player))

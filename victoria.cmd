@@ -1,16 +1,27 @@
-take Card_1
+move e
+recruit Drax
+take NovaPass
+move s
 move s
 move u
+recruit Rocket
 move w
-take Suit
-move e
-move e
-take O2_Tank
-move w
-open L_Up_Bdg with Card_1
+move n
+take Knife
 move u
-take Card_3
-move s
-open L_Air_Pod with Card_3
-move s
+move e
+take Keycard
+chat
+open L_Tow_Arm with Keycard
+move e
+move e
+chat
+take Blaster
+chat
+open L_Arm_Vlt with NovaPass
+move e
+move e
+attack
+attack
+attack
 exit

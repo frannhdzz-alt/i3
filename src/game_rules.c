@@ -3,9 +3,7 @@
  *
  * @file game_rules.c
  * @author Rodrigo, Mario and Francisco
- * @version 8.0
- * @date 28-04-2026
- * @copyright GNU Public License
+ * @version 10.0
  */
 
 #include "game_rules.h"
@@ -17,124 +15,130 @@
 #include <stdio.h>
 
 void game_rules_random_event(Game* game) {
-    /* Variables at the top for ANSI C compliance */
-    Player *p = NULL;
-    Id p_loc = NO_ID;
-    Id ronan_loc = NO_ID;
-    int health = 0;
-    int prob = 0;
-    int extra_dmg = 0;
+    /* 100% ANSI C COMPLIANT: Declaraciones al principio */
+    static Id last_turn_player_id = 1; /* MEMORIA DEL TURNO ANTERIOR */
+    Player *p = NULL, *attacker = NULL;
+    Id ronan_loc = NO_ID, attacker_id = NO_ID, random_dest = NO_ID;
+    int health = 0, prob = 0, extra_dmg = 0;
+    int has_ally = 0, has_weap = 0; 
     Link *door = NULL;
     Command *last_cmd = NULL;
-    Character *ronan = NULL;
-    Character *drax = NULL;
-    char msg[255]; /* Variable para formatear nuestros mensajes */
+    Character *ronan = NULL, *rocket = NULL, *drax = NULL;
+    char msg[255];
+
+    Id valid_spaces[] = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 25, 26, 27};
+    int n_valid_spaces = 15;
 
     if (!game) return;
 
-    /* Limpiar mensaje del turno anterior */
-    game_set_last_message(game, "");
+    game_set_last_message(game, ""); 
 
     p = game_get_active_player(game); 
     if (!p) return;
 
-    p_loc = game_get_player_location(game);
     health = player_get_health(p);
 
     /* =========================================================
-       DETERMINISTIC RULES (Game specific logic)
+       DETERMINISTIC RULES 
        ========================================================= */
 
-    /* RULE 1: Epic Boss Extra Damage */
     last_cmd = game_get_last_command(game);
     if (last_cmd && command_get_code(last_cmd) == ATTACK) {
         ronan = game_get_character(game, 1);
-        drax = game_get_character(game, 4);
-        
         if (ronan && character_get_health(ronan) > 0) {
             ronan_loc = game_get_character_location(game, 1);
-            if (ronan_loc == p_loc) {
+            
+            /* Buscamos quién fue el que atacó basándonos en la memoria */
+            attacker = game_get_player_by_id(game, last_turn_player_id);
+            if (!attacker) attacker = p; /* Fallback */
+
+            if (attacker && player_get_location(attacker) == ronan_loc) {
+                attacker_id = player_get_id(attacker);
                 extra_dmg = 0;
+                has_ally = 0;
+                has_weap = 0;
                 
-                if (player_has_object(p, 7) == TRUE) {
-                    extra_dmg += 2;
+                if (attacker_id == 1) { /* Star-Lord */
+                    rocket = game_get_character(game, 2); 
+                    if (rocket && character_get_following(rocket) == attacker_id) { extra_dmg += 2; has_ally = 1; }
+                    if (player_has_object(attacker, 7) == TRUE) { extra_dmg += 3; has_weap = 1; }
+                    
+                    if (extra_dmg > 0) {
+                        if (has_ally && has_weap) sprintf(msg, "[STAR-LORD] Rocket & Blaster boost: +%d dmg!", extra_dmg);
+                        else if (has_weap) sprintf(msg, "[STAR-LORD] Blaster shot: +%d dmg!", extra_dmg);
+                        else sprintf(msg, "[STAR-LORD] Rocket cover fire: +%d dmg!", extra_dmg);
+                        game_set_last_message(game, msg);
+                    }
                 }
-                if (drax && character_get_following(drax) == player_get_id(p)) {
-                    extra_dmg += 2;
+                else if (attacker_id == 2) { /* Gamora */
+                    drax = game_get_character(game, 4); 
+                    if (drax && character_get_following(drax) == attacker_id) { extra_dmg += 2; has_ally = 1; }
+                    if (player_has_object(attacker, 3) == TRUE) { extra_dmg += 3; has_weap = 1; }
+                    
+                    if (extra_dmg > 0) {
+                        if (has_ally && has_weap) sprintf(msg, "[GAMORA] Drax & Knife combo: +%d dmg!", extra_dmg);
+                        else if (has_weap) sprintf(msg, "[GAMORA] Knife slash: +%d dmg!", extra_dmg);
+                        else sprintf(msg, "[GAMORA] Drax brute force: +%d dmg!", extra_dmg);
+                        game_set_last_message(game, msg);
+                    }
                 }
                 
-                if (extra_dmg > 0) {
+                if (character_get_health(ronan) <= extra_dmg + 1) {
+                    game_set_last_message(game, "*** VICTORY! RONAN HAS BEEN DEFEATED! ***");
+                    game_set_finished(game, TRUE);
+                    /* Guardar la memoria antes de acabar el juego por seguridad */
+                    last_turn_player_id = player_get_id(p);
+                    return;
+                } else {
                     character_set_health(ronan, character_get_health(ronan) - extra_dmg);
-                    sprintf(msg, "[COMBAT] Weapons & allies deal %d EXTRA damage to Ronan!", extra_dmg);
-                    game_set_last_message(game, msg);
                 }
             }
         }
     }
 
-    /* RULE 2: Epic Boss Victory */
     ronan = game_get_character(game, 1);
     if (ronan && character_get_health(ronan) <= 0) {
-        game_set_last_message(game, "*** VICTORY! YOU HAVE DEFEATED RONAN THE ACCUSER! ***");
+        game_set_last_message(game, "*** VICTORY! RONAN HAS BEEN DEFEATED! ***");
         game_set_finished(game, TRUE);
+        last_turn_player_id = player_get_id(p);
         return;
     }
-
-    /* RULE 3: Defeat Condition */
     if (health <= 0) {
-        game_set_last_message(game, "*** GAME OVER. RONAN HAS DEFEATED YOU. ***");
+        game_set_last_message(game, "*** GAME OVER. YOU DIED IN KYLN PRISON. ***");
         game_set_finished(game, TRUE);
+        last_turn_player_id = player_get_id(p);
         return;
     }
 
     /* =========================================================
-       RANDOM RULES (Surprise events)
+       RANDOM RULES 
        ========================================================= */
     prob = rand() % 100; 
 
-    /* RULE 4: Surprise Attack (10% chance) */
     if (prob < 10) {
-        game_set_last_message(game, "[ALERT] Ronan hit you with an energy blast! Lose 1 HP.");
+        game_set_last_message(game, "[ALERT] Ronan blast! You lose 1 HP.");
         player_set_health(p, health - 1);
     }
-    
-    /* RULE 5: Door Malfunction (10% chance) */
     else if (prob >= 10 && prob < 20) {
         door = game_get_link(game, 9); 
-        if (door && link_get_open(door) == TRUE) {
-            game_set_last_message(game, "[SYSTEM] Power failure. Tower door closed itself.");
-            link_set_open(door, FALSE);
+        if (door) {
+            game_set_last_message(game, "[SYSTEM] Security breach. Tower door state changed.");
+            link_set_open(door, !link_get_open(door));
         }
     }
-
-    /* RULE 6: Object Displacement (10% chance) */
-    else if (prob >= 20 && prob < 30) {
-        if (game_get_object_location(game, 19) != 17 && player_has_object(p, 19) == FALSE) {
-            game_set_last_message(game, "[SYSTEM] Guards moved the scrap to the vault.");
-            game_set_object_location(game, 17, 19);
-        }
-    }
-
-    /* RULE 7: Unexpected Help (10% chance) */
-    else if (prob >= 30 && prob < 40) {
-        if (health < 10) {
-            game_set_last_message(game, "[HELP] A glowing spore from Groot heals 1 HP.");
-            player_set_health(p, health + 1);
-        }
-    }
-
-    /* RULE 8: Rocket's Distraction (10% chance) */
     else if (prob >= 40 && prob < 50) {
-        game_set_last_message(game, "[EVENT] BOOM! Rocket detonated a bomb! Ronan moves.");
-        game_set_character_location(game, 13, 1);
+        random_dest = valid_spaces[rand() % n_valid_spaces];
+        game_set_last_message(game, "[EVENT] Rocket detonated a bomb! Ronan warped.");
+        game_set_character_location(game, random_dest, 1);
     }
-
-    /* RULE 9: Drax's Brute Force (10% chance) */
     else if (prob >= 50 && prob < 60) {
         door = game_get_link(game, 13);
         if (door && link_get_open(door) == FALSE) {
-            game_set_last_message(game, "[EVENT] CRASH! Drax smashed open the Hangar door!");
+            game_set_last_message(game, "[EVENT] Drax smashed open the Hangar door!");
             link_set_open(door, TRUE);
         }
     }
+
+    /* ACTUALIZAR MEMORIA AL FINAL DEL TURNO */
+    last_turn_player_id = player_get_id(p);
 }

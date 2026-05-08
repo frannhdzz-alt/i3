@@ -1,8 +1,8 @@
 # =============================================================
-# DATA FILE: GUARDIANS OF THE GALAXY (CENTERED GRAPHICS)
+# DATA FILE: GUARDIANS OF THE GALAXY (15 SPACES - 3 FLOORS)
 # =============================================================
 
-# --- SPACES (12) ---
+# --- SPACES (15) ---
 # Format: #s: ID | Name | g1 | g2 | g3 | g4 | g5 |
 #s:11|Cell|       | [lll] |  ME   | [lll] |       |
 #s:12|Block|       | : . : |  . .  | : . : |       |
@@ -16,23 +16,35 @@
 #s:20|Milano|       |  /_\  |  \ /  |  ===  |       |
 #s:21|Cockpit|       |  (o)  |  ---  |  ( )  |       |
 #s:22|Engine|       |  000  |  /_\  |  000  |       |
+#s:25|Medbay|       |  [+]  |  . .  |  [+]  |       |
+#s:26|Interrog|       |  ---  |  [?]  |  ---  |       |
+#s:27|Security|       | [CAM] |  ...  | [CAM] |       |
 
-# --- LINKS (22) ---
+# --- LINKS (28) ---
 # Format: #l: ID | Name | Origin | Dest | Direction | Open
-#l:1|L_Cel_Blk|11|12|1|1
-#l:2|L_Blk_Cel|12|11|0|1
-#l:3|L_Blk_Can|12|13|2|1
-#l:4|L_Can_Blk|13|12|3|1
-#l:5|L_Blk_Shw|12|14|3|1
-#l:6|L_Shw_Blk|14|12|2|1
-#l:7|L_Blk_Tow|12|15|1|1
-#l:8|L_Tow_Blk|15|12|0|1
+# (Directions: 0=North, 1=South, 2=East, 3=West, 4=Up, 5=Down)
+
+# -- PISO 1 (Bloque, Celda, Cafeteria, Duchas, Enfermeria) --
+#l:1|L_Cel_Blk|11|12|2|1
+#l:2|L_Blk_Cel|12|11|3|1
+#l:3|L_Blk_Can|12|13|0|1
+#l:4|L_Can_Blk|13|12|1|1
+#l:5|L_Blk_Shw|12|14|1|1
+#l:6|L_Shw_Blk|14|12|0|1
+#l:7|L_Blk_Med|12|25|2|1
+#l:8|L_Med_Blk|25|12|3|1
+
+# -- PISO 2 (Torre, Armeria, Camara, Interrogatorio, Seguridad) --
 #l:9|L_Tow_Arm|15|16|2|0
 #l:10|L_Arm_Tow|16|15|3|1
 #l:11|L_Arm_Vlt|16|17|2|0
 #l:12|L_Vlt_Arm|17|16|3|1
-#l:13|L_Tow_Hng|15|18|5|0
-#l:14|L_Hng_Tow|18|15|4|1
+#l:25|L_Tow_Int|15|26|3|1
+#l:26|L_Int_Tow|26|15|2|1
+#l:27|L_Tow_Sec|15|27|0|1
+#l:28|L_Sec_Tow|27|15|1|1
+
+# -- PISO 3 (Hangar y Milano) --
 #l:15|L_Hng_Air|18|19|2|1
 #l:16|L_Air_Hng|19|18|3|1
 #l:17|L_Air_Mil|19|20|2|1
@@ -42,11 +54,17 @@
 #l:21|L_Mil_Eng|20|22|1|1
 #l:22|L_Eng_Mil|22|20|0|1
 
+# -- ASCENSORES (Conectan los pisos) --
+#l:23|L_Blk_Tow|12|15|4|1
+#l:24|L_Tow_Blk|15|12|5|1
+#l:13|L_Tow_Hng|15|18|4|0
+#l:14|L_Hng_Tow|18|15|5|1
+
 # --- OBJECTS (20) ---
 # Format: #o: ID | Name | Location | Desc | Health | Movable | Dependency | OpenLink | CanTP | SingleUse
 #o:1|Walkman|11|Awesome Mix.|0|1|-1|-1|0|0
 #o:2|Tape|11|Music tape.|0|1|1|-1|0|0
-#o:3|Knife|13|Gamora blade.|0|1|-1|-1|0|0
+#o:3|Knife|26|Gamora blade.|0|1|-1|-1|0|0
 #o:4|Leg|14|Fake leg.|0|1|-1|-1|0|0
 #o:5|Eye|14|Fake eye.|0|1|-1|-1|0|0
 #o:6|Keycard|15|Tower card.|0|1|-1|9|0|0
@@ -55,7 +73,7 @@
 #o:9|Battery|15|Anulax battery.|0|1|-1|-1|0|0
 #o:10|Orb|17|The Power Stone.|0|1|9|-1|0|0
 #o:11|ShipKey|17|Milano keys.|0|1|-1|13|0|0
-#o:12|Medpack|16|Heals 5 HP.|5|1|-1|-1|0|1
+#o:12|Medpack|25|Heals 5 HP.|5|1|-1|-1|0|1
 #o:13|Food|13|Unit rations.|2|1|-1|-1|0|1
 #o:14|AeroRig|14|Jetpack.|0|1|-1|-1|1|1
 #o:15|NovaPass|12|Vault access.|0|1|-1|11|0|0
@@ -63,7 +81,7 @@
 #o:17|GrootLeaf|14|Heals 1 HP.|1|1|-1|-1|0|1
 #o:18|Radio|21|In the Milano.|0|1|-1|-1|0|0
 #o:19|Scrap|18|Metal junk.|0|1|-1|-1|0|0
-#o:20|Uniform|12|Nova uniform.|0|1|-1|-1|0|0
+#o:20|Uniform|27|Nova uniform.|0|1|-1|-1|0|0
 
 # --- PLAYERS (2) ---
 # Format: #p: ID | Name | gdesc | Location | Health | Extra |
@@ -76,4 +94,4 @@
 #c:2|Rocket|~*~|5|1|Need that eye!|14
 #c:3|Groot|\T/|8|1|I am Groot.|12
 #c:4|Drax|>-<|10|1|Die scum!|13
-#c:5|Guard|0_0|5|0|Stop there!|15
+#c:5|Guard|0_0|5|0|Stop there!|27

@@ -2,9 +2,9 @@
  * @brief It implements the game structure
  *
  * @file game.c
- * @author Mario
+ * @author Mario and Rodrigo
  * @version 3.0
- * @date 13-04-2026
+ * @date 30-04-2026
  * @copyright GNU Public License
  */
 
@@ -33,6 +33,7 @@ struct _Game
   int n_links;                           /*!< Number of links in the game */
   Command *last_cmd;                     /*!< Last command executed in the game */
   Bool finished;                         /*!< Whether the game is finished or not */
+  char last_message[255];                /*!< Save the messages */
 };
 
 Status game_create(Game **game)
@@ -88,6 +89,7 @@ for (i = 0; i < MAX_PLAYERS; i++)
   }
 
   newGame->finished = FALSE;
+  newGame->last_message[0] = '\0'; 
   *game = newGame;
 
   return OK;
@@ -605,10 +607,8 @@ Status game_recruit_character(Game *game, Id player_id, const char *char_name) {
   c = game_get_character_by_name(game, char_name);
   if (!c) return ERROR;
 
-  /* Solo personajes amigos */
   if (character_get_friendly(c) == FALSE) return ERROR;
 
-  /* Asignar follower */
   return character_set_following(c, player_id);
 }
 
@@ -620,10 +620,8 @@ Status game_abandon_character(Game *game, Id player_id, const char *char_name) {
     c = game_get_character_by_name(game, char_name);
     if (!c) return ERROR;
 
-    /* Solo se puede abandonar si esta siguiendo a alguien */
-    if (character_get_following(c) == NO_ID) return ERROR;
+    if (character_get_following(c) != player_id) return ERROR;
 
-    /* Dejar de seguir */
     return character_set_following(c, NO_ID);
 }
 
@@ -676,3 +674,26 @@ Status game_move_followers(Game *game, Id player_id, Id new_space_id)
   return OK;
 }
 
+
+Status game_set_last_message(Game *game, const char *msg) {
+    if (!game || !msg) return ERROR;
+    strncpy(game->last_message, msg, 254);
+    game->last_message[254] = '\0';
+    return OK;
+}
+
+const char *game_get_last_message(Game *game) {
+    if (!game) return NULL;
+    return game->last_message;
+}
+
+Player *game_get_player_by_id(Game *game, Id id) {
+  int i;
+  if (!game || id == NO_ID) return NULL;
+  for (i = 0; i < game->n_players; i++) {
+    if (game->players[i] != NULL && player_get_id(game->players[i]) == id) {
+      return game->players[i];
+    }
+  }
+  return NULL;
+}

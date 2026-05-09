@@ -1,7 +1,7 @@
 # =================================================================
 # File: Makefile
 # Authors: Rodrigo and Mario
-# Project: The Haunted GOTG 
+# Project: The Haunted Castle 
 # =================================================================
 
 # --- Directorios ---
@@ -136,15 +136,15 @@ vrun: $(EXEC)
 	valgrind --leak-check=full ./$(EXEC) GOTG.dat -l registro.txt
 
 test: $(EXEC)
-	./$(EXEC) GOTG.dat -l log_normal.txt < test_normal.cmd
-	./$(EXEC) GOTG.dat -l log_errores.txt < test_errores.cmd
-	./$(EXEC) GOTG_vacio.dat -l log_vacio.txt < test_vacio.cmd
-	./$(EXEC) GOTG_error.dat -l log_dat_error.txt < test_normal.cmd
+	./$(EXEC) castle.dat -l log_normal.txt < test_normal.cmd
+	./$(EXEC) castle.dat -l log_errores.txt < test_errores.cmd
+	./$(EXEC) castle_vacio.dat -l log_vacio.txt < test_vacio.cmd
+	./$(EXEC) castle_error.dat -l log_dat_error.txt < test_normal.cmd
 
 doc:
 	doxygen Doxyfile
 
 clean:
 	rm -f $(OBJ_DIR)/*.o $(EXEC) $(TESTS)
-	rm -f *.txt
+	rm -f salida_*.log registro.log *.txt
 	rm -rf $(DOC_DIR)/html $(DOC_DIR)/latex

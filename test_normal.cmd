@@ -1,20 +1,15 @@
-chat
-take map
-inspect map
-take dirk
+take Walkman
 move s
-recruit seer
-move s
-move s
-take vial
-use vial
-move s
-take key
-move n
-move n
-move n
+move e
+chat Groot
+take NovaPass
+move u
+move u
+take Keycard
+inspect NovaPass
+open L_Tow_Arm with Keycard
+move e
+move e
+take Blaster
 move w
-open l_mine_hedge with key
-attack
-abandon seer
 exit
